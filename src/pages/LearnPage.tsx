@@ -93,7 +93,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
       const section = lesson.sections[sectionIndex];
       // Pick a unique illustration from this belt's cards
       const cardImage =
-        beltCards[sectionIndex % beltCards.length]?.conceptImage;
+        beltCards[(sectionIndex + 1) % beltCards.length]?.conceptImage;
 
       return (
         <div>
