@@ -36,7 +36,7 @@ export const lessons: Lesson[] = [
     sections: [
       {
         title: "Declaring variables",
-        image: "/concepts/w01.png",
+        image: "/concepts/w08.png",
         body: "Go gives you two ways to create variables. The long form with var works anywhere. The short form with := is more common inside functions and infers the type automatically.",
         examples: [
           {
@@ -162,7 +162,7 @@ fmt.Sprintf("Score: %d%%", 95)       // returns string`,
     sections: [
       {
         title: "Functions",
-        image: "/concepts/y01.png",
+        image: "/concepts/y02.png",
         body: "Go functions can return multiple values. This is the foundation of Go's error handling: almost every function returns (result, error). Parameters of the same type can share a type declaration.",
         examples: [
           {
@@ -317,7 +317,7 @@ _, err := fmt.Println("hi") // ignore byte count`,
     sections: [
       {
         title: "Arrays vs slices",
-        image: "/concepts/g01.png",
+        image: "/concepts/g07.png",
         body: "Arrays have a fixed size baked into the type: [5]int and [3]int are different types. Slices are what you actually use. They're views into arrays that can grow with append.",
         examples: [
           {
@@ -454,7 +454,7 @@ func (r *Rect) Scale(factor float64) {
       },
       {
         title: "Interfaces",
-        image: "/concepts/b01.png",
+        image: "/concepts/b02.png",
         body: "An interface defines behavior: a set of method signatures. Any type that implements all those methods satisfies the interface automatically. No implements keyword. This is Go's implicit interface satisfaction.",
         examples: [
           {
@@ -549,7 +549,7 @@ case int:
     sections: [
       {
         title: "Goroutines",
-        image: "/concepts/br01.png",
+        image: "/concepts/br10.png",
         body: "A goroutine is a function running concurrently. Start one with the go keyword. Goroutines are cheap (a few KB of stack), so you can launch thousands. They're multiplexed onto OS threads by Go's runtime scheduler.",
         examples: [
           {
@@ -750,7 +750,7 @@ doubled := Map([]int{1, 2, 3}, func(x int) int {
       },
       {
         title: "The init() function",
-        image: "/concepts/k01.png",
+        image: "/concepts/k04.png",
         body: "Packages can have init() functions that run automatically before main(). They execute in dependency order. Common uses: registering database drivers, validating configuration, initializing package-level state.",
         examples: [
           {
