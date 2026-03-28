@@ -60,9 +60,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           {dueCount > 0 ? `Train (${dueCount} due)` : "Start Quiz"}
         </button>
       </div>
-
-      {/* Keyboard hint */}
-      <div style={styles.hint}>Press 1-4 to answer, Enter to continue</div>
     </div>
   );
 };
@@ -137,12 +134,5 @@ const styles: Record<string, React.CSSProperties> = {
     padding: "14px 32px",
     cursor: "pointer",
     transition: "all 0.2s",
-  },
-  hint: {
-    fontFamily: font.mono,
-    fontSize: 15,
-    color: colors.textMuted,
-    marginTop: spacing.xxl,
-    opacity: 0.6,
   },
 };
