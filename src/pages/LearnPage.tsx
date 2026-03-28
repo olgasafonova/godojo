@@ -250,25 +250,16 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
               <div
                 key={i}
                 style={{
-                  background: `${colors.wrong}08`,
-                  border: `1px solid ${colors.wrong}20`,
-                  borderRadius: radius.md,
+                  background: `${colors.wrong}18`,
+                  borderLeft: `4px solid ${colors.wrong}`,
+                  borderRadius: radius.sm,
                   padding: `${spacing.md}px ${spacing.lg}px`,
                   fontFamily: font.body,
-                  fontSize: 17,
+                  fontSize: 18,
                   color: colors.text,
-                  lineHeight: 1.6,
+                  lineHeight: 1.7,
                 }}
               >
-                <span
-                  style={{
-                    color: colors.wrong,
-                    fontWeight: font.weightBold,
-                    marginRight: spacing.sm,
-                  }}
-                >
-                  {i + 1}.
-                </span>
                 {g}
               </div>
             ))}
