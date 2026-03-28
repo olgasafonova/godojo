@@ -152,7 +152,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
           section={section}
           index={i}
           mobile={mobile}
-          image={beltCards[i]?.conceptImage || beltCards[0]?.conceptImage}
+          image={beltCards[i]?.conceptImage ?? beltCards[0]?.conceptImage ?? ""}
           secondaryImage={beltCards[i + lesson.sections.length]?.conceptImage}
         />
       ))}
