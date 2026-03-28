@@ -9,12 +9,10 @@ interface AboutPageProps {
 
 export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   const mobile = useIsMobile();
-  const col = mobile ? 1 : 2;
-
   return (
     <div
       style={{
-        maxWidth: 800,
+        maxWidth: 860,
         margin: "0 auto",
         padding: mobile
           ? `${spacing.lg}px ${spacing.md}px`
@@ -33,75 +31,53 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Feature cards grid */}
-      <div
-        style={{
-          ...styles.grid,
-          gridTemplateColumns: `repeat(${col}, 1fr)`,
-        }}
-      >
-        <div style={styles.card}>
-          <div style={styles.cardIcon}>
-            <img
-              src={asset("concepts/k05.png")}
-              alt="Gopher with timer"
-              style={styles.cardImg}
-            />
+      <div style={styles.grid}>
+        {[
+          {
+            img: "k05",
+            alt: "Gopher with timer",
+            title: "Spaced repetition",
+            text: "The SM-2 algorithm schedules each card at the optimal moment. Get it right and the interval grows. Get it wrong and it bounces back. You spend time on what you don't know yet.",
+          },
+          {
+            img: "g07",
+            alt: "Gopher chef",
+            title: "Visual metaphors",
+            text: "Every concept gets a gopher illustration. Slices become sushi rolls. Channels become pipes. Your brain remembers images better than definitions, so the pictures act as memory anchors.",
+          },
+          {
+            img: "br10",
+            alt: "Three gophers numbered 1-2-3",
+            title: "Six belts, 60 cards",
+            text: 'From "Hello World" to reflection and unsafe. White belt covers variables and loops. Black belt covers generics, context cancellation, and build tags. Progress is saved in your browser.',
+          },
+          {
+            img: "b08",
+            alt: "Gopher with formula",
+            title: "10 cards per session",
+            text: "Short sessions that fit between meetings. Due reviews come first, then new concepts. Keyboard shortcuts (1-4 to answer, Enter to continue) keep things fast.",
+          },
+        ].map((c) => (
+          <div
+            key={c.img}
+            style={{
+              ...styles.card,
+              flexDirection: mobile ? "column" : "row",
+            }}
+          >
+            <div style={styles.cardIcon}>
+              <img
+                src={asset(`concepts/${c.img}.png`)}
+                alt={c.alt}
+                style={styles.cardImg}
+              />
+            </div>
+            <div>
+              <h3 style={styles.cardTitle}>{c.title}</h3>
+              <p style={styles.cardText}>{c.text}</p>
+            </div>
           </div>
-          <h3 style={styles.cardTitle}>Spaced repetition</h3>
-          <p style={styles.cardText}>
-            The SM-2 algorithm schedules each card at the optimal moment. Get it
-            right and the interval grows. Get it wrong and it bounces back. You
-            spend time on what you don't know yet.
-          </p>
-        </div>
-
-        <div style={styles.card}>
-          <div style={styles.cardIcon}>
-            <img
-              src={asset("concepts/g07.png")}
-              alt="Gopher chef"
-              style={styles.cardImg}
-            />
-          </div>
-          <h3 style={styles.cardTitle}>Visual metaphors</h3>
-          <p style={styles.cardText}>
-            Every concept gets a gopher illustration. Slices become sushi rolls.
-            Channels become pipes. Your brain remembers images better than
-            definitions, so the pictures act as memory anchors.
-          </p>
-        </div>
-
-        <div style={styles.card}>
-          <div style={styles.cardIcon}>
-            <img
-              src={asset("concepts/br10.png")}
-              alt="Three gophers numbered 1-2-3"
-              style={styles.cardImg}
-            />
-          </div>
-          <h3 style={styles.cardTitle}>Six belts, 60 cards</h3>
-          <p style={styles.cardText}>
-            From "Hello World" to reflection and unsafe. White belt covers
-            variables and loops. Black belt covers generics, context
-            cancellation, and build tags. Progress is saved in your browser.
-          </p>
-        </div>
-
-        <div style={styles.card}>
-          <div style={styles.cardIcon}>
-            <img
-              src={asset("concepts/b08.png")}
-              alt="Gopher with formula"
-              style={styles.cardImg}
-            />
-          </div>
-          <h3 style={styles.cardTitle}>10 cards per session</h3>
-          <p style={styles.cardText}>
-            Short sessions that fit between meetings. Due reviews come first,
-            then new concepts. Keyboard shortcuts (1-4 to answer, Enter to
-            continue) keep things fast.
-          </p>
-        </div>
+        ))}
       </div>
 
       {/* Illustration showcase */}
@@ -232,7 +208,8 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: 1.5,
   },
   grid: {
-    display: "grid",
+    display: "flex",
+    flexDirection: "column",
     gap: spacing.md,
     marginBottom: spacing.xxl,
   },
@@ -241,28 +218,29 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: radius.lg,
     padding: spacing.lg,
     display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    textAlign: "center",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: spacing.lg,
+    textAlign: "left",
   },
   cardIcon: {
-    marginBottom: spacing.md,
+    flexShrink: 0,
   },
   cardImg: {
-    width: 100,
-    height: 100,
+    width: 140,
+    height: 140,
     objectFit: "contain",
   },
   cardTitle: {
     fontFamily: font.mono,
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: font.weightBold,
     color: colors.accent,
     marginBottom: spacing.sm,
   },
   cardText: {
     fontFamily: font.body,
-    fontSize: 15,
+    fontSize: 17,
     color: colors.textMuted,
     lineHeight: 1.6,
   },
@@ -271,33 +249,35 @@ const styles: Record<string, React.CSSProperties> = {
   },
   sectionTitle: {
     fontFamily: font.mono,
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: font.weightBold,
     color: colors.accent,
     marginBottom: spacing.lg,
+    textAlign: "left",
   },
   illustrationStrip: {
     display: "flex",
-    gap: spacing.sm,
+    gap: spacing.md,
     overflowX: "auto",
     paddingBottom: spacing.md,
-    marginBottom: spacing.md,
+    marginBottom: spacing.lg,
   },
   stripImg: {
-    width: 110,
-    height: 110,
+    width: 160,
+    height: 160,
     objectFit: "contain",
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
     background: colors.bgCard,
-    padding: spacing.xs,
+    padding: spacing.sm,
     flexShrink: 0,
   },
   text: {
     fontFamily: font.body,
-    fontSize: 17,
+    fontSize: 19,
     color: colors.text,
     lineHeight: 1.7,
     marginBottom: spacing.md,
+    textAlign: "left",
   },
   section: {
     marginBottom: spacing.xxl,
