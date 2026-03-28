@@ -165,7 +165,7 @@ export const ProgressPage: React.FC = () => {
               <div
                 style={{
                   fontFamily: font.mono,
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: isCurrent ? font.weightBold : font.weightRegular,
                   color: isCurrent
                     ? b.id === "black"
@@ -179,7 +179,7 @@ export const ProgressPage: React.FC = () => {
               <div
                 style={{
                   fontFamily: font.mono,
-                  fontSize: 14,
+                  fontSize: 15,
                   color: colors.textMuted,
                   marginTop: 2,
                 }}
@@ -275,7 +275,7 @@ export const ProgressPage: React.FC = () => {
 
 const sectionTitle: React.CSSProperties = {
   fontFamily: font.mono,
-  fontSize: 20,
+  fontSize: 28,
   textTransform: "uppercase",
   letterSpacing: 2,
   color: colors.textMuted,

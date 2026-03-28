@@ -72,8 +72,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
                 alt={c.alt}
                 style={{
                   ...styles.cardImg,
-                  width: mobile ? 100 : 140,
-                  height: mobile ? 100 : 140,
+                  width: mobile ? 180 : 160,
+                  height: mobile ? 180 : 160,
                 }}
               />
             </div>
@@ -185,7 +185,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
             onClick={() => onNavigate("quiz")}
             style={styles.ctaSecondary}
           >
-            Jump to quiz
+            Train
           </button>
         </div>
       </div>
@@ -240,7 +240,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   cardTitle: {
     fontFamily: font.mono,
-    fontSize: 19,
+    fontSize: 18,
     fontWeight: font.weightBold,
     color: colors.accent,
     marginBottom: spacing.sm,

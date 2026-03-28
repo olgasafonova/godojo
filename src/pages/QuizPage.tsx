@@ -156,14 +156,14 @@ export const QuizPage: React.FC<QuizPageProps> = ({ onNavigate }) => {
         }}
       >
         <Gopher mood="idle" size={mobile ? 160 : 220} />
-        <h1 style={{ ...styles.title, fontSize: mobile ? 26 : 32 }}>
+        <h1 style={{ ...styles.title, fontSize: mobile ? 28 : 36 }}>
           Ready to train?
         </h1>
         <p style={styles.subtitle}>
           10 cards per session. Due reviews first, then new concepts.
         </p>
         <button onClick={startQuiz} style={styles.startButton}>
-          Start Quiz
+          Train
         </button>
         <span style={styles.hint}>or press Enter</span>
       </div>
@@ -362,7 +362,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   title: {
     fontFamily: font.mono,
-    fontSize: 28,
+    fontSize: 36,
     fontWeight: font.weightBold,
     color: colors.text,
     marginTop: spacing.lg,
@@ -378,7 +378,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   startButton: {
     fontFamily: font.mono,
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: font.weightMedium,
     color: colors.bg,
     background: colors.accent,
@@ -433,7 +433,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   question: {
     fontFamily: font.body,
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: font.weightMedium,
     color: colors.text,
     marginBottom: spacing.lg,
@@ -452,7 +452,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: "14px 16px",
     borderRadius: radius.md,
     fontFamily: font.mono,
-    fontSize: 17,
+    fontSize: 18,
     color: colors.text,
     textAlign: "left",
     transition: "all 0.2s",
@@ -489,13 +489,13 @@ const styles: Record<string, React.CSSProperties> = {
   },
   explanation: {
     fontFamily: font.body,
-    fontSize: 17,
+    fontSize: 18,
     color: colors.textMuted,
     lineHeight: 1.6,
   },
   nextButton: {
     fontFamily: font.mono,
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: font.weightMedium,
     color: colors.bg,
     background: colors.accent,

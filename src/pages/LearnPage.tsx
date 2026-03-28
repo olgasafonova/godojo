@@ -72,7 +72,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
           <p
             style={{
               fontFamily: font.body,
-              fontSize: 19,
+              fontSize: 18,
               color: colors.textMuted,
               lineHeight: 1.7,
             }}
@@ -173,7 +173,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
                 <span
                   style={{
                     fontFamily: font.mono,
-                    fontSize: 12,
+                    fontSize: 14,
                     textTransform: "uppercase",
                     letterSpacing: 1.5,
                     color: colors.accent,
@@ -186,7 +186,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
                 <p
                   style={{
                     fontFamily: font.body,
-                    fontSize: 16,
+                    fontSize: 18,
                     color: colors.text,
                     lineHeight: 1.6,
                   }}
@@ -242,7 +242,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
                 key={i}
                 style={{
                   fontFamily: font.body,
-                  fontSize: 19,
+                  fontSize: 18,
                   color: colors.text,
                   lineHeight: 1.7,
                   margin: 0,
@@ -279,7 +279,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
         <p
           style={{
             fontFamily: font.body,
-            fontSize: 19,
+            fontSize: 18,
             color: colors.textMuted,
             lineHeight: 1.7,
             marginBottom: spacing.xl,
@@ -326,7 +326,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
               cursor: "pointer",
             }}
           >
-            Practice quiz
+            Train
           </button>
         </div>
       </div>

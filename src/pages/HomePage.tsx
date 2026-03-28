@@ -23,7 +23,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     >
       <Gopher mood="idle" size={mobile ? 220 : 320} />
 
-      <h1 style={{ ...styles.title, fontSize: mobile ? 32 : 42 }}>Go Dojo</h1>
+      <h1 style={{ ...styles.title, fontSize: mobile ? 28 : 36 }}>Go Dojo</h1>
       <p style={styles.subtitle}>Master Go through spaced repetition</p>
 
       {/* Quick stats */}
@@ -57,7 +57,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           onClick={() => onNavigate("quiz")}
           style={{ ...styles.secondaryButton, width: mobile ? "100%" : "auto" }}
         >
-          {dueCount > 0 ? `Train (${dueCount} due)` : "Start Quiz"}
+          {dueCount > 0 ? `Train (${dueCount} due)` : "Train"}
         </button>
       </div>
     </div>
@@ -76,7 +76,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   title: {
     fontFamily: font.mono,
-    fontSize: 42,
+    fontSize: 36,
     fontWeight: font.weightBold,
     color: colors.text,
     marginTop: spacing.lg,
