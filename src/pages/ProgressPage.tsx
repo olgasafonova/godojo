@@ -50,7 +50,7 @@ export const ProgressPage: React.FC = () => {
           marginBottom: spacing.xxl,
         }}
       >
-        <Gopher mood="meditating" size={mobile ? 100 : 140} />
+        <Gopher mood="meditating" size={mobile ? 140 : 200} />
         <div>
           <div
             style={{

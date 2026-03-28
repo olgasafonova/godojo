@@ -5,10 +5,9 @@ import { getRecord, saveRecord, updateStreak } from "../store/progress";
 import { calculateNextReview, isDue, isMastered } from "../srs/sm2";
 import { Gopher } from "../components/Gopher";
 import { CodeBlock } from "../components/CodeBlock";
-import { getCurrentBelt } from "../data/belts";
-import { getMasteredCount } from "../store/progress";
 import { colors, font, radius, spacing } from "../styles/tokens";
 import { useIsMobile } from "../utils/useMediaQuery";
+import { playCorrect, playWrong } from "../utils/sounds";
 
 type Phase = "ready" | "question" | "feedback" | "done";
 
@@ -48,7 +47,6 @@ export const QuizPage: React.FC = () => {
   const [total, setTotal] = useState(0);
 
   const card = queue[index];
-  const belt = getCurrentBelt(getMasteredCount());
   const mobile = useIsMobile();
 
   const startQuiz = useCallback(() => {
@@ -75,7 +73,12 @@ export const QuizPage: React.FC = () => {
     updateStreak();
 
     setTotal((t) => t + 1);
-    if (isCorrect) setScore((s) => s + 1);
+    if (isCorrect) {
+      setScore((s) => s + 1);
+      playCorrect();
+    } else {
+      playWrong();
+    }
 
     setPhase("feedback");
   };
@@ -123,8 +126,8 @@ export const QuizPage: React.FC = () => {
             : styles.container.padding,
         }}
       >
-        <Gopher mood="idle" size={mobile ? 120 : 180} />
-        <h1 style={{ ...styles.title, fontSize: mobile ? 22 : 28 }}>
+        <Gopher mood="idle" size={mobile ? 160 : 220} />
+        <h1 style={{ ...styles.title, fontSize: mobile ? 26 : 32 }}>
           Ready to train?
         </h1>
         <p style={styles.subtitle}>
@@ -153,7 +156,7 @@ export const QuizPage: React.FC = () => {
             : styles.container.padding,
         }}
       >
-        <Gopher mood={gopherMood} size={mobile ? 120 : 180} />
+        <Gopher mood={gopherMood} size={mobile ? 160 : 220} />
         <h1 style={styles.title}>
           {pct >= 80
             ? "Excellent!"
@@ -236,7 +239,7 @@ export const QuizPage: React.FC = () => {
         {/* Options */}
         <div style={styles.options}>
           {card.options.map((opt, i) => {
-            let bg = colors.bgCode;
+            let bg: string = colors.bgCode;
             let border = "2px solid transparent";
 
             if (selected !== null) {
@@ -292,7 +295,7 @@ export const QuizPage: React.FC = () => {
           >
             <Gopher
               mood={isCorrect ? "celebrating" : "encouraging"}
-              size={mobile ? 120 : 150}
+              size={mobile ? 140 : 180}
             />
             <div style={styles.feedbackText}>
               <div

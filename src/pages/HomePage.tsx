@@ -21,7 +21,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     <div
       style={{ ...styles.container, padding: mobile ? spacing.md : spacing.xl }}
     >
-      <Gopher mood="idle" size={mobile ? 180 : 260} />
+      <Gopher mood="idle" size={mobile ? 220 : 320} />
 
       <h1 style={{ ...styles.title, fontSize: mobile ? 32 : 42 }}>Go Dojo</h1>
       <p style={styles.subtitle}>Master Go through spaced repetition</p>

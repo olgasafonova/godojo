@@ -19,7 +19,7 @@ export const cards: GoCard[] = [
     explanation:
       "The := operator is short variable declaration. It declares a new variable and infers its type from the right side. You can only use it inside functions.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/variables.png",
+    conceptImage: "/concepts/w01.png",
   },
   {
     id: "w02",
@@ -39,7 +39,7 @@ func main() {
     explanation:
       "x is declared with := and assigned the value 42. fmt.Println prints the value, not the variable name.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/variables.png",
+    conceptImage: "/concepts/w02.png",
   },
   {
     id: "w03",
@@ -51,7 +51,7 @@ func main() {
     explanation:
       "Every type in Go has a zero value. For strings it's \"\", for numbers it's 0, for booleans it's false, and for pointers/slices/maps it's nil.",
     gopherMood: "idle",
-    conceptImage: "/concepts/variables.png",
+    conceptImage: "/concepts/w03.png",
   },
   {
     id: "w04",
@@ -72,7 +72,7 @@ func main() {
     explanation:
       'Uninitialized int is 0, string is "" (empty, prints nothing visible). x == 0 is true. The output is: 0  true (with an empty string in between).',
     gopherMood: "thinking",
-    conceptImage: "/concepts/variables.png",
+    conceptImage: "/concepts/w04.png",
   },
   {
     id: "w05",
@@ -89,7 +89,7 @@ func main() {
     explanation:
       "Constants are declared with the const keyword. They must be set at compile time and cannot use :=.",
     gopherMood: "idle",
-    conceptImage: "/concepts/variables.png",
+    conceptImage: "/concepts/w05.png",
   },
   {
     id: "w06",
@@ -116,7 +116,7 @@ func main() {
     explanation:
       "You cannot use := to redeclare a variable in the same scope. Use = for reassignment: x = 20.",
     gopherMood: "encouraging",
-    conceptImage: "/concepts/variables.png",
+    conceptImage: "/concepts/w06.png",
   },
   {
     id: "w07",
@@ -133,7 +133,7 @@ func main() {
     explanation:
       'Go refuses to compile with unused imports. This keeps code clean. Use _ as a blank identifier if you need the side effect: import _ "pkg".',
     gopherMood: "encouraging",
-    conceptImage: "/concepts/variables.png",
+    conceptImage: "/concepts/w07.png",
   },
   {
     id: "w08",
@@ -153,7 +153,7 @@ func main() {
     explanation:
       "Go supports multiple assignment. a gets 3, b gets 7. Their sum is 10.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/variables.png",
+    conceptImage: "/concepts/w08.png",
   },
   {
     id: "w09",
@@ -165,7 +165,7 @@ func main() {
     explanation:
       "Go doesn't have a char type. It uses byte (alias for uint8) for ASCII and rune (alias for int32) for Unicode characters.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/variables.png",
+    conceptImage: "/concepts/w09.png",
   },
   {
     id: "w10",
@@ -185,7 +185,7 @@ func main() {
     explanation:
       "Printf uses format verbs. %s substitutes a string value. \\n adds a newline.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/variables.png",
+    conceptImage: "/concepts/w10.png",
   },
 
   // ═══════════════════════════════════════
@@ -206,7 +206,7 @@ func main() {
     explanation:
       "Go functions can return multiple values, commonly used for returning a result and an error: func divide(a, b int) (int, error).",
     gopherMood: "thinking",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/y01.png",
   },
   {
     id: "y02",
@@ -229,7 +229,7 @@ func main() {
     correct: 0,
     explanation: "swap returns b first, then a. So x gets 2 and y gets 1.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/y02.png",
   },
   {
     id: "y03",
@@ -241,7 +241,7 @@ func main() {
     explanation:
       "Go only has 'for'. It covers all cases: for i := 0; i < n; i++ (classic), for condition (while), for (infinite), for range (foreach).",
     gopherMood: "idle",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/y03.png",
   },
   {
     id: "y04",
@@ -262,7 +262,7 @@ func main() {
     explanation:
       "The loop starts at 0 and stops before 3. fmt.Print doesn't add a newline, so output is on one line.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/y04.png",
   },
   {
     id: "y05",
@@ -289,7 +289,7 @@ func main() {
     explanation:
       "Go requires the opening brace { on the same line as the statement. The compiler inserts semicolons at line ends, so a brace on the next line breaks the syntax.",
     gopherMood: "encouraging",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/y05.png",
   },
   {
     id: "y06",
@@ -306,7 +306,7 @@ func main() {
     explanation:
       "The blank identifier _ lets you ignore values. Common with range: for _, v := range items. Go won't compile with unused variables, so _ is the escape hatch.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/y06.png",
   },
   {
     id: "y07",
@@ -332,7 +332,7 @@ func main() {
     explanation:
       "Switch with no condition after the semicolon acts like if-else. x is 3, so case x == 3 matches. Go switch doesn't fall through by default.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/y07.png",
   },
   {
     id: "y08",
@@ -344,7 +344,7 @@ func main() {
     explanation:
       'A bare "for" with no condition is an infinite loop. It\'s clean, idiomatic, and reads as "loop forever."',
     gopherMood: "idle",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/y08.png",
   },
   {
     id: "y09",
@@ -368,7 +368,7 @@ func main() {
     explanation:
       "Functions are first-class values in Go. f holds a reference to double, so f(5) calls double(5) which returns 10.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/y09.png",
   },
   {
     id: "y10",
@@ -385,7 +385,7 @@ func main() {
     explanation:
       "defer pushes a call onto a stack. When the surrounding function returns, deferred calls execute in LIFO order. Common for cleanup: defer file.Close().",
     gopherMood: "thinking",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/y10.png",
   },
 
   // ═══════════════════════════════════════
@@ -406,7 +406,7 @@ func main() {
     explanation:
       "Arrays [5]int have a fixed compile-time size. Slices []int are backed by arrays but can grow with append(). Slices are used far more often in practice.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/slices.png",
+    conceptImage: "/concepts/g01.png",
   },
   {
     id: "g02",
@@ -427,7 +427,7 @@ func main() {
     explanation:
       "append adds elements to a slice. The slice now has 5 elements. Capacity is always >= length, so cap(s) >= 5 is true.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/slices.png",
+    conceptImage: "/concepts/g02.png",
   },
   {
     id: "g03",
@@ -451,7 +451,7 @@ func main() {
     explanation:
       'Accessing a missing map key returns the zero value (0 for int) and false for the "comma ok" idiom. No panic, no nil.',
     gopherMood: "thinking",
-    conceptImage: "/concepts/slices.png",
+    conceptImage: "/concepts/g03.png",
   },
   {
     id: "g04",
@@ -468,7 +468,7 @@ func main() {
     explanation:
       'Go uses the "comma ok" idiom. The second return value from a map lookup is a boolean indicating whether the key exists.',
     gopherMood: "idle",
-    conceptImage: "/concepts/slices.png",
+    conceptImage: "/concepts/g04.png",
   },
   {
     id: "g05",
@@ -485,7 +485,7 @@ func main() {
     explanation:
       "Structs are defined with type Name struct { fields }. Go has no classes; structs with methods are the closest equivalent.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/structs.png",
+    conceptImage: "/concepts/g05.png",
   },
   {
     id: "g06",
@@ -510,7 +510,7 @@ func main() {
     explanation:
       "Age wasn't set, so it gets the zero value for int: 0. Struct fields always have their zero values unless explicitly initialized.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/structs.png",
+    conceptImage: "/concepts/g06.png",
   },
   {
     id: "g07",
@@ -531,7 +531,7 @@ func main() {
     explanation:
       "Slice notation [low:high] includes low, excludes high. nums[1:3] gives elements at index 1 and 2: 20 and 30.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/structs.png",
+    conceptImage: "/concepts/g07.png",
   },
   {
     id: "g08",
@@ -557,7 +557,7 @@ func main() {
     explanation:
       "var m map[string]int declares a nil map. Writing to a nil map panics. Use m := make(map[string]int) or m := map[string]int{} to initialize it.",
     gopherMood: "encouraging",
-    conceptImage: "/concepts/structs.png",
+    conceptImage: "/concepts/g08.png",
   },
   {
     id: "g09",
@@ -574,7 +574,7 @@ func main() {
     explanation:
       "make() initializes slices, maps, and channels with optional capacity hints. make([]int, 0, 100) creates an empty slice that can hold 100 items before resizing.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/structs.png",
+    conceptImage: "/concepts/g09.png",
   },
   {
     id: "g10",
@@ -594,7 +594,7 @@ func main() {
     explanation:
       'len() on a string returns the number of bytes. "Hello" is 5 ASCII characters, each one byte, so len is 5. For Unicode strings, len counts bytes, not runes.',
     gopherMood: "celebrating",
-    conceptImage: "/concepts/structs.png",
+    conceptImage: "/concepts/g10.png",
   },
 
   // ═══════════════════════════════════════
@@ -615,7 +615,7 @@ func main() {
     explanation:
       "Go uses implicit interfaces. If a type has all the methods an interface requires, it satisfies that interface automatically. No declaration needed.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/interfaces.png",
+    conceptImage: "/concepts/b01.png",
   },
   {
     id: "b02",
@@ -648,7 +648,7 @@ func main() {
     explanation:
       "Spanish implements the Greeter interface because it has a Greet() string method. sayHi accepts any Greeter, so Spanish{} works.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/interfaces.png",
+    conceptImage: "/concepts/b02.png",
   },
   {
     id: "b03",
@@ -665,7 +665,7 @@ func main() {
     explanation:
       "Go uses explicit error returns instead of exceptions. The pattern is: result, err := doThing(); if err != nil { return err }. Every error is handled where it occurs.",
     gopherMood: "idle",
-    conceptImage: "/concepts/errors.png",
+    conceptImage: "/concepts/b03.png",
   },
   {
     id: "b04",
@@ -683,7 +683,7 @@ func main() {
     explanation:
       "func (d Dog) Speak() gets a copy of Dog. func (d *Dog) Rename(n string) can modify the actual Dog. Use pointer receivers when you need to mutate or avoid copying large structs.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/interfaces.png",
+    conceptImage: "/concepts/b04.png",
   },
   {
     id: "b05",
@@ -722,7 +722,7 @@ func main() {
     explanation:
       "divide returns an error when b is 0. The caller checks err != nil and prints the error message. No panic involved.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/errors.png",
+    conceptImage: "/concepts/b05.png",
   },
   {
     id: "b06",
@@ -739,7 +739,7 @@ func main() {
     explanation:
       "The empty interface has zero methods, so every type satisfies it. Since Go 1.18, you can write 'any' as shorthand. fmt.Println uses it: func Println(a ...any).",
     gopherMood: "thinking",
-    conceptImage: "/concepts/interfaces.png",
+    conceptImage: "/concepts/b06.png",
   },
   {
     id: "b07",
@@ -774,7 +774,7 @@ func main() {
     explanation:
       "Increment has a value receiver (c Counter), so c.n++ modifies a copy. The original c.n stays 0. Fix: use a pointer receiver (c *Counter).",
     gopherMood: "encouraging",
-    conceptImage: "/concepts/interfaces.png",
+    conceptImage: "/concepts/b07.png",
   },
   {
     id: "b08",
@@ -789,7 +789,7 @@ func main() {
     explanation:
       "Go functions explicitly declare their return types. This one returns two values: a string and an error. The parentheses group multiple returns.",
     gopherMood: "idle",
-    conceptImage: "/concepts/interfaces.png",
+    conceptImage: "/concepts/b08.png",
   },
   {
     id: "b09",
@@ -806,7 +806,7 @@ func main() {
     explanation:
       "Type assertion extracts the underlying value: str := val.(string). Use the comma-ok form to avoid panics: str, ok := val.(string).",
     gopherMood: "thinking",
-    conceptImage: "/concepts/interfaces.png",
+    conceptImage: "/concepts/b09.png",
   },
   {
     id: "b10",
@@ -826,7 +826,7 @@ func main() {
     explanation:
       'defer pushes "world" to execute when main() returns. So "hello" prints first, then "world" runs on exit.',
     gopherMood: "celebrating",
-    conceptImage: "/concepts/errors.png",
+    conceptImage: "/concepts/b10.png",
   },
 
   // ═══════════════════════════════════════
@@ -847,7 +847,7 @@ func main() {
     explanation:
       "Goroutines are multiplexed onto OS threads by Go's scheduler. They start with just a few KB of stack and are cheap to create. Launch one with: go doSomething().",
     gopherMood: "thinking",
-    conceptImage: "/concepts/goroutines.png",
+    conceptImage: "/concepts/br01.png",
   },
   {
     id: "br02",
@@ -871,7 +871,7 @@ func main() {
     explanation:
       "A goroutine sends 42 into the channel. The main goroutine receives it with <-ch. Channels synchronize the two; no sleep needed.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/goroutines.png",
+    conceptImage: "/concepts/br02.png",
   },
   {
     id: "br03",
@@ -889,7 +889,7 @@ func main() {
     explanation:
       "Unbuffered channels synchronize: the sender waits for a receiver and vice versa. This is how goroutines coordinate without shared memory.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/channels.png",
+    conceptImage: "/concepts/br03.png",
   },
   {
     id: "br04",
@@ -912,7 +912,7 @@ func main() {
     explanation:
       "Buffered channel with capacity 2. Both sends succeed without blocking. Receives come out FIFO: first 1, then 2.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/channels.png",
+    conceptImage: "/concepts/br04.png",
   },
   {
     id: "br05",
@@ -929,7 +929,7 @@ func main() {
     explanation:
       "select is like switch for channels. It blocks until one case can proceed. If multiple are ready, it picks one at random. Add a default case to make it non-blocking.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/channels.png",
+    conceptImage: "/concepts/br05.png",
   },
   {
     id: "br06",
@@ -955,7 +955,7 @@ func main() {
     explanation:
       "On an unbuffered channel, ch <- 42 blocks until someone receives. But the receive is on the next line, which never runs. Deadlock. Fix: send in a goroutine or use a buffered channel.",
     gopherMood: "encouraging",
-    conceptImage: "/concepts/channels.png",
+    conceptImage: "/concepts/br06.png",
   },
   {
     id: "br07",
@@ -982,7 +982,7 @@ func main() {
     explanation:
       "range over a channel receives values until the channel is closed. The goroutine sends ping, then pong, then closes. Both values print in order.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/channels.png",
+    conceptImage: "/concepts/br07.png",
   },
   {
     id: "br08",
@@ -1000,7 +1000,7 @@ func main() {
     explanation:
       "sync.WaitGroup tracks goroutines: wg.Add(1) before launch, wg.Done() inside (often deferred), wg.Wait() to block until all finish. Clean and race-free.",
     gopherMood: "idle",
-    conceptImage: "/concepts/channels.png",
+    conceptImage: "/concepts/br08.png",
   },
   {
     id: "br09",
@@ -1017,7 +1017,7 @@ func main() {
     explanation:
       "Closing a channel tells receivers there's nothing more coming. range loops exit. Receiving from a closed, empty channel returns the zero value and false.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/goroutines.png",
+    conceptImage: "/concepts/br09.png",
   },
   {
     id: "br10",
@@ -1052,7 +1052,7 @@ func main() {
     explanation:
       "Each goroutine captures its own copy of i via the function parameter n. All three values print, but goroutine scheduling is non-deterministic, so the order varies.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/goroutines.png",
+    conceptImage: "/concepts/br10.png",
   },
 
   // ═══════════════════════════════════════
@@ -1073,7 +1073,7 @@ func main() {
     explanation:
       "Each package can have multiple init() functions. They run once, in dependency order, before main(). Used for registering drivers, setting defaults, and validation.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/k01.png",
   },
   {
     id: "k02",
@@ -1090,7 +1090,7 @@ func main() {
     explanation:
       "Test files end in _test.go and live alongside the code they test. Test functions start with Test: func TestAdd(t *testing.T). Run with: go test ./...",
     gopherMood: "idle",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/k02.png",
   },
   {
     id: "k03",
@@ -1107,7 +1107,7 @@ func main() {
     explanation:
       "The //go:embed directive lets you include file contents in your binary. Works with strings, []byte, and embed.FS. Example: //go:embed config.json \\n var config string",
     gopherMood: "thinking",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/k03.png",
   },
   {
     id: "k04",
@@ -1133,7 +1133,7 @@ func main() {
     explanation:
       "Deferred calls execute in LIFO (last-in, first-out) order. Think of it as a stack: last defer in, first to run on exit.",
     gopherMood: "celebrating",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/k04.png",
   },
   {
     id: "k05",
@@ -1150,7 +1150,7 @@ func main() {
     explanation:
       "Context flows through function calls to control cancellation and timeouts. APIs that do I/O should accept ctx as their first parameter. Always respect ctx.Done().",
     gopherMood: "thinking",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/k05.png",
   },
   {
     id: "k06",
@@ -1168,7 +1168,7 @@ func main() {
     explanation:
       "The error interface has one method: Error() string. Any type with this method is an error. This simplicity is by design.",
     gopherMood: "idle",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/k06.png",
   },
   {
     id: "k07",
@@ -1185,7 +1185,7 @@ func main() {
     explanation:
       "Generics use type parameters: func Map[T, U any](s []T, f func(T) U) []U. Constraints like comparable or custom interfaces restrict which types are allowed.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/k07.png",
   },
   {
     id: "k08",
@@ -1214,7 +1214,7 @@ func main() {
     explanation:
       "Two bugs: (1) All goroutines share the same v variable, which ends at 3. Fix: pass v as parameter. (2) main() exits before goroutines run. Fix: use sync.WaitGroup.",
     gopherMood: "encouraging",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/k08.png",
   },
   {
     id: "k09",
@@ -1231,7 +1231,7 @@ func main() {
     explanation:
       "Functional options use closures: func WithTimeout(d time.Duration) Option. The constructor applies them: New(WithTimeout(5*time.Second)). Clean API, extensible, no breaking changes.",
     gopherMood: "thinking",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/k09.png",
   },
   {
     id: "k10",
@@ -1253,7 +1253,7 @@ func main() {
     explanation:
       'delete(m, "a") removes key "a". delete(m, "c") is a no-op (deleting a missing key doesn\'t panic). One key remains: "b".',
     gopherMood: "celebrating",
-    conceptImage: "/concepts/defer.png",
+    conceptImage: "/concepts/k10.png",
   },
 ];
 
