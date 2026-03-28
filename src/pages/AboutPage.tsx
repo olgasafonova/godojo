@@ -152,15 +152,48 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         </p>
       </div>
 
+      {/* Why Dojo? */}
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>Why "Dojo"?</h2>
+        <p style={styles.text}>
+          A dojo is a place for practicing a discipline through repetition. The
+          Japanese word literally means "place of the way." In martial arts, you
+          don't read about a technique once and move on. You drill it until
+          muscle memory takes over. That is the idea here: short, repeated
+          sessions until Go syntax stops requiring conscious effort.
+        </p>
+        <p style={styles.text}>
+          Go Dojo has a sibling:{" "}
+          <a
+            href="https://olgasafonova.github.io/kanadojo/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.inlineLink}
+          >
+            KanaDojo
+          </a>
+          , the same spaced repetition engine applied to Japanese hiragana and
+          katakana. Same philosophy, different alphabet.
+        </p>
+      </div>
+
       {/* Credits */}
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Who made this?</h2>
         <p style={styles.text}>
-          Built by Olga Safonova while learning Go. The concept illustrations
-          were generated with AI and cleaned up for transparent backgrounds. The
-          gopher mascot follows the tradition established by Renee French, who
-          deserves credit for making a rodent the most recognizable thing in
-          systems programming.
+          Built by{" "}
+          <a
+            href="https://github.com/olgasafonova"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.inlineLink}
+          >
+            Olga Safonova
+          </a>{" "}
+          while learning Go. The concept illustrations were generated with AI
+          and cleaned up for transparent backgrounds. The gopher mascot follows
+          the tradition established by Renee French, who deserves credit for
+          making a rodent the most recognizable thing in systems programming.
         </p>
         <div style={styles.linkRow}>
           <a
