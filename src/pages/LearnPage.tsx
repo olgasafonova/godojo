@@ -2,7 +2,6 @@ import { useState } from "react";
 import type { Belt } from "../data/types";
 import { BELTS } from "../data/belts";
 import { getLessonByBelt } from "../data/lessons";
-import { cards } from "../data/cards";
 import { Gopher } from "../components/Gopher";
 import { CodeBlock } from "../components/CodeBlock";
 import { colors, font, radius, spacing } from "../styles/tokens";
@@ -28,7 +27,6 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
   const [step, setStep] = useState(0);
 
   const lesson = getLessonByBelt(selectedBelt);
-  const beltCards = cards.filter((c) => c.belt === selectedBelt);
 
   // Total steps: intro + sections + gotchas + summary
   const totalSteps = 1 + lesson.sections.length + 1 + 1;
@@ -91,9 +89,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
     const sectionIndex = step - 1;
     if (sectionIndex < lesson.sections.length) {
       const section = lesson.sections[sectionIndex];
-      // Pick a unique illustration from this belt's cards
-      const cardImage =
-        beltCards[(sectionIndex + 1) % beltCards.length]?.conceptImage;
+      const cardImage = section.image;
 
       return (
         <div>

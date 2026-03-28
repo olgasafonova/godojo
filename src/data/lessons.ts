@@ -10,6 +10,7 @@ export interface LessonSection {
   body: string;
   examples: CodeExample[];
   insight?: string;
+  image?: string;
 }
 
 export interface Lesson {
@@ -35,6 +36,7 @@ export const lessons: Lesson[] = [
     sections: [
       {
         title: "Declaring variables",
+        image: "/concepts/w01.png",
         body: "Go gives you two ways to create variables. The long form with var works anywhere. The short form with := is more common inside functions and infers the type automatically.",
         examples: [
           {
@@ -55,6 +57,7 @@ x, y := swap(1, 2)          // from function returns`,
       },
       {
         title: "Zero values",
+        image: "/concepts/w03.png",
         body: 'Every variable in Go has a zero value if you don\'t initialize it. There is no "undefined" or "null surprise." Numbers start at 0, strings at "", booleans at false, and pointers/slices/maps at nil.',
         examples: [
           {
@@ -71,6 +74,7 @@ var p *int       // nil`,
       },
       {
         title: "Constants",
+        image: "/concepts/w05.png",
         body: "Constants are declared with const and must be known at compile time. They cannot use :=. Go constants are more powerful than you'd expect because they are untyped until used.",
         examples: [
           {
@@ -86,6 +90,7 @@ const (
       },
       {
         title: "Basic types",
+        image: "/concepts/w09.png",
         body: "Go's type system is small and deliberate. No char type; use byte (uint8) for ASCII or rune (int32) for Unicode. No implicit conversions between types.",
         examples: [
           {
@@ -108,6 +113,7 @@ var u uint = uint(f)`,
       },
       {
         title: "Imports and unused things",
+        image: "/concepts/w07.png",
         body: "Go refuses to compile if you import a package and don't use it, or declare a variable and never read it. This feels strict at first but keeps codebases clean.",
         examples: [
           {
@@ -122,6 +128,7 @@ x := 10            // must read x somewhere`,
       },
       {
         title: "Printing and formatting",
+        image: "/concepts/w10.png",
         body: "fmt is Go's formatting package. Println adds a newline. Printf uses format verbs like %s (string), %d (integer), %v (any value). You'll use fmt more than any other package while learning.",
         examples: [
           {
@@ -155,6 +162,7 @@ fmt.Sprintf("Score: %d%%", 95)       // returns string`,
     sections: [
       {
         title: "Functions",
+        image: "/concepts/y01.png",
         body: "Go functions can return multiple values. This is the foundation of Go's error handling: almost every function returns (result, error). Parameters of the same type can share a type declaration.",
         examples: [
           {
@@ -183,6 +191,7 @@ fmt.Println(double(5)) // 10`,
       },
       {
         title: "The for loop",
+        image: "/concepts/y03.png",
         body: "Go has exactly one loop: for. It covers every case. Classic three-part, while-style, infinite, and range-based. No while, no do-while, no foreach. Just for.",
         examples: [
           {
@@ -203,6 +212,7 @@ for i, v := range items { }`,
       },
       {
         title: "If statements",
+        image: "/concepts/y05.png",
         body: "No parentheses around the condition. Opening brace must be on the same line (the compiler inserts semicolons). You can include a short statement before the condition, which is perfect for error checks.",
         examples: [
           {
@@ -223,6 +233,7 @@ if err := doSomething(); err != nil {
       },
       {
         title: "Switch",
+        image: "/concepts/y07.png",
         body: "Go switch is cleaner than C-style. No fall-through by default (no need for break). Cases can be expressions. A switch with no condition works like if-else chains.",
         examples: [
           {
@@ -249,6 +260,7 @@ case score >= 80:
       },
       {
         title: "Defer",
+        image: "/concepts/y10.png",
         body: "defer schedules a function call to run when the enclosing function returns. Deferred calls stack up in LIFO order. The most common use is cleanup: closing files, releasing locks, finishing timers.",
         examples: [
           {
@@ -270,6 +282,7 @@ case score >= 80:
       },
       {
         title: "The blank identifier",
+        image: "/concepts/y06.png",
         body: "The underscore _ discards a value. Since Go won't compile with unused variables, _ is how you intentionally ignore something: a loop index, a return value, an import's exports.",
         examples: [
           {
@@ -304,6 +317,7 @@ _, err := fmt.Println("hi") // ignore byte count`,
     sections: [
       {
         title: "Arrays vs slices",
+        image: "/concepts/g01.png",
         body: "Arrays have a fixed size baked into the type: [5]int and [3]int are different types. Slices are what you actually use. They're views into arrays that can grow with append.",
         examples: [
           {
@@ -330,6 +344,7 @@ sub := nums[1:3]  // [20, 30]
       },
       {
         title: "Maps",
+        image: "/concepts/g03.png",
         body: 'Maps are Go\'s hash tables. Keys can be any comparable type. Looking up a missing key returns the zero value and false (the "comma-ok" idiom).',
         examples: [
           {
@@ -359,6 +374,7 @@ delete(m, "nobody")  // no-op, no panic`,
       },
       {
         title: "Structs",
+        image: "/concepts/g05.png",
         body: "Structs group fields together. Go has no classes, but structs with methods are the equivalent. Fields start with uppercase to be exported (visible outside the package).",
         examples: [
           {
@@ -378,6 +394,7 @@ fmt.Println(u.age)    // 0 (zero value, not set)`,
       },
       {
         title: "make() and new()",
+        image: "/concepts/g09.png",
         body: "make() initializes slices, maps, and channels. It can pre-allocate capacity. new() allocates memory and returns a pointer, but it's rarely used; &Type{} is more idiomatic.",
         examples: [
           {
@@ -410,6 +427,7 @@ ch := make(chan int, 10)      // buffered channel`,
     sections: [
       {
         title: "Methods",
+        image: "/concepts/b04.png",
         body: "Methods are functions with a receiver. The receiver binds the method to a type. Value receivers get a copy; pointer receivers can modify the original.",
         examples: [
           {
@@ -436,6 +454,7 @@ func (r *Rect) Scale(factor float64) {
       },
       {
         title: "Interfaces",
+        image: "/concepts/b01.png",
         body: "An interface defines behavior: a set of method signatures. Any type that implements all those methods satisfies the interface automatically. No implements keyword. This is Go's implicit interface satisfaction.",
         examples: [
           {
@@ -460,6 +479,7 @@ func save(w Writer, data []byte) error {
       },
       {
         title: "Error handling",
+        image: "/concepts/b03.png",
         body: "Go uses error values instead of exceptions. Functions return errors as their last return value. The caller checks immediately with if err != nil. It's verbose but explicit: you always know where errors can happen.",
         examples: [
           {
@@ -486,6 +506,7 @@ err = fmt.Errorf("user %s not found", name)`,
       },
       {
         title: "Type assertions and type switches",
+        image: "/concepts/b09.png",
         body: "When you have an interface value, you can extract the concrete type with a type assertion. The comma-ok form prevents panics.",
         examples: [
           {
@@ -528,6 +549,7 @@ case int:
     sections: [
       {
         title: "Goroutines",
+        image: "/concepts/br01.png",
         body: "A goroutine is a function running concurrently. Start one with the go keyword. Goroutines are cheap (a few KB of stack), so you can launch thousands. They're multiplexed onto OS threads by Go's runtime scheduler.",
         examples: [
           {
@@ -545,6 +567,7 @@ go func() {                  // anonymous goroutine
       },
       {
         title: "Channels",
+        image: "/concepts/br02.png",
         body: "Channels are typed conduits for sending values between goroutines. Unbuffered channels synchronize: the sender blocks until a receiver is ready, and vice versa.",
         examples: [
           {
@@ -571,6 +594,7 @@ ch <- 3
       },
       {
         title: "Channel patterns",
+        image: "/concepts/br07.png",
         body: "Closing a channel signals that no more values will be sent. range over a channel receives until it's closed. These patterns form the building blocks of Go concurrency.",
         examples: [
           {
@@ -592,6 +616,7 @@ for result := range ch {
       },
       {
         title: "Select",
+        image: "/concepts/br05.png",
         body: "select waits on multiple channel operations. Whichever channel is ready first wins. If multiple are ready, one is chosen randomly. Add a default case to make it non-blocking.",
         examples: [
           {
@@ -610,6 +635,7 @@ case <-time.After(5 * time.Second):
       },
       {
         title: "sync.WaitGroup",
+        image: "/concepts/br08.png",
         body: "WaitGroup coordinates multiple goroutines. Add(1) before launching, Done() inside (usually deferred), Wait() to block until all finish.",
         examples: [
           {
@@ -653,6 +679,7 @@ wg.Wait()                    // blocks until all Done()`,
     sections: [
       {
         title: "Testing",
+        image: "/concepts/k02.png",
         body: "Test files live next to the code they test and end in _test.go. Test functions start with Test and take *testing.T. Run with go test ./... No framework needed.",
         examples: [
           {
@@ -673,6 +700,7 @@ func TestAdd(t *testing.T) {
       },
       {
         title: "Context",
+        image: "/concepts/k05.png",
         body: "context.Context carries deadlines, cancellation signals, and request-scoped values through call chains. Any function doing I/O or long work should accept ctx as its first parameter.",
         examples: [
           {
@@ -699,6 +727,7 @@ fetchData(ctx, "https://api.example.com")`,
       },
       {
         title: "Generics (Go 1.18+)",
+        image: "/concepts/k07.png",
         body: "Type parameters let functions and types work with multiple types without losing type safety. Constraints restrict which types are allowed.",
         examples: [
           {
@@ -721,6 +750,7 @@ doubled := Map([]int{1, 2, 3}, func(x int) int {
       },
       {
         title: "The init() function",
+        image: "/concepts/k01.png",
         body: "Packages can have init() functions that run automatically before main(). They execute in dependency order. Common uses: registering database drivers, validating configuration, initializing package-level state.",
         examples: [
           {
@@ -736,6 +766,7 @@ doubled := Map([]int{1, 2, 3}, func(x int) int {
       },
       {
         title: "Functional options pattern",
+        image: "/concepts/k09.png",
         body: "When a constructor needs many optional parameters, the functional options pattern provides a clean API that's extensible without breaking changes.",
         examples: [
           {
@@ -773,6 +804,7 @@ srv := NewServer(":8080",
       },
       {
         title: "go:embed",
+        image: "/concepts/k03.png",
         body: "The embed directive includes files in your compiled binary. Useful for templates, static assets, configuration files, and migration scripts.",
         examples: [
           {
