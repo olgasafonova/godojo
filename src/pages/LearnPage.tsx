@@ -3,7 +3,6 @@ import type { Belt } from "../data/types";
 import { BELTS } from "../data/belts";
 import { getLessonByBelt } from "../data/lessons";
 import type { LessonSection } from "../data/lessons";
-import { cards } from "../data/cards";
 import { Gopher } from "../components/Gopher";
 import { CodeBlock } from "../components/CodeBlock";
 import { colors, font, radius, spacing } from "../styles/tokens";
@@ -27,9 +26,6 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
   const mobile = useIsMobile();
   const [selectedBelt, setSelectedBelt] = useState<Belt>("white");
   const lesson = getLessonByBelt(selectedBelt);
-
-  // Get concept images for this belt's cards to sprinkle throughout sections
-  const beltCards = cards.filter((c) => c.belt === selectedBelt);
 
   return (
     <div
@@ -152,9 +148,8 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
           key={i}
           section={section}
           index={i}
+          total={lesson.sections.length}
           mobile={mobile}
-          image={beltCards[i]?.conceptImage ?? beltCards[0]?.conceptImage ?? ""}
-          secondaryImage={beltCards[i + lesson.sections.length]?.conceptImage}
         />
       ))}
 
@@ -310,11 +305,10 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
 const SectionCard: React.FC<{
   section: LessonSection;
   index: number;
+  total: number;
   mobile: boolean;
-  image: string;
-  secondaryImage?: string;
-}> = ({ section, index, mobile, image, secondaryImage }) => {
-  const imageOnLeft = index % 2 === 0;
+}> = ({ section, index, total, mobile }) => {
+  const progress = ((index + 1) / total) * 100;
 
   return (
     <div
@@ -323,116 +317,93 @@ const SectionCard: React.FC<{
         borderRadius: radius.lg,
         padding: mobile ? spacing.lg : spacing.xl,
         marginBottom: spacing.lg,
+        position: "relative",
+        overflow: "hidden",
       }}
     >
-      {/* Header with image */}
+      {/* Progress bar along top */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: `${progress}%`,
+          height: 3,
+          background: colors.accent,
+          borderRadius: "14px 0 0 0",
+          transition: "width 0.3s",
+        }}
+      />
+
+      {/* Section header */}
       <div
         style={{
           display: "flex",
-          flexDirection: mobile
-            ? "column"
-            : imageOnLeft
-              ? "row"
-              : "row-reverse",
-          alignItems: mobile ? "center" : "flex-start",
-          gap: spacing.lg,
+          alignItems: "center",
+          gap: spacing.md,
           marginBottom: spacing.lg,
         }}
       >
-        <img
-          src={asset(image)}
-          alt={section.title}
+        <div
           style={{
-            width: mobile ? 140 : 160,
-            height: mobile ? 140 : 160,
-            objectFit: "contain",
+            width: 40,
+            height: 40,
+            borderRadius: "50%",
+            background: `${colors.accent}15`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: font.mono,
+            fontSize: 16,
+            fontWeight: font.weightBold,
+            color: colors.accent,
             flexShrink: 0,
           }}
-        />
-        <div style={{ flex: 1, textAlign: mobile ? "center" : "left" }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: spacing.sm,
-              marginBottom: spacing.sm,
-              justifyContent: mobile ? "center" : "flex-start",
-            }}
-          >
-            <span
-              style={{
-                fontFamily: font.mono,
-                fontSize: 13,
-                color: colors.accent,
-                background: `${colors.accent}15`,
-                padding: "3px 10px",
-                borderRadius: 12,
-              }}
-            >
-              {index + 1}
-            </span>
-          </div>
-          <h2
-            style={{
-              fontFamily: font.mono,
-              fontSize: mobile ? 22 : 26,
-              fontWeight: font.weightBold,
-              color: colors.text,
-              marginBottom: spacing.sm,
-            }}
-          >
-            {section.title}
-          </h2>
-          <p
-            style={{
-              fontFamily: font.body,
-              fontSize: 17,
-              color: colors.textMuted,
-              lineHeight: 1.6,
-            }}
-          >
-            {section.body}
-          </p>
+        >
+          {index + 1}
         </div>
+        <h2
+          style={{
+            fontFamily: font.mono,
+            fontSize: mobile ? 22 : 26,
+            fontWeight: font.weightBold,
+            color: colors.text,
+          }}
+        >
+          {section.title}
+        </h2>
       </div>
+
+      {/* Body text */}
+      <p
+        style={{
+          fontFamily: font.body,
+          fontSize: 18,
+          color: colors.textMuted,
+          lineHeight: 1.7,
+          marginBottom: spacing.lg,
+        }}
+      >
+        {section.body}
+      </p>
 
       {/* Code examples */}
       {section.examples.map((ex, i) => (
         <div key={i} style={{ marginBottom: spacing.lg }}>
           <CodeBlock code={ex.code} />
-          <div
+          <p
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: spacing.sm,
+              fontFamily: font.body,
+              fontSize: 15,
+              fontStyle: "italic",
+              color: colors.textMuted,
               marginTop: spacing.sm,
+              paddingLeft: spacing.md,
+              borderLeft: `2px solid ${colors.notStarted}`,
             }}
           >
-            {secondaryImage && i === 0 && (
-              <img
-                src={asset(secondaryImage)}
-                alt=""
-                style={{
-                  width: 48,
-                  height: 48,
-                  objectFit: "contain",
-                  flexShrink: 0,
-                  opacity: 0.8,
-                }}
-              />
-            )}
-            <p
-              style={{
-                fontFamily: font.body,
-                fontSize: 15,
-                fontStyle: "italic",
-                color: colors.textMuted,
-                flex: 1,
-              }}
-            >
-              {ex.caption}
-            </p>
-          </div>
+            {ex.caption}
+          </p>
         </div>
       ))}
 
