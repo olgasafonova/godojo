@@ -47,7 +47,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
     // Step 0: Intro
     if (step === 0) {
       return (
-        <div style={{ textAlign: "center" }}>
+        <div>
           <img
             src={asset(lesson.conceptImage)}
             alt={lesson.title}
@@ -75,8 +75,6 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
               fontSize: 19,
               color: colors.textMuted,
               lineHeight: 1.7,
-              maxWidth: 560,
-              margin: "0 auto",
             }}
           >
             {lesson.intro}
@@ -98,7 +96,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
             style={{
               display: "flex",
               flexDirection: mobile ? "column" : "row",
-              alignItems: mobile ? "center" : "flex-start",
+              alignItems: "flex-start",
               gap: spacing.lg,
               marginBottom: spacing.xl,
             }}
@@ -115,7 +113,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
                 }}
               />
             )}
-            <div style={{ flex: 1, textAlign: mobile ? "center" : "left" }}>
+            <div style={{ flex: 1 }}>
               <h2
                 style={{
                   fontFamily: font.mono,
@@ -206,7 +204,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
     if (sectionIndex === lesson.sections.length) {
       return (
         <div>
-          <div style={{ textAlign: "center", marginBottom: spacing.xl }}>
+          <div style={{ marginBottom: spacing.xl }}>
             <Gopher mood="encouraging" size={mobile ? 160 : 200} />
             <h2
               style={{
@@ -264,7 +262,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
     const nextBelt = hasNextBelt ? BELTS[beltIndex + 1] : null;
 
     return (
-      <div style={{ textAlign: "center" }}>
+      <div>
         <Gopher mood="celebrating" size={mobile ? 180 : 240} />
         <h2
           style={{
@@ -284,8 +282,6 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
             fontSize: 19,
             color: colors.textMuted,
             lineHeight: 1.7,
-            maxWidth: 560,
-            margin: "0 auto",
             marginBottom: spacing.xl,
           }}
         >
@@ -295,7 +291,6 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
           style={{
             display: "flex",
             gap: spacing.md,
-            justifyContent: "center",
             flexWrap: "wrap",
           }}
         >
