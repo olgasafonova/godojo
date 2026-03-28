@@ -26,36 +26,37 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           About Go Dojo
         </h1>
         <p style={styles.tagline}>
-          A flashcard dojo for Go, powered by spaced repetition and tiny gophers
+          A flashcard dojo for Go, powered by spaced repetition and small
+          determined gophers
         </p>
       </div>
 
-      {/* Feature cards grid */}
+      {/* Feature cards */}
       <div style={styles.grid}>
         {[
           {
             img: "k05",
             alt: "Gopher with timer",
             title: "Spaced repetition",
-            text: "The SM-2 algorithm schedules each card at the optimal moment. Get it right and the interval grows. Get it wrong and it bounces back. You spend time on what you don't know yet.",
+            text: "The SM-2 algorithm decides when you see each card again. Get it right and it recedes into the distance. Get it wrong and it reappears the next morning like a cat you forgot to feed.",
           },
           {
             img: "g07",
             alt: "Gopher chef",
             title: "Visual metaphors",
-            text: "Every concept gets a gopher illustration. Slices become sushi rolls. Channels become pipes. Your brain remembers images better than definitions, so the pictures act as memory anchors.",
+            text: "Every concept gets a gopher doing something concrete. Slices become sushi rolls. Channels become copper pipes. The brain is a deeply visual organ; it will hold onto a picture of a gopher holding a jar long after a paragraph of documentation has evaporated.",
           },
           {
             img: "br10",
             alt: "Three gophers numbered 1-2-3",
             title: "Six belts, 60 cards",
-            text: 'From "Hello World" to reflection and unsafe. White belt covers variables and loops. Black belt covers generics, context cancellation, and build tags. Progress is saved in your browser.',
+            text: "White belt starts with variables and for-loops. Black belt ends with reflection, unsafe pointers, and build tags. The progression is steep on purpose. Comfortable learning is an oxymoron.",
           },
           {
             img: "b08",
             alt: "Gopher with formula",
             title: "10 cards per session",
-            text: "Short sessions that fit between meetings. Due reviews come first, then new concepts. Keyboard shortcuts (1-4 to answer, Enter to continue) keep things fast.",
+            text: "Short enough to fit between meetings. Due reviews come first, then new material. Press 1-4 to answer, Enter to continue. No mouse required.",
           },
         ].map((c) => (
           <div
@@ -69,10 +70,14 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
               <img
                 src={asset(`concepts/${c.img}.png`)}
                 alt={c.alt}
-                style={styles.cardImg}
+                style={{
+                  ...styles.cardImg,
+                  width: mobile ? 100 : 140,
+                  height: mobile ? 100 : 140,
+                }}
               />
             </div>
-            <div>
+            <div style={{ minWidth: 0 }}>
               <h3 style={styles.cardTitle}>{c.title}</h3>
               <p style={styles.cardText}>{c.text}</p>
             </div>
@@ -83,22 +88,23 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       {/* Illustration showcase */}
       <div style={styles.showcase}>
         <h2 style={styles.sectionTitle}>Why the illustrations?</h2>
-        <div style={styles.illustrationStrip}>
+        <div style={styles.illustrationGrid}>
           {["w01", "br07", "g07", "k09", "y06", "b06"].map((id) => (
             <img
               key={id}
               src={asset(`concepts/${id}.png`)}
               alt={`Concept illustration ${id}`}
-              style={styles.stripImg}
+              style={styles.gridImg}
             />
           ))}
         </div>
         <p style={styles.text}>
-          Abstract programming concepts are hard to remember from text alone.
-          When you see a gopher holding a jar with a label, "typed container for
-          a value" sticks. When two gophers pass things through copper pipes,
-          channels make sense. The illustrations give the spaced repetition
-          algorithm something richer to reinforce than dry quiz answers.
+          Programming concepts are abstract by nature. A goroutine is not a
+          thing you can point at. An interface has no shape. The illustrations
+          give each idea a physical form, something the spaced repetition
+          algorithm can actually sink its teeth into. A gopher passing a message
+          through a pipe is harder to forget than "channels provide a mechanism
+          for concurrently executing functions to communicate."
         </p>
       </div>
 
@@ -129,8 +135,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           Wait, why is a Go app built in TypeScript?
         </h2>
         <p style={styles.text}>
-          Yes, we built a Go learning tool in TypeScript. We are aware of the
-          irony. In our defense, this fits a pattern: Olga also built{" "}
+          A fair question. The answer is that this is a learning tool, not a Go
+          program, and React happens to be good at the kind of interactive
+          card-flipping UI this requires. The irony is not lost on us. Olga also
+          built{" "}
           <a
             href="https://getskillcheck.com"
             target="_blank"
@@ -139,8 +147,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           >
             SkillCheck
           </a>
-          , an agentic skill that checks agentic skills. Meta is the brand at
-          this point.
+          , an agentic skill whose sole purpose is to validate other agentic
+          skills. Meta is the house style at this point.
         </p>
       </div>
 
@@ -148,10 +156,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Who made this?</h2>
         <p style={styles.text}>
-          Built by Olga Safonova as a learning project while picking up Go.
-          Concept illustrations generated with AI and cleaned up for transparent
-          backgrounds. The gopher mascot follows the tradition of the Go gopher
-          by Renee French.
+          Built by Olga Safonova while learning Go. The concept illustrations
+          were generated with AI and cleaned up for transparent backgrounds. The
+          gopher mascot follows the tradition established by Renee French, who
+          deserves credit for making a rodent the most recognizable thing in
+          systems programming.
         </p>
         <div style={styles.linkRow}>
           <a
@@ -201,7 +210,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   tagline: {
     fontFamily: font.body,
-    fontSize: 19,
+    fontSize: 18,
     color: colors.textMuted,
     lineHeight: 1.5,
   },
@@ -226,21 +235,19 @@ const styles: Record<string, React.CSSProperties> = {
     flexShrink: 0,
   },
   cardImg: {
-    width: 120,
-    height: 120,
     objectFit: "contain",
     maxWidth: "100%",
   },
   cardTitle: {
     fontFamily: font.mono,
-    fontSize: 18,
+    fontSize: 19,
     fontWeight: font.weightBold,
     color: colors.accent,
     marginBottom: spacing.sm,
   },
   cardText: {
     fontFamily: font.body,
-    fontSize: 17,
+    fontSize: 18,
     color: colors.textMuted,
     lineHeight: 1.6,
   },
@@ -249,20 +256,20 @@ const styles: Record<string, React.CSSProperties> = {
   },
   sectionTitle: {
     fontFamily: font.mono,
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: font.weightBold,
     color: colors.accent,
     marginBottom: spacing.lg,
     textAlign: "left",
     wordBreak: "break-word",
   },
-  illustrationStrip: {
+  illustrationGrid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))",
     gap: spacing.md,
     marginBottom: spacing.lg,
   },
-  stripImg: {
+  gridImg: {
     width: "100%",
     aspectRatio: "1",
     objectFit: "contain",
@@ -272,7 +279,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   text: {
     fontFamily: font.body,
-    fontSize: 19,
+    fontSize: 18,
     color: colors.text,
     lineHeight: 1.7,
     marginBottom: spacing.md,
@@ -288,10 +295,10 @@ const styles: Record<string, React.CSSProperties> = {
   },
   techPill: {
     fontFamily: font.mono,
-    fontSize: 14,
+    fontSize: 16,
     color: colors.textMuted,
     background: colors.bgCard,
-    padding: "8px 16px",
+    padding: "10px 18px",
     borderRadius: 20,
   },
   linkRow: {
@@ -305,7 +312,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   extLink: {
     fontFamily: font.mono,
-    fontSize: 15,
+    fontSize: 16,
     color: colors.accent,
     textDecoration: "none",
     borderBottom: `1px solid ${colors.accent}`,
@@ -318,7 +325,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   ctaText: {
     fontFamily: font.mono,
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: font.weightBold,
     color: colors.text,
     marginBottom: spacing.lg,
@@ -330,7 +337,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   ctaPrimary: {
     fontFamily: font.mono,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: font.weightMedium,
     color: colors.bg,
     background: colors.accent,
@@ -341,7 +348,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   ctaSecondary: {
     fontFamily: font.mono,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: font.weightMedium,
     color: colors.accent,
     background: "transparent",
