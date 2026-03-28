@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { Belt } from "../data/types";
 import { BELTS } from "../data/belts";
 import { getLessonByBelt } from "../data/lessons";
-import type { LessonSection } from "../data/lessons";
+import { cards } from "../data/cards";
 import { Gopher } from "../components/Gopher";
 import { CodeBlock } from "../components/CodeBlock";
 import { colors, font, radius, spacing } from "../styles/tokens";
@@ -25,7 +25,330 @@ interface LearnPageProps {
 export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
   const mobile = useIsMobile();
   const [selectedBelt, setSelectedBelt] = useState<Belt>("white");
+  const [step, setStep] = useState(0);
+
   const lesson = getLessonByBelt(selectedBelt);
+  const beltCards = cards.filter((c) => c.belt === selectedBelt);
+
+  // Total steps: intro + sections + gotchas + summary
+  const totalSteps = 1 + lesson.sections.length + 1 + 1;
+  const progress = ((step + 1) / totalSteps) * 100;
+
+  const goNext = () => setStep((s) => Math.min(s + 1, totalSteps - 1));
+  const goBack = () => setStep((s) => Math.max(s - 1, 0));
+  const isFirst = step === 0;
+  const isLast = step === totalSteps - 1;
+
+  const changeBelt = (belt: Belt) => {
+    setSelectedBelt(belt);
+    setStep(0);
+  };
+
+  // Map step index to content
+  const renderCard = () => {
+    // Step 0: Intro
+    if (step === 0) {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <img
+            src={asset(lesson.conceptImage)}
+            alt={lesson.title}
+            style={{
+              width: mobile ? 200 : 260,
+              height: mobile ? 200 : 260,
+              objectFit: "contain",
+              marginBottom: spacing.lg,
+            }}
+          />
+          <h1
+            style={{
+              fontFamily: font.mono,
+              fontSize: mobile ? 28 : 36,
+              fontWeight: font.weightBold,
+              color: colors.text,
+              marginBottom: spacing.md,
+            }}
+          >
+            {lesson.title}
+          </h1>
+          <p
+            style={{
+              fontFamily: font.body,
+              fontSize: 19,
+              color: colors.textMuted,
+              lineHeight: 1.7,
+              maxWidth: 560,
+              margin: "0 auto",
+            }}
+          >
+            {lesson.intro}
+          </p>
+        </div>
+      );
+    }
+
+    // Steps 1..N: Sections
+    const sectionIndex = step - 1;
+    if (sectionIndex < lesson.sections.length) {
+      const section = lesson.sections[sectionIndex];
+      // Pick a unique illustration from this belt's cards
+      const cardImage =
+        beltCards[sectionIndex % beltCards.length]?.conceptImage;
+
+      return (
+        <div>
+          {/* Illustration + title */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: mobile ? "column" : "row",
+              alignItems: mobile ? "center" : "flex-start",
+              gap: spacing.lg,
+              marginBottom: spacing.xl,
+            }}
+          >
+            {cardImage && (
+              <img
+                src={asset(cardImage)}
+                alt={section.title}
+                style={{
+                  width: mobile ? 160 : 180,
+                  height: mobile ? 160 : 180,
+                  objectFit: "contain",
+                  flexShrink: 0,
+                }}
+              />
+            )}
+            <div style={{ flex: 1, textAlign: mobile ? "center" : "left" }}>
+              <h2
+                style={{
+                  fontFamily: font.mono,
+                  fontSize: mobile ? 24 : 30,
+                  fontWeight: font.weightBold,
+                  color: colors.text,
+                  marginBottom: spacing.md,
+                }}
+              >
+                {section.title}
+              </h2>
+              <p
+                style={{
+                  fontFamily: font.body,
+                  fontSize: 18,
+                  color: colors.textMuted,
+                  lineHeight: 1.7,
+                }}
+              >
+                {section.body}
+              </p>
+            </div>
+          </div>
+
+          {/* Code examples */}
+          {section.examples.map((ex, i) => (
+            <div key={i} style={{ marginBottom: spacing.lg }}>
+              <CodeBlock code={ex.code} />
+              <p
+                style={{
+                  fontFamily: font.body,
+                  fontSize: 15,
+                  fontStyle: "italic",
+                  color: colors.textMuted,
+                  marginTop: spacing.sm,
+                  paddingLeft: spacing.md,
+                  borderLeft: `2px solid ${colors.notStarted}`,
+                }}
+              >
+                {ex.caption}
+              </p>
+            </div>
+          ))}
+
+          {/* Insight */}
+          {section.insight && (
+            <div
+              style={{
+                background: `${colors.accent}08`,
+                border: `1px solid ${colors.accent}20`,
+                borderRadius: radius.md,
+                padding: `${spacing.md}px ${spacing.lg}px`,
+                display: "flex",
+                alignItems: "flex-start",
+                gap: spacing.md,
+              }}
+            >
+              <Gopher mood="thinking" size={56} />
+              <div>
+                <span
+                  style={{
+                    fontFamily: font.mono,
+                    fontSize: 12,
+                    textTransform: "uppercase",
+                    letterSpacing: 1.5,
+                    color: colors.accent,
+                    display: "block",
+                    marginBottom: spacing.xs,
+                  }}
+                >
+                  Good to know
+                </span>
+                <p
+                  style={{
+                    fontFamily: font.body,
+                    fontSize: 16,
+                    color: colors.text,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {section.insight}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // Gotchas step
+    if (sectionIndex === lesson.sections.length) {
+      const gotchaImage =
+        beltCards[lesson.sections.length % beltCards.length]?.conceptImage;
+
+      return (
+        <div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: mobile ? "column" : "row",
+              alignItems: "center",
+              gap: spacing.lg,
+              marginBottom: spacing.xl,
+            }}
+          >
+            <Gopher mood="encouraging" size={mobile ? 140 : 180} />
+            <div style={{ textAlign: mobile ? "center" : "left" }}>
+              <h2
+                style={{
+                  fontFamily: font.mono,
+                  fontSize: mobile ? 24 : 30,
+                  fontWeight: font.weightBold,
+                  color: colors.wrong,
+                  marginBottom: spacing.sm,
+                }}
+              >
+                Watch out!
+              </h2>
+              <p
+                style={{
+                  fontFamily: font.body,
+                  fontSize: 18,
+                  color: colors.textMuted,
+                }}
+              >
+                Common mistakes to avoid with{" "}
+                {BELT_TOPICS[selectedBelt].toLowerCase()}.
+              </p>
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: spacing.md,
+            }}
+          >
+            {lesson.gotchas.map((g, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: spacing.md,
+                  background: `${colors.wrong}08`,
+                  border: `1px solid ${colors.wrong}20`,
+                  borderRadius: radius.md,
+                  padding: `${spacing.md}px ${spacing.lg}px`,
+                }}
+              >
+                {gotchaImage && (
+                  <img
+                    src={asset(gotchaImage)}
+                    alt=""
+                    style={{
+                      width: 48,
+                      height: 48,
+                      objectFit: "contain",
+                      flexShrink: 0,
+                      opacity: 0.7,
+                    }}
+                  />
+                )}
+                <p
+                  style={{
+                    fontFamily: font.body,
+                    fontSize: 17,
+                    color: colors.text,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {g}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Summary / CTA (last step)
+    return (
+      <div style={{ textAlign: "center" }}>
+        <Gopher mood="celebrating" size={mobile ? 180 : 240} />
+        <h2
+          style={{
+            fontFamily: font.mono,
+            fontSize: mobile ? 24 : 30,
+            fontWeight: font.weightBold,
+            color: colors.mastered,
+            marginTop: spacing.lg,
+            marginBottom: spacing.md,
+          }}
+        >
+          Lesson complete!
+        </h2>
+        <p
+          style={{
+            fontFamily: font.body,
+            fontSize: 19,
+            color: colors.textMuted,
+            lineHeight: 1.7,
+            maxWidth: 560,
+            margin: "0 auto",
+            marginBottom: spacing.xl,
+          }}
+        >
+          {lesson.summary}
+        </p>
+        <button
+          onClick={() => onNavigate("quiz")}
+          style={{
+            fontFamily: font.mono,
+            fontSize: 20,
+            fontWeight: font.weightMedium,
+            color: colors.bg,
+            background: colors.mastered,
+            border: "none",
+            borderRadius: radius.md,
+            padding: "16px 48px",
+            cursor: "pointer",
+          }}
+        >
+          Test yourself
+        </button>
+      </div>
+    );
+  };
 
   return (
     <div
@@ -35,6 +358,9 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
         padding: mobile
           ? `${spacing.md}px ${spacing.sm}px`
           : `${spacing.xl}px ${spacing.md}px`,
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "85vh",
       }}
     >
       {/* Belt selector */}
@@ -42,7 +368,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
         style={{
           display: "flex",
           gap: mobile ? spacing.xs : spacing.sm,
-          marginBottom: spacing.xl,
+          marginBottom: spacing.lg,
           flexWrap: "wrap",
         }}
       >
@@ -51,7 +377,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
           return (
             <button
               key={b.id}
-              onClick={() => setSelectedBelt(b.id)}
+              onClick={() => changeBelt(b.id)}
               style={{
                 fontFamily: font.mono,
                 fontSize: mobile ? 14 : 16,
@@ -73,381 +399,100 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
         })}
       </div>
 
-      {/* Lesson hero */}
+      {/* Progress bar */}
+      <div
+        style={{
+          width: "100%",
+          height: 6,
+          background: colors.notStarted,
+          borderRadius: 3,
+          marginBottom: spacing.xl,
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            width: `${progress}%`,
+            height: "100%",
+            background: colors.accent,
+            borderRadius: 3,
+            transition: "width 0.3s ease",
+          }}
+        />
+      </div>
+
+      {/* Card content */}
       <div
         style={{
           background: colors.bgCard,
           borderRadius: radius.lg,
           padding: mobile ? spacing.lg : spacing.xl,
-          marginBottom: spacing.xl,
+          flex: 1,
           display: "flex",
-          flexDirection: mobile ? "column" : "row",
-          alignItems: "center",
-          gap: spacing.lg,
+          flexDirection: "column",
         }}
       >
-        <img
-          src={asset(lesson.conceptImage)}
-          alt={lesson.title}
-          style={{
-            width: mobile ? 160 : 200,
-            height: mobile ? 160 : 200,
-            objectFit: "contain",
-            flexShrink: 0,
-          }}
-        />
-        <div style={{ textAlign: mobile ? "center" : "left" }}>
-          <h1
-            style={{
-              fontFamily: font.mono,
-              fontSize: mobile ? 26 : 34,
-              fontWeight: font.weightBold,
-              color: colors.text,
-              marginBottom: spacing.sm,
-            }}
-          >
-            {lesson.title}
-          </h1>
-          <p
-            style={{
-              fontFamily: font.body,
-              fontSize: 18,
-              color: colors.textMuted,
-              lineHeight: 1.6,
-            }}
-          >
-            {lesson.intro}
-          </p>
+        <div style={{ flex: 1 }}>{renderCard()}</div>
+
+        {/* Navigation */}
+        {!isLast && (
           <div
             style={{
               display: "flex",
-              gap: spacing.sm,
-              marginTop: spacing.md,
-              justifyContent: mobile ? "center" : "flex-start",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: spacing.xl,
+              gap: spacing.md,
             }}
           >
-            {lesson.sections.map((_, i) => (
-              <div
-                key={i}
-                style={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: "50%",
-                  background: colors.accent,
-                  opacity: 0.3 + (i / lesson.sections.length) * 0.7,
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Lesson sections as visual cards */}
-      {lesson.sections.map((section, i) => (
-        <SectionCard
-          key={i}
-          section={section}
-          index={i}
-          total={lesson.sections.length}
-          mobile={mobile}
-        />
-      ))}
-
-      {/* Gotchas card */}
-      <div
-        style={{
-          background: colors.bgCard,
-          borderRadius: radius.lg,
-          padding: mobile ? spacing.lg : spacing.xl,
-          marginBottom: spacing.lg,
-          borderLeft: `4px solid ${colors.wrong}`,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: spacing.md,
-            marginBottom: spacing.lg,
-          }}
-        >
-          <Gopher mood="encouraging" size={mobile ? 80 : 100} />
-          <h3
-            style={{
-              fontFamily: font.mono,
-              fontSize: mobile ? 20 : 24,
-              color: colors.wrong,
-            }}
-          >
-            Watch out!
-          </h3>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: spacing.md,
-          }}
-        >
-          {lesson.gotchas.map((g, i) => (
-            <div
-              key={i}
+            <button
+              onClick={goBack}
+              disabled={isFirst}
               style={{
-                background: `${colors.wrong}08`,
-                border: `1px solid ${colors.wrong}20`,
+                fontFamily: font.mono,
+                fontSize: 16,
+                color: isFirst ? colors.notStarted : colors.accent,
+                background: "transparent",
+                border: `2px solid ${isFirst ? colors.notStarted : colors.accent}`,
                 borderRadius: radius.md,
-                padding: `${spacing.md}px ${spacing.lg}px`,
-                fontFamily: font.body,
-                fontSize: 17,
-                color: colors.text,
-                lineHeight: 1.6,
+                padding: "12px 28px",
+                cursor: isFirst ? "default" : "pointer",
+                transition: "all 0.2s",
               }}
             >
-              {g}
-            </div>
-          ))}
-        </div>
-      </div>
+              Back
+            </button>
 
-      {/* Summary card */}
-      <div
-        style={{
-          background: colors.bgCard,
-          borderRadius: radius.lg,
-          padding: mobile ? spacing.lg : spacing.xl,
-          marginBottom: spacing.lg,
-          borderLeft: `4px solid ${colors.accent}`,
-        }}
-      >
-        <div
-          style={{
-            fontFamily: font.mono,
-            fontSize: 14,
-            color: colors.accent,
-            textTransform: "uppercase",
-            letterSpacing: 1.5,
-            marginBottom: spacing.sm,
-          }}
-        >
-          Key Takeaway
-        </div>
-        <p
-          style={{
-            fontFamily: font.body,
-            fontSize: 19,
-            color: colors.text,
-            lineHeight: 1.7,
-          }}
-        >
-          {lesson.summary}
-        </p>
-      </div>
-
-      {/* Quiz CTA */}
-      <div
-        style={{
-          padding: mobile ? spacing.lg : spacing.xl,
-          background: `${colors.mastered}10`,
-          border: `1px solid ${colors.mastered}30`,
-          borderRadius: radius.lg,
-          display: "flex",
-          alignItems: "center",
-          gap: spacing.lg,
-          flexDirection: mobile ? "column" : "row",
-          marginBottom: spacing.xxl,
-        }}
-      >
-        <Gopher mood="celebrating" size={mobile ? 100 : 130} />
-        <div style={{ flex: 1, textAlign: mobile ? "center" : "left" }}>
-          <div
-            style={{
-              fontFamily: font.mono,
-              fontSize: 22,
-              fontWeight: font.weightBold,
-              color: colors.text,
-              marginBottom: spacing.xs,
-            }}
-          >
-            Ready to test yourself?
-          </div>
-          <div
-            style={{
-              fontFamily: font.body,
-              fontSize: 16,
-              color: colors.textMuted,
-            }}
-          >
-            Quiz time! Lock in what you just learned with spaced repetition.
-          </div>
-        </div>
-        <button
-          onClick={() => onNavigate("quiz")}
-          style={{
-            fontFamily: font.mono,
-            fontSize: 16,
-            fontWeight: font.weightMedium,
-            color: colors.bg,
-            background: colors.mastered,
-            border: "none",
-            borderRadius: radius.md,
-            padding: "12px 32px",
-            cursor: "pointer",
-            flexShrink: 0,
-          }}
-        >
-          Start Quiz
-        </button>
-      </div>
-    </div>
-  );
-};
-
-const SectionCard: React.FC<{
-  section: LessonSection;
-  index: number;
-  total: number;
-  mobile: boolean;
-}> = ({ section, index, total, mobile }) => {
-  const progress = ((index + 1) / total) * 100;
-
-  return (
-    <div
-      style={{
-        background: colors.bgCard,
-        borderRadius: radius.lg,
-        padding: mobile ? spacing.lg : spacing.xl,
-        marginBottom: spacing.lg,
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* Progress bar along top */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: `${progress}%`,
-          height: 3,
-          background: colors.accent,
-          borderRadius: "14px 0 0 0",
-          transition: "width 0.3s",
-        }}
-      />
-
-      {/* Section header */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: spacing.md,
-          marginBottom: spacing.lg,
-        }}
-      >
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            background: `${colors.accent}15`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontFamily: font.mono,
-            fontSize: 16,
-            fontWeight: font.weightBold,
-            color: colors.accent,
-            flexShrink: 0,
-          }}
-        >
-          {index + 1}
-        </div>
-        <h2
-          style={{
-            fontFamily: font.mono,
-            fontSize: mobile ? 22 : 26,
-            fontWeight: font.weightBold,
-            color: colors.text,
-          }}
-        >
-          {section.title}
-        </h2>
-      </div>
-
-      {/* Body text */}
-      <p
-        style={{
-          fontFamily: font.body,
-          fontSize: 18,
-          color: colors.textMuted,
-          lineHeight: 1.7,
-          marginBottom: spacing.lg,
-        }}
-      >
-        {section.body}
-      </p>
-
-      {/* Code examples */}
-      {section.examples.map((ex, i) => (
-        <div key={i} style={{ marginBottom: spacing.lg }}>
-          <CodeBlock code={ex.code} />
-          <p
-            style={{
-              fontFamily: font.body,
-              fontSize: 15,
-              fontStyle: "italic",
-              color: colors.textMuted,
-              marginTop: spacing.sm,
-              paddingLeft: spacing.md,
-              borderLeft: `2px solid ${colors.notStarted}`,
-            }}
-          >
-            {ex.caption}
-          </p>
-        </div>
-      ))}
-
-      {/* Insight callout */}
-      {section.insight && (
-        <div
-          style={{
-            background: `${colors.accent}08`,
-            border: `1px solid ${colors.accent}20`,
-            borderRadius: radius.md,
-            padding: `${spacing.md}px ${spacing.lg}px`,
-            display: "flex",
-            alignItems: "flex-start",
-            gap: spacing.md,
-          }}
-        >
-          <Gopher mood="thinking" size={56} />
-          <div>
             <span
               style={{
                 fontFamily: font.mono,
-                fontSize: 12,
-                textTransform: "uppercase",
-                letterSpacing: 1.5,
-                color: colors.accent,
-                display: "block",
-                marginBottom: spacing.xs,
+                fontSize: 14,
+                color: colors.textMuted,
               }}
             >
-              Good to know
+              {step + 1} / {totalSteps}
             </span>
-            <p
+
+            <button
+              onClick={goNext}
               style={{
-                fontFamily: font.body,
+                fontFamily: font.mono,
                 fontSize: 16,
-                color: colors.text,
-                lineHeight: 1.6,
+                fontWeight: font.weightMedium,
+                color: colors.bg,
+                background: colors.accent,
+                border: "none",
+                borderRadius: radius.md,
+                padding: "12px 28px",
+                cursor: "pointer",
+                transition: "all 0.2s",
               }}
             >
-              {section.insight}
-            </p>
+              Next
+            </button>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
