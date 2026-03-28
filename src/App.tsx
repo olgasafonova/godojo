@@ -81,7 +81,7 @@ function App() {
       {page === "learn" && <LearnPage onNavigate={navigate} />}
       {page === "quiz" && <QuizPage onNavigate={navigate} />}
       {page === "progress" && <ProgressPage />}
-      {page === "about" && <AboutPage />}
+      {page === "about" && <AboutPage onNavigate={navigate} />}
     </div>
   );
 }
