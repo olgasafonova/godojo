@@ -1,7 +1,7 @@
 import type { GopherMood } from "../data/types";
 import { asset } from "../utils/basePath";
 
-const v = "?v=2";
+const v = "?v=3";
 const MOOD_IMAGES: Record<GopherMood, string> = {
   idle: asset("gophers/idle.png") + v,
   thinking: asset("gophers/thinking.png") + v,
