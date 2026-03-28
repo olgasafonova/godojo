@@ -147,6 +147,27 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         </div>
       </div>
 
+      {/* Wait, why TypeScript? */}
+      <div style={styles.section}>
+        <h2 style={styles.sectionTitle}>
+          Wait, why is a Go app built in TypeScript?
+        </h2>
+        <p style={styles.text}>
+          Yes, we built a Go learning tool in TypeScript. We are aware of the
+          irony. In our defense, this fits a pattern: Olga also built{" "}
+          <a
+            href="https://getskillcheck.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.inlineLink}
+          >
+            SkillCheck
+          </a>
+          , an agentic skill that checks agentic skills. Meta is the brand at
+          this point.
+        </p>
+      </div>
+
       {/* Credits */}
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Who made this?</h2>
@@ -296,6 +317,12 @@ const styles: Record<string, React.CSSProperties> = {
   },
   linkRow: {
     marginTop: spacing.md,
+  },
+  inlineLink: {
+    color: colors.accent,
+    textDecoration: "none",
+    borderBottom: `1px solid ${colors.accent}`,
+    paddingBottom: 1,
   },
   extLink: {
     fontFamily: font.mono,
