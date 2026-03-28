@@ -188,9 +188,8 @@ const styles: Record<string, React.CSSProperties> = {
   hero: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "flex-start",
     marginBottom: spacing.xxl,
-    textAlign: "center",
   },
   title: {
     fontFamily: font.mono,
@@ -202,9 +201,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
   tagline: {
     fontFamily: font.body,
-    fontSize: 18,
+    fontSize: 19,
     color: colors.textMuted,
-    maxWidth: 480,
     lineHeight: 1.5,
   },
   grid: {
@@ -258,18 +256,16 @@ const styles: Record<string, React.CSSProperties> = {
   illustrationStrip: {
     display: "flex",
     gap: spacing.md,
-    overflowX: "auto",
-    paddingBottom: spacing.md,
+    flexWrap: "wrap",
     marginBottom: spacing.lg,
   },
   stripImg: {
-    width: 160,
-    height: 160,
+    width: 140,
+    height: 140,
     objectFit: "contain",
     borderRadius: radius.lg,
     background: colors.bgCard,
     padding: spacing.sm,
-    flexShrink: 0,
   },
   text: {
     fontFamily: font.body,
@@ -313,7 +309,6 @@ const styles: Record<string, React.CSSProperties> = {
     paddingBottom: 2,
   },
   cta: {
-    textAlign: "center",
     padding: `${spacing.xl}px 0`,
     marginBottom: spacing.xl,
     borderTop: `1px solid ${colors.notStarted}`,
@@ -328,7 +323,6 @@ const styles: Record<string, React.CSSProperties> = {
   ctaButtons: {
     display: "flex",
     gap: spacing.md,
-    justifyContent: "center",
     flexWrap: "wrap",
   },
   ctaPrimary: {
