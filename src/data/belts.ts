@@ -28,7 +28,7 @@ export const BELTS: BeltInfo[] = [
   },
   {
     id: "blue",
-    name: "Journeyman",
+    name: "Adept",
     emoji: "  ",
     color: colors.belt.blue,
     min: 40,

@@ -3,10 +3,11 @@ import { HomePage } from "./pages/HomePage";
 import { LearnPage } from "./pages/LearnPage";
 import { QuizPage } from "./pages/QuizPage";
 import { ProgressPage } from "./pages/ProgressPage";
+import { AboutPage } from "./pages/AboutPage";
 import { colors, font, spacing } from "./styles/tokens";
 import { useIsMobile } from "./utils/useMediaQuery";
 
-type Page = "home" | "learn" | "quiz" | "progress";
+type Page = "home" | "learn" | "quiz" | "progress" | "about";
 
 function App() {
   const [page, setPage] = useState<Page>("home");
@@ -63,6 +64,15 @@ function App() {
           >
             Progress
           </button>
+          <button
+            onClick={() => setPage("about")}
+            style={{
+              ...styles.navLink,
+              color: page === "about" ? colors.accent : colors.textMuted,
+            }}
+          >
+            About
+          </button>
         </div>
       </nav>
 
@@ -71,6 +81,7 @@ function App() {
       {page === "learn" && <LearnPage onNavigate={navigate} />}
       {page === "quiz" && <QuizPage onNavigate={navigate} />}
       {page === "progress" && <ProgressPage />}
+      {page === "about" && <AboutPage />}
     </div>
   );
 }
