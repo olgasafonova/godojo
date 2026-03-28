@@ -239,31 +239,42 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-          <div
+          <ul
             style={{
+              listStyle: "none",
+              padding: 0,
               display: "flex",
               flexDirection: "column",
-              gap: spacing.md,
+              gap: spacing.lg,
             }}
           >
             {lesson.gotchas.map((g, i) => (
-              <div
+              <li
                 key={i}
                 style={{
-                  background: `${colors.wrong}18`,
-                  borderLeft: `4px solid ${colors.wrong}`,
-                  borderRadius: radius.sm,
-                  padding: `${spacing.md}px ${spacing.lg}px`,
                   fontFamily: font.body,
-                  fontSize: 18,
+                  fontSize: 19,
                   color: colors.text,
                   lineHeight: 1.7,
+                  paddingLeft: spacing.lg,
+                  position: "relative",
                 }}
               >
+                <span
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    color: colors.wrong,
+                    fontSize: 22,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  &bull;
+                </span>
                 {g}
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       );
     }
