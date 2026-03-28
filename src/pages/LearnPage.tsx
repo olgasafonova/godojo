@@ -150,13 +150,10 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
               <CodeBlock code={ex.code} />
               <p
                 style={{
-                  fontFamily: font.body,
-                  fontSize: 15,
-                  fontStyle: "italic",
+                  fontFamily: font.mono,
+                  fontSize: 14,
                   color: colors.textMuted,
                   marginTop: spacing.sm,
-                  paddingLeft: spacing.md,
-                  borderLeft: `2px solid ${colors.notStarted}`,
                 }}
               >
                 {ex.caption}
@@ -239,42 +236,28 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-          <ul
+          <div
             style={{
-              listStyle: "none",
-              padding: 0,
               display: "flex",
               flexDirection: "column",
               gap: spacing.lg,
             }}
           >
             {lesson.gotchas.map((g, i) => (
-              <li
+              <p
                 key={i}
                 style={{
                   fontFamily: font.body,
                   fontSize: 19,
                   color: colors.text,
                   lineHeight: 1.7,
-                  paddingLeft: spacing.lg,
-                  position: "relative",
+                  margin: 0,
                 }}
               >
-                <span
-                  style={{
-                    position: "absolute",
-                    left: 0,
-                    color: colors.wrong,
-                    fontSize: 22,
-                    lineHeight: 1.5,
-                  }}
-                >
-                  &bull;
-                </span>
                 {g}
-              </li>
+              </p>
             ))}
-          </ul>
+          </div>
         </div>
       );
     }
