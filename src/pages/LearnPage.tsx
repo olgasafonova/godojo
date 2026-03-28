@@ -8,6 +8,7 @@ import { Gopher } from "../components/Gopher";
 import { CodeBlock } from "../components/CodeBlock";
 import { colors, font, radius, spacing } from "../styles/tokens";
 import { useIsMobile } from "../utils/useMediaQuery";
+import { asset } from "../utils/basePath";
 
 const BELT_TOPICS: Record<Belt, string> = {
   white: "Basics",
@@ -90,7 +91,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
         }}
       >
         <img
-          src={lesson.conceptImage}
+          src={asset(lesson.conceptImage)}
           alt={lesson.title}
           style={{
             width: mobile ? 160 : 200,
@@ -339,7 +340,7 @@ const SectionCard: React.FC<{
         }}
       >
         <img
-          src={image}
+          src={asset(image)}
           alt={section.title}
           style={{
             width: mobile ? 140 : 160,
@@ -409,7 +410,7 @@ const SectionCard: React.FC<{
           >
             {secondaryImage && i === 0 && (
               <img
-                src={secondaryImage}
+                src={asset(secondaryImage)}
                 alt=""
                 style={{
                   width: 48,

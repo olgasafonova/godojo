@@ -1,12 +1,13 @@
 import type { GopherMood } from "../data/types";
+import { asset } from "../utils/basePath";
 
 const MOOD_IMAGES: Record<GopherMood, string> = {
-  idle: "/gophers/idle.png",
-  thinking: "/gophers/thinking.png",
-  celebrating: "/gophers/celebrating.png",
-  encouraging: "/gophers/encouraging.png",
-  meditating: "/gophers/meditating.png",
-  "belt-ceremony": "/gophers/sensei.png",
+  idle: asset("gophers/idle.png"),
+  thinking: asset("gophers/thinking.png"),
+  celebrating: asset("gophers/celebrating.png"),
+  encouraging: asset("gophers/encouraging.png"),
+  meditating: asset("gophers/meditating.png"),
+  "belt-ceremony": asset("gophers/sensei.png"),
 };
 
 interface GopherProps {
