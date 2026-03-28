@@ -292,7 +292,7 @@ export const QuizPage: React.FC = () => {
           >
             <Gopher
               mood={isCorrect ? "celebrating" : "encouraging"}
-              size={mobile ? 80 : 100}
+              size={mobile ? 120 : 150}
             />
             <div style={styles.feedbackText}>
               <div
@@ -307,8 +307,7 @@ export const QuizPage: React.FC = () => {
             </div>
           </div>
           <button onClick={handleNext} style={styles.nextButton}>
-            {index + 1 < queue.length ? "Next" : "See Results"}{" "}
-            <span style={styles.hint}>Enter</span>
+            {index + 1 < queue.length ? "Next" : "See Results"}
           </button>
         </div>
       )}
@@ -337,20 +336,20 @@ const styles: Record<string, React.CSSProperties> = {
   },
   subtitle: {
     fontFamily: font.body,
-    fontSize: 16,
+    fontSize: 18,
     color: colors.textMuted,
     marginBottom: spacing.xl,
     textAlign: "center",
   },
   startButton: {
     fontFamily: font.mono,
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: font.weightMedium,
     color: colors.bg,
     background: colors.accent,
     border: "none",
     borderRadius: radius.md,
-    padding: "14px 40px",
+    padding: "16px 48px",
     cursor: "pointer",
     transition: "background 0.2s",
   },
@@ -449,7 +448,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   feedbackVerdict: {
     fontFamily: font.mono,
-    fontSize: 20,
+    fontSize: 26,
     fontWeight: font.weightBold,
     marginBottom: spacing.sm,
   },
@@ -461,7 +460,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   nextButton: {
     fontFamily: font.mono,
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: font.weightMedium,
     color: colors.bg,
     background: colors.accent,

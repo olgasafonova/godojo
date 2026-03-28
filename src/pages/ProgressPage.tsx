@@ -55,7 +55,7 @@ export const ProgressPage: React.FC = () => {
           <div
             style={{
               fontFamily: font.mono,
-              fontSize: 14,
+              fontSize: 16,
               textTransform: "uppercase",
               letterSpacing: 2,
               color: colors.textMuted,
@@ -67,7 +67,7 @@ export const ProgressPage: React.FC = () => {
           <div
             style={{
               fontFamily: font.mono,
-              fontSize: 28,
+              fontSize: 34,
               fontWeight: font.weightBold,
               color: belt.color,
             }}
@@ -77,7 +77,7 @@ export const ProgressPage: React.FC = () => {
           <div
             style={{
               fontFamily: font.mono,
-              fontSize: 14,
+              fontSize: 16,
               color: colors.textMuted,
               marginTop: spacing.xs,
             }}
@@ -154,10 +154,10 @@ export const ProgressPage: React.FC = () => {
             >
               <div
                 style={{
-                  width: 40,
-                  height: 10,
+                  width: 48,
+                  height: 12,
                   borderRadius: 3,
-                  background: b.color,
+                  background: b.id === "black" ? "#555" : b.color,
                   border: b.id === "white" ? "1px solid #888" : "none",
                   marginBottom: spacing.sm,
                 }}
@@ -165,9 +165,13 @@ export const ProgressPage: React.FC = () => {
               <div
                 style={{
                   fontFamily: font.mono,
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: isCurrent ? font.weightBold : font.weightRegular,
-                  color: isCurrent ? b.color : colors.text,
+                  color: isCurrent
+                    ? b.id === "black"
+                      ? colors.text
+                      : b.color
+                    : colors.text,
                 }}
               >
                 {b.name}
@@ -175,7 +179,7 @@ export const ProgressPage: React.FC = () => {
               <div
                 style={{
                   fontFamily: font.mono,
-                  fontSize: 12,
+                  fontSize: 14,
                   color: colors.textMuted,
                   marginTop: 2,
                 }}
@@ -219,16 +223,17 @@ export const ProgressPage: React.FC = () => {
               <h3
                 style={{
                   fontFamily: font.mono,
-                  fontSize: 14,
+                  fontSize: 18,
                   textTransform: "uppercase",
                   letterSpacing: 1.5,
-                  color: colors.belt[beltId],
+                  color:
+                    beltId === "black" ? colors.textMuted : colors.belt[beltId],
                   marginBottom: spacing.sm,
                 }}
               >
                 {BELT_LABELS[beltId]}
               </h3>
-              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {beltCards.map((card) => {
                   const rec = records[card.id];
                   const mastered = rec && isMastered(rec);
@@ -243,14 +248,14 @@ export const ProgressPage: React.FC = () => {
                       key={card.id}
                       title={card.question}
                       style={{
-                        width: 44,
-                        height: 44,
+                        width: 56,
+                        height: 56,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         background: bg,
                         borderRadius: radius.sm,
-                        fontSize: 11,
+                        fontSize: 14,
                         fontFamily: font.mono,
                         color: mastered || seen ? "#fff" : colors.textMuted,
                       }}
@@ -270,7 +275,7 @@ export const ProgressPage: React.FC = () => {
 
 const sectionTitle: React.CSSProperties = {
   fontFamily: font.mono,
-  fontSize: 16,
+  fontSize: 20,
   textTransform: "uppercase",
   letterSpacing: 2,
   color: colors.textMuted,
@@ -286,7 +291,7 @@ const StatBlock: React.FC<{
   <div>
     <div
       style={{
-        fontSize: 36,
+        fontSize: 42,
         fontFamily: font.mono,
         fontWeight: font.weightBold,
         color,
@@ -297,7 +302,7 @@ const StatBlock: React.FC<{
     </div>
     <div
       style={{
-        fontSize: 13,
+        fontSize: 15,
         fontFamily: font.mono,
         textTransform: "uppercase",
         letterSpacing: 1.5,
