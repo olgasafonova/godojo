@@ -1,73 +1,58 @@
-# React + TypeScript + Vite
+# Go Dojo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A flashcard app for learning Go through spaced repetition and small determined gophers.
 
-Currently, two official plugins are available:
+**[Try it live](https://olgasafonova.github.io/godojo/)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+<p>
+  <img src="public/gophers/idle.png" width="120" alt="Gopher in karate gi" />
+  <img src="public/gophers/celebrating.png" width="120" alt="Celebrating gopher" />
+  <img src="public/gophers/thinking.png" width="120" alt="Thinking gopher" />
+  <img src="public/gophers/encouraging.png" width="120" alt="Encouraging gopher" />
+</p>
 
-## React Compiler
+## What it does
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+60 quiz cards covering Go from variables to reflection. The SM-2 spaced repetition algorithm schedules reviews so you spend time on what you don't know yet. Get a card right and it recedes into the distance. Get it wrong and it comes back tomorrow.
 
-## Expanding the ESLint configuration
+Cards are organized into six belts (white through black), each mapped to a topic area. Progress is stored in localStorage; nothing leaves your browser.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Why the illustrations
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Every concept has a gopher illustration acting as a visual metaphor. Slices become sushi rolls. Channels become copper pipes. Goroutines become a queue of gophers waiting for an alarm clock. The brain holds images better than definitions, and the spaced repetition algorithm has something richer to reinforce than dry quiz text.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+<p>
+  <img src="public/concepts/w01.png" width="140" alt="Gopher with receipt" />
+  <img src="public/concepts/br07.png" width="140" alt="Gophers with pipes" />
+  <img src="public/concepts/g07.png" width="140" alt="Gopher chef" />
+  <img src="public/concepts/k09.png" width="140" alt="Gopher at buffet" />
+</p>
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Why "Dojo"
+
+A dojo is a place for practicing a discipline through repetition. You don't read about a technique once and move on. You drill it until muscle memory takes over.
+
+Go Dojo has a sibling: [KanaDojo](https://olgasafonova.github.io/kanadojo/), the same engine applied to Japanese hiragana and katakana.
+
+## Stack
+
+React 19, TypeScript, Vite, Shiki (syntax highlighting), Web Audio API (sound effects), SM-2 (spaced repetition), Claude Code, GitHub Pages.
+
+Yes, this is a Go learning app built in TypeScript. The irony is noted.
+
+## Run locally
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Opens at `http://localhost:5173/godojo/`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Deploy
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Pushes to `main` trigger a GitHub Actions workflow that builds and deploys to GitHub Pages.
+
+## Credits
+
+Built by [Olga Safonova](https://github.com/olgasafonova). Concept illustrations generated with AI. The gopher mascot follows the tradition of the Go gopher by Renee French.
