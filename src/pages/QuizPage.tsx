@@ -45,9 +45,19 @@ export const QuizPage: React.FC = () => {
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [total, setTotal] = useState(0);
+  const [optionOrder, setOptionOrder] = useState<number[]>([]);
 
   const card = queue[index];
   const mobile = useIsMobile();
+
+  const shuffleOptions = (card: GoCard) => {
+    const order = card.options.map((_, i) => i);
+    for (let i = order.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+    setOptionOrder(order);
+  };
 
   const startQuiz = useCallback(() => {
     const q = buildQueue();
@@ -56,14 +66,23 @@ export const QuizPage: React.FC = () => {
     setSelected(null);
     setScore(0);
     setTotal(0);
+    if (q.length > 0) {
+      const order = q[0].options.map((_, i) => i);
+      for (let i = order.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+      setOptionOrder(order);
+    }
     setPhase(q.length > 0 ? "question" : "done");
   }, []);
 
-  const handleSelect = (optionIndex: number) => {
+  const handleSelect = (displayIndex: number) => {
     if (selected !== null) return; // already answered
-    setSelected(optionIndex);
+    setSelected(displayIndex);
 
-    const isCorrect = optionIndex === card.correct;
+    const originalIndex = optionOrder[displayIndex];
+    const isCorrect = originalIndex === card.correct;
     const quality = isCorrect ? 2 : 0;
 
     // Update SRS
@@ -87,8 +106,10 @@ export const QuizPage: React.FC = () => {
     if (index + 1 >= queue.length) {
       setPhase("done");
     } else {
-      setIndex((i) => i + 1);
+      const nextIndex = index + 1;
+      setIndex(nextIndex);
       setSelected(null);
+      shuffleOptions(queue[nextIndex]);
       setPhase("question");
     }
   };
@@ -205,7 +226,7 @@ export const QuizPage: React.FC = () => {
   }
 
   // Question / Feedback
-  const isCorrect = selected === card.correct;
+  const isCorrect = selected !== null && optionOrder[selected] === card.correct;
 
   return (
     <div style={styles.container}>
@@ -236,17 +257,18 @@ export const QuizPage: React.FC = () => {
 
         {card.code && <CodeBlock code={card.code} />}
 
-        {/* Options */}
+        {/* Options (shuffled) */}
         <div style={styles.options}>
-          {card.options.map((opt, i) => {
+          {optionOrder.map((originalIdx, displayIdx) => {
+            const opt = card.options[originalIdx];
             let bg: string = colors.bgCode;
             let border = "2px solid transparent";
 
             if (selected !== null) {
-              if (i === card.correct) {
+              if (originalIdx === card.correct) {
                 bg = "rgba(45, 134, 89, 0.25)";
                 border = `2px solid ${colors.mastered}`;
-              } else if (i === selected && !isCorrect) {
+              } else if (displayIdx === selected && !isCorrect) {
                 bg = "rgba(224, 112, 96, 0.25)";
                 border = `2px solid ${colors.wrong}`;
               }
@@ -254,23 +276,25 @@ export const QuizPage: React.FC = () => {
               border = "2px solid rgba(0, 173, 216, 0.15)";
             }
 
+            const isIrrelevant =
+              selected !== null &&
+              displayIdx !== selected &&
+              originalIdx !== card.correct;
+
             return (
               <button
-                key={i}
-                onClick={() => handleSelect(i)}
+                key={displayIdx}
+                onClick={() => handleSelect(displayIdx)}
                 disabled={selected !== null}
                 style={{
                   ...styles.option,
                   background: bg,
                   border,
                   cursor: selected !== null ? "default" : "pointer",
-                  opacity:
-                    selected !== null && i !== selected && i !== card.correct
-                      ? 0.5
-                      : 1,
+                  opacity: isIrrelevant ? 0.5 : 1,
                 }}
               >
-                <span style={styles.optionNumber}>{i + 1}</span>
+                <span style={styles.optionNumber}>{displayIdx + 1}</span>
                 <span style={styles.optionText}>{opt}</span>
               </button>
             );

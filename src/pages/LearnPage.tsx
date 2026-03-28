@@ -211,44 +211,32 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
 
     // Gotchas step
     if (sectionIndex === lesson.sections.length) {
-      const gotchaImage =
-        beltCards[lesson.sections.length % beltCards.length]?.conceptImage;
-
       return (
         <div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: mobile ? "column" : "row",
-              alignItems: "center",
-              gap: spacing.lg,
-              marginBottom: spacing.xl,
-            }}
-          >
-            <Gopher mood="encouraging" size={mobile ? 140 : 180} />
-            <div style={{ textAlign: mobile ? "center" : "left" }}>
-              <h2
-                style={{
-                  fontFamily: font.mono,
-                  fontSize: mobile ? 24 : 30,
-                  fontWeight: font.weightBold,
-                  color: colors.wrong,
-                  marginBottom: spacing.sm,
-                }}
-              >
-                Watch out!
-              </h2>
-              <p
-                style={{
-                  fontFamily: font.body,
-                  fontSize: 18,
-                  color: colors.textMuted,
-                }}
-              >
-                Common mistakes to avoid with{" "}
-                {BELT_TOPICS[selectedBelt].toLowerCase()}.
-              </p>
-            </div>
+          <div style={{ textAlign: "center", marginBottom: spacing.xl }}>
+            <Gopher mood="encouraging" size={mobile ? 160 : 200} />
+            <h2
+              style={{
+                fontFamily: font.mono,
+                fontSize: mobile ? 24 : 30,
+                fontWeight: font.weightBold,
+                color: colors.wrong,
+                marginTop: spacing.md,
+                marginBottom: spacing.sm,
+              }}
+            >
+              Watch out!
+            </h2>
+            <p
+              style={{
+                fontFamily: font.body,
+                fontSize: 18,
+                color: colors.textMuted,
+              }}
+            >
+              Common mistakes to avoid with{" "}
+              {BELT_TOPICS[selectedBelt].toLowerCase()}.
+            </p>
           </div>
 
           <div
@@ -262,38 +250,26 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
               <div
                 key={i}
                 style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: spacing.md,
                   background: `${colors.wrong}08`,
                   border: `1px solid ${colors.wrong}20`,
                   borderRadius: radius.md,
                   padding: `${spacing.md}px ${spacing.lg}px`,
+                  fontFamily: font.body,
+                  fontSize: 17,
+                  color: colors.text,
+                  lineHeight: 1.6,
                 }}
               >
-                {gotchaImage && (
-                  <img
-                    src={asset(gotchaImage)}
-                    alt=""
-                    style={{
-                      width: 48,
-                      height: 48,
-                      objectFit: "contain",
-                      flexShrink: 0,
-                      opacity: 0.7,
-                    }}
-                  />
-                )}
-                <p
+                <span
                   style={{
-                    fontFamily: font.body,
-                    fontSize: 17,
-                    color: colors.text,
-                    lineHeight: 1.6,
+                    color: colors.wrong,
+                    fontWeight: font.weightBold,
+                    marginRight: spacing.sm,
                   }}
                 >
-                  {g}
-                </p>
+                  {i + 1}.
+                </span>
+                {g}
               </div>
             ))}
           </div>
@@ -302,6 +278,10 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
     }
 
     // Summary / CTA (last step)
+    const beltIndex = BELTS.findIndex((b) => b.id === selectedBelt);
+    const hasNextBelt = beltIndex < BELTS.length - 1;
+    const nextBelt = hasNextBelt ? BELTS[beltIndex + 1] : null;
+
     return (
       <div style={{ textAlign: "center" }}>
         <Gopher mood="celebrating" size={mobile ? 180 : 240} />
@@ -330,22 +310,49 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
         >
           {lesson.summary}
         </p>
-        <button
-          onClick={() => onNavigate("quiz")}
+        <div
           style={{
-            fontFamily: font.mono,
-            fontSize: 20,
-            fontWeight: font.weightMedium,
-            color: colors.bg,
-            background: colors.mastered,
-            border: "none",
-            borderRadius: radius.md,
-            padding: "16px 48px",
-            cursor: "pointer",
+            display: "flex",
+            gap: spacing.md,
+            justifyContent: "center",
+            flexWrap: "wrap",
           }}
         >
-          Test yourself
-        </button>
+          {nextBelt && (
+            <button
+              onClick={() => changeBelt(nextBelt.id)}
+              style={{
+                fontFamily: font.mono,
+                fontSize: 18,
+                fontWeight: font.weightMedium,
+                color: colors.bg,
+                background: colors.accent,
+                border: "none",
+                borderRadius: radius.md,
+                padding: "14px 36px",
+                cursor: "pointer",
+              }}
+            >
+              Next: {BELT_TOPICS[nextBelt.id]}
+            </button>
+          )}
+          <button
+            onClick={() => onNavigate("quiz")}
+            style={{
+              fontFamily: font.mono,
+              fontSize: 18,
+              fontWeight: font.weightMedium,
+              color: colors.accent,
+              background: "transparent",
+              border: `2px solid ${colors.accent}`,
+              borderRadius: radius.md,
+              padding: "12px 36px",
+              cursor: "pointer",
+            }}
+          >
+            Practice quiz
+          </button>
+        </div>
       </div>
     );
   };
