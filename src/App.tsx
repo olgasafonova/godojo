@@ -69,7 +69,7 @@ function App() {
       {/* Pages */}
       {page === "home" && <HomePage onNavigate={navigate} />}
       {page === "learn" && <LearnPage onNavigate={navigate} />}
-      {page === "quiz" && <QuizPage />}
+      {page === "quiz" && <QuizPage onNavigate={navigate} />}
       {page === "progress" && <ProgressPage />}
     </div>
   );

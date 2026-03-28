@@ -15,6 +15,7 @@ function buildQueue(): GoCard[] {
   // Priority: due cards first, then unseen cards, shuffle each group
   const due: GoCard[] = [];
   const unseen: GoCard[] = [];
+  const review: GoCard[] = [];
 
   for (const card of cards) {
     const rec = getRecord(card.id);
@@ -22,6 +23,8 @@ function buildQueue(): GoCard[] {
       unseen.push(card);
     } else if (isDue(rec) && !isMastered(rec)) {
       due.push(card);
+    } else if (!isMastered(rec)) {
+      review.push(card);
     }
   }
 
@@ -34,11 +37,16 @@ function buildQueue(): GoCard[] {
     return a;
   };
 
-  const queue = [...shuffle(due), ...shuffle(unseen)];
+  // Priority: due first, then unseen, then not-yet-due non-mastered as fallback
+  const queue = [...shuffle(due), ...shuffle(unseen), ...shuffle(review)];
   return queue.slice(0, 10); // session of 10
 }
 
-export const QuizPage: React.FC = () => {
+interface QuizPageProps {
+  onNavigate: (page: string) => void;
+}
+
+export const QuizPage: React.FC<QuizPageProps> = ({ onNavigate }) => {
   const [phase, setPhase] = useState<Phase>("ready");
   const [queue, setQueue] = useState<GoCard[]>([]);
   const [index, setIndex] = useState(0);
@@ -218,8 +226,8 @@ export const QuizPage: React.FC = () => {
             <span style={styles.scoreLabel}>Accuracy</span>
           </div>
         </div>
-        <button onClick={startQuiz} style={styles.startButton}>
-          Train Again
+        <button onClick={() => onNavigate("home")} style={styles.startButton}>
+          Home
         </button>
       </div>
     );
