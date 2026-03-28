@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: #0b1622;
+  color: #f0f4f8;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button {
+  font-family: inherit;
+}
+
+button:hover {
+  filter: brightness(1.1);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Shiki code block overrides */
+.code-block pre {
+  padding: 16px;
+  border-radius: 12px;
+  overflow-x: auto;
+  margin: 0;
+}
+
+.code-block code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 173, 216, 0.3);
+  border-radius: 3px;
+}
+
+/* Selection */
+::selection {
+  background: rgba(0, 173, 216, 0.3);
+  color: #e8f0f8;
+}
+
+/* ═══ Mobile-first responsive ═══ */
+
+/* Touch targets: minimum 44px for all buttons */
+@media (max-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+
+  /* Code blocks: smaller font, horizontal scroll */
+  .code-block pre {
+    padding: 12px;
+    font-size: 12px !important;
+    border-radius: 8px;
+  }
+
+  .code-block code {
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+
+  .code-block pre {
+    padding: 10px;
+    font-size: 11px !important;
+  }
+
+  .code-block code {
+    font-size: 11px !important;
+  }
+}
+
+/* PWA: safe area for notched phones */
+@supports (padding: env(safe-area-inset-top)) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}

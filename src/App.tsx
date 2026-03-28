@@ -1,0 +1,111 @@
+import { useState, useCallback } from "react";
+import { HomePage } from "./pages/HomePage";
+import { LearnPage } from "./pages/LearnPage";
+import { QuizPage } from "./pages/QuizPage";
+import { ProgressPage } from "./pages/ProgressPage";
+import { colors, font, spacing } from "./styles/tokens";
+import { useIsMobile } from "./utils/useMediaQuery";
+
+type Page = "home" | "learn" | "quiz" | "progress";
+
+function App() {
+  const [page, setPage] = useState<Page>("home");
+
+  const navigate = useCallback((p: string) => setPage(p as Page), []);
+  const mobile = useIsMobile();
+
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background: colors.bg,
+        color: colors.text,
+        fontFamily: font.body,
+      }}
+    >
+      {/* Nav */}
+      <nav
+        style={{
+          ...styles.nav,
+          padding: mobile
+            ? `${spacing.sm}px ${spacing.md}px`
+            : styles.nav.padding,
+        }}
+      >
+        <button onClick={() => setPage("home")} style={styles.navBrand}>
+          Go Dojo
+        </button>
+        <div style={styles.navLinks}>
+          <button
+            onClick={() => setPage("learn")}
+            style={{
+              ...styles.navLink,
+              color: page === "learn" ? colors.accent : colors.textMuted,
+            }}
+          >
+            Learn
+          </button>
+          <button
+            onClick={() => setPage("quiz")}
+            style={{
+              ...styles.navLink,
+              color: page === "quiz" ? colors.accent : colors.textMuted,
+            }}
+          >
+            Train
+          </button>
+          <button
+            onClick={() => setPage("progress")}
+            style={{
+              ...styles.navLink,
+              color: page === "progress" ? colors.accent : colors.textMuted,
+            }}
+          >
+            Progress
+          </button>
+        </div>
+      </nav>
+
+      {/* Pages */}
+      {page === "home" && <HomePage onNavigate={navigate} />}
+      {page === "learn" && <LearnPage onNavigate={navigate} />}
+      {page === "quiz" && <QuizPage />}
+      {page === "progress" && <ProgressPage />}
+    </div>
+  );
+}
+
+const styles: Record<string, React.CSSProperties> = {
+  nav: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: `${spacing.md}px ${spacing.xl}px`,
+    borderBottom: `1px solid ${colors.notStarted}`,
+  },
+  navBrand: {
+    fontFamily: font.mono,
+    fontSize: 20,
+    fontWeight: font.weightBold,
+    color: colors.accent,
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    padding: 0,
+  },
+  navLinks: {
+    display: "flex",
+    gap: spacing.lg,
+  },
+  navLink: {
+    fontFamily: font.mono,
+    fontSize: 15,
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    padding: `${spacing.xs}px ${spacing.sm}px`,
+    transition: "color 0.2s",
+  },
+};
+
+export default App;
