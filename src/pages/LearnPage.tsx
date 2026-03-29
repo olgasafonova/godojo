@@ -339,150 +339,161 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: 800,
-        margin: "0 auto",
-        padding: mobile
-          ? `${spacing.md}px ${spacing.sm}px`
-          : `${spacing.xl}px ${spacing.md}px`,
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "85vh",
-      }}
-    >
-      {/* Belt selector */}
+    <>
+      <style>{`@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }`}</style>
       <div
         style={{
-          display: "flex",
-          gap: mobile ? spacing.xs : spacing.sm,
-          marginBottom: spacing.lg,
-          flexWrap: "wrap",
-        }}
-      >
-        {BELTS.map((b) => {
-          const isSelected = b.id === selectedBelt;
-          return (
-            <button
-              key={b.id}
-              onClick={() => changeBelt(b.id)}
-              style={{
-                fontFamily: font.mono,
-                fontSize: mobile ? 14 : 16,
-                fontWeight: isSelected ? font.weightBold : font.weightRegular,
-                color: isSelected ? colors.bg : colors.text,
-                background: isSelected ? b.color : colors.bgCard,
-                border: isSelected
-                  ? `2px solid ${b.color}`
-                  : `2px solid ${colors.notStarted}`,
-                borderRadius: 24,
-                padding: mobile ? "8px 14px" : "10px 20px",
-                cursor: "pointer",
-                transition: "all 0.2s",
-              }}
-            >
-              {BELT_TOPICS[b.id]}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Progress bar */}
-      <div
-        style={{
-          width: "100%",
-          height: 6,
-          background: colors.notStarted,
-          borderRadius: 3,
-          marginBottom: spacing.xl,
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            width: `${progress}%`,
-            height: "100%",
-            background: colors.accent,
-            borderRadius: 3,
-            transition: "width 0.3s ease",
-          }}
-        />
-      </div>
-
-      {/* Card content */}
-      <div
-        style={{
-          background: colors.bgCard,
-          borderRadius: radius.lg,
-          padding: mobile ? spacing.lg : spacing.xl,
-          flex: 1,
+          maxWidth: 800,
+          margin: "0 auto",
+          padding: mobile
+            ? `${spacing.md}px ${spacing.sm}px`
+            : `${spacing.xl}px ${spacing.md}px`,
           display: "flex",
           flexDirection: "column",
+          minHeight: "85vh",
         }}
       >
-        <div style={{ flex: 1 }}>{renderCard()}</div>
-
-        {/* Navigation */}
+        {/* Belt selector */}
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginTop: spacing.xl,
-            gap: spacing.md,
+            gap: mobile ? spacing.xs : spacing.sm,
+            marginBottom: spacing.lg,
+            flexWrap: "wrap",
           }}
         >
-          <button
-            onClick={goBack}
-            disabled={isFirst}
+          {BELTS.map((b) => {
+            const isSelected = b.id === selectedBelt;
+            return (
+              <button
+                key={b.id}
+                onClick={() => changeBelt(b.id)}
+                style={{
+                  fontFamily: font.mono,
+                  fontSize: mobile ? 14 : 16,
+                  fontWeight: isSelected ? font.weightBold : font.weightRegular,
+                  color: isSelected ? colors.bg : colors.text,
+                  background: isSelected ? b.color : colors.bgCard,
+                  border: isSelected
+                    ? `2px solid ${b.color}`
+                    : `2px solid ${colors.notStarted}`,
+                  borderRadius: 24,
+                  padding: mobile ? "8px 14px" : "10px 20px",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                }}
+              >
+                {BELT_TOPICS[b.id]}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Progress bar */}
+        <div
+          style={{
+            width: "100%",
+            height: 6,
+            background: colors.notStarted,
+            borderRadius: 3,
+            marginBottom: spacing.xl,
+            overflow: "hidden",
+          }}
+        >
+          <div
             style={{
-              fontFamily: font.mono,
-              fontSize: 16,
-              color: isFirst ? colors.notStarted : colors.accent,
-              background: "transparent",
-              border: `2px solid ${isFirst ? colors.notStarted : colors.accent}`,
-              borderRadius: radius.md,
-              padding: "12px 28px",
-              cursor: isFirst ? "default" : "pointer",
-              transition: "all 0.2s",
+              width: `${progress}%`,
+              height: "100%",
+              background: colors.accent,
+              borderRadius: 3,
+              transition: "width 0.3s ease",
+            }}
+          />
+        </div>
+
+        {/* Card content */}
+        <div
+          style={{
+            background: colors.bgCard,
+            borderRadius: radius.lg,
+            padding: mobile ? spacing.lg : spacing.xl,
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <div
+            key={`${selectedBelt}-${step}`}
+            style={{
+              flex: 1,
+              animation: "fadeIn 0.3s ease",
             }}
           >
-            Back
-          </button>
+            {renderCard()}
+          </div>
 
-          <span
+          {/* Navigation */}
+          <div
             style={{
-              fontFamily: font.mono,
-              fontSize: 14,
-              color: colors.textMuted,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: spacing.xl,
+              gap: spacing.md,
             }}
           >
-            {step + 1} / {totalSteps}
-          </span>
-
-          {!isLast ? (
             <button
-              onClick={goNext}
+              onClick={goBack}
+              disabled={isFirst}
               style={{
                 fontFamily: font.mono,
                 fontSize: 16,
-                fontWeight: font.weightMedium,
-                color: colors.bg,
-                background: colors.accent,
-                border: "none",
+                color: isFirst ? colors.notStarted : colors.accent,
+                background: "transparent",
+                border: `2px solid ${isFirst ? colors.notStarted : colors.accent}`,
                 borderRadius: radius.md,
                 padding: "12px 28px",
-                cursor: "pointer",
+                cursor: isFirst ? "default" : "pointer",
                 transition: "all 0.2s",
               }}
             >
-              Next
+              Back
             </button>
-          ) : (
-            <div style={{ width: 90 }} />
-          )}
+
+            <span
+              style={{
+                fontFamily: font.mono,
+                fontSize: 14,
+                color: colors.textMuted,
+              }}
+            >
+              {step + 1} / {totalSteps}
+            </span>
+
+            {!isLast ? (
+              <button
+                onClick={goNext}
+                style={{
+                  fontFamily: font.mono,
+                  fontSize: 16,
+                  fontWeight: font.weightMedium,
+                  color: colors.bg,
+                  background: colors.accent,
+                  border: "none",
+                  borderRadius: radius.md,
+                  padding: "12px 28px",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                }}
+              >
+                Next
+              </button>
+            ) : (
+              <div style={{ width: 90 }} />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
