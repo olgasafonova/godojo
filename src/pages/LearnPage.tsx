@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { Belt } from "../data/types";
 import { BELTS } from "../data/belts";
 import { getLessonByBelt } from "../data/lessons";
@@ -36,11 +36,6 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
   const goBack = () => setStep((s) => Math.max(s - 1, 0));
   const isFirst = step === 0;
   const isLast = step === totalSteps - 1;
-
-  // Scroll to top of card on step change
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [step, selectedBelt]);
 
   const changeBelt = (belt: Belt) => {
     setSelectedBelt(belt);
@@ -432,7 +427,6 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
             background: colors.bgCard,
             borderRadius: radius.lg,
             padding: mobile ? spacing.lg : spacing.xl,
-            flex: 1,
             display: "flex",
             flexDirection: "column",
           }}
@@ -440,7 +434,7 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
           <div
             key={`${selectedBelt}-${step}`}
             style={{
-              flex: 1,
+              minHeight: mobile ? 400 : 460,
               animation: "fadeIn 0.3s ease",
             }}
           >
