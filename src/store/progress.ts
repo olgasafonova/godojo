@@ -38,7 +38,9 @@ export function getMasteredCount(): number {
 }
 
 export function getDueCount(): number {
-  return Object.values(getAllRecords()).filter(isDue).length;
+  return Object.values(getAllRecords()).filter(
+    (r) => isDue(r) && !isMastered(r),
+  ).length;
 }
 
 export function getSeenCount(): number {

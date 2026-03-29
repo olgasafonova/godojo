@@ -7,7 +7,6 @@ const MOOD_IMAGES: Record<GopherMood, string> = {
   celebrating: asset("gophers/celebrating.png"),
   encouraging: asset("gophers/encouraging.png"),
   meditating: asset("gophers/meditating.png"),
-  "belt-ceremony": asset("gophers/sensei.png"),
 };
 
 interface GopherProps {

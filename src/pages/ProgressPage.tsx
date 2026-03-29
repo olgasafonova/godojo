@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { cards } from "../data/cards";
 import { BELTS, getCurrentBelt } from "../data/belts";
 import {
@@ -5,6 +6,7 @@ import {
   getStreak,
   getMasteredCount,
   getDueCount,
+  resetAll,
 } from "../store/progress";
 import { isMastered } from "../srs/sm2";
 import { Gopher } from "../components/Gopher";
@@ -23,6 +25,7 @@ const BELT_LABELS: Record<Belt, string> = {
 
 export const ProgressPage: React.FC = () => {
   const mobile = useIsMobile();
+  const [confirmReset, setConfirmReset] = useState(false);
   const records = getAllRecords();
   const streak = getStreak();
   const masteredCount = getMasteredCount();
@@ -269,6 +272,81 @@ export const ProgressPage: React.FC = () => {
           );
         },
       )}
+
+      {/* Reset */}
+      <div
+        style={{
+          borderTop: `1px solid ${colors.notStarted}`,
+          paddingTop: spacing.xl,
+          marginTop: spacing.xl,
+        }}
+      >
+        {!confirmReset ? (
+          <button
+            onClick={() => setConfirmReset(true)}
+            style={{
+              fontFamily: font.mono,
+              fontSize: 14,
+              color: colors.textMuted,
+              background: "transparent",
+              border: `1px solid ${colors.notStarted}`,
+              borderRadius: radius.md,
+              padding: "10px 20px",
+              cursor: "pointer",
+            }}
+          >
+            Reset all progress
+          </button>
+        ) : (
+          <div
+            style={{ display: "flex", gap: spacing.md, alignItems: "center" }}
+          >
+            <span
+              style={{
+                fontFamily: font.body,
+                fontSize: 14,
+                color: colors.wrong,
+              }}
+            >
+              This will erase all progress. Are you sure?
+            </span>
+            <button
+              onClick={() => {
+                resetAll();
+                setConfirmReset(false);
+                window.location.reload();
+              }}
+              style={{
+                fontFamily: font.mono,
+                fontSize: 14,
+                color: "#fff",
+                background: colors.wrong,
+                border: "none",
+                borderRadius: radius.md,
+                padding: "10px 20px",
+                cursor: "pointer",
+              }}
+            >
+              Yes, reset
+            </button>
+            <button
+              onClick={() => setConfirmReset(false)}
+              style={{
+                fontFamily: font.mono,
+                fontSize: 14,
+                color: colors.textMuted,
+                background: "transparent",
+                border: `1px solid ${colors.notStarted}`,
+                borderRadius: radius.md,
+                padding: "10px 20px",
+                cursor: "pointer",
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

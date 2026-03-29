@@ -418,44 +418,44 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
         <div style={{ flex: 1 }}>{renderCard()}</div>
 
         {/* Navigation */}
-        {!isLast && (
-          <div
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: spacing.xl,
+            gap: spacing.md,
+          }}
+        >
+          <button
+            onClick={goBack}
+            disabled={isFirst}
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginTop: spacing.xl,
-              gap: spacing.md,
+              fontFamily: font.mono,
+              fontSize: 16,
+              color: isFirst ? colors.notStarted : colors.accent,
+              background: "transparent",
+              border: `2px solid ${isFirst ? colors.notStarted : colors.accent}`,
+              borderRadius: radius.md,
+              padding: "12px 28px",
+              cursor: isFirst ? "default" : "pointer",
+              transition: "all 0.2s",
             }}
           >
-            <button
-              onClick={goBack}
-              disabled={isFirst}
-              style={{
-                fontFamily: font.mono,
-                fontSize: 16,
-                color: isFirst ? colors.notStarted : colors.accent,
-                background: "transparent",
-                border: `2px solid ${isFirst ? colors.notStarted : colors.accent}`,
-                borderRadius: radius.md,
-                padding: "12px 28px",
-                cursor: isFirst ? "default" : "pointer",
-                transition: "all 0.2s",
-              }}
-            >
-              Back
-            </button>
+            Back
+          </button>
 
-            <span
-              style={{
-                fontFamily: font.mono,
-                fontSize: 14,
-                color: colors.textMuted,
-              }}
-            >
-              {step + 1} / {totalSteps}
-            </span>
+          <span
+            style={{
+              fontFamily: font.mono,
+              fontSize: 14,
+              color: colors.textMuted,
+            }}
+          >
+            {step + 1} / {totalSteps}
+          </span>
 
+          {!isLast ? (
             <button
               onClick={goNext}
               style={{
@@ -473,8 +473,10 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
             >
               Next
             </button>
-          </div>
-        )}
+          ) : (
+            <div style={{ width: 90 }} />
+          )}
+        </div>
       </div>
     </div>
   );

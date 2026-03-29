@@ -7,8 +7,7 @@ export type GopherMood =
   | "thinking"
   | "celebrating"
   | "encouraging"
-  | "meditating"
-  | "belt-ceremony";
+  | "meditating";
 
 export interface GoCard {
   id: string;
