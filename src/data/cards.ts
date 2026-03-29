@@ -34,8 +34,8 @@ func main() {
     x := 42
     fmt.Println(x)
 }`,
-    options: ["42", "x", "0", "Compile error"],
-    correct: 0,
+    options: ["x", "42", "0", "Compile error"],
+    correct: 1,
     explanation:
       "x is declared with := and assigned the value 42. fmt.Println prints the value, not the variable name.",
     gopherMood: "thinking",
@@ -46,8 +46,8 @@ func main() {
     belt: "white",
     type: "concept",
     question: "What is the zero value of a string in Go?",
-    options: ['An empty string ""', "nil", "undefined", "0"],
-    correct: 0,
+    options: ["nil", "undefined", 'An empty string ""', "0"],
+    correct: 2,
     explanation:
       "Every type in Go has a zero value. For strings it's \"\", for numbers it's 0, for booleans it's false, and for pointers/slices/maps it's nil.",
     gopherMood: "idle",
@@ -80,12 +80,12 @@ func main() {
     type: "concept",
     question: "How do you declare a constant in Go?",
     options: [
-      "const name = value",
       "let name = value",
       "final name = value",
       "var name = value",
+      "const name = value",
     ],
-    correct: 0,
+    correct: 3,
     explanation:
       "Constants are declared with the const keyword. They must be set at compile time and cannot use :=.",
     gopherMood: "idle",
@@ -107,12 +107,12 @@ func main() {
     fmt.Println(x)
 }`,
     options: [
-      "Line 8: x := 20 (x already declared)",
       "Line 6: x := 10",
+      "Line 8: x := 20 (x already declared)",
       "Line 7: fmt.Println(x)",
       "No error",
     ],
-    correct: 0,
+    correct: 1,
     explanation:
       "You cannot use := to redeclare a variable in the same scope. Use = for reassignment: x = 20.",
     gopherMood: "encouraging",
@@ -124,12 +124,12 @@ func main() {
     type: "concept",
     question: "What happens if you import a package but don't use it?",
     options: [
-      "Compile error",
       "Warning only",
       "It gets ignored silently",
+      "Compile error",
       "Runtime panic",
     ],
-    correct: 0,
+    correct: 2,
     explanation:
       'Go refuses to compile with unused imports. This keeps code clean. Use _ as a blank identifier if you need the side effect: import _ "pkg".',
     gopherMood: "encouraging",
@@ -148,8 +148,8 @@ func main() {
     a, b := 3, 7
     fmt.Println(a + b)
 }`,
-    options: ["10", "37", "3 7", "Compile error"],
-    correct: 0,
+    options: ["37", "3 7", "Compile error", "10"],
+    correct: 3,
     explanation:
       "Go supports multiple assignment. a gets 3, b gets 7. Their sum is 10.",
     gopherMood: "celebrating",
@@ -160,8 +160,8 @@ func main() {
     belt: "white",
     type: "concept",
     question: "Which of these is NOT a basic Go type?",
-    options: ["char", "int", "string", "bool"],
-    correct: 0,
+    options: ["int", "char", "string", "bool"],
+    correct: 1,
     explanation:
       "Go doesn't have a char type. It uses byte (alias for uint8) for ASCII and rune (alias for int32) for Unicode characters.",
     gopherMood: "thinking",
@@ -180,8 +180,8 @@ func main() {
     name := "Gopher"
     fmt.Printf("Hello, %s!\\n", name)
 }`,
-    options: ["Hello, Gopher!", "Hello, %s!", "Hello, name!", "Compile error"],
-    correct: 0,
+    options: ["Hello, %s!", "Hello, name!", "Compile error", "Hello, Gopher!"],
+    correct: 3,
     explanation:
       "Printf uses format verbs. %s substitutes a string value. \\n adds a newline.",
     gopherMood: "celebrating",
@@ -225,8 +225,8 @@ func main() {
     x, y := swap(1, 2)
     fmt.Println(x, y)
 }`,
-    options: ["2 1", "1 2", "Compile error", "2, 1"],
-    correct: 0,
+    options: ["1 2", "2 1", "Compile error", "2, 1"],
+    correct: 1,
     explanation: "swap returns b first, then a. So x gets 2 and y gets 1.",
     gopherMood: "celebrating",
     conceptImage: "/concepts/y02.png",
@@ -236,8 +236,8 @@ func main() {
     belt: "yellow",
     type: "concept",
     question: "Go has only one loop construct. What is it?",
-    options: ["for", "while", "foreach", "loop"],
-    correct: 0,
+    options: ["while", "foreach", "for", "loop"],
+    correct: 2,
     explanation:
       "Go only has 'for'. It covers all cases: for i := 0; i < n; i++ (classic), for condition (while), for (infinite), for range (foreach).",
     gopherMood: "idle",
@@ -280,12 +280,12 @@ func main() {
     }
 }`,
     options: [
-      "Opening brace must be on the same line as if",
       "x := 10 is invalid in an if statement",
       "Missing parentheses around condition",
       "Nothing, it compiles fine",
+      "Opening brace must be on the same line as if",
     ],
-    correct: 0,
+    correct: 3,
     explanation:
       "Go requires the opening brace { on the same line as the statement. The compiler inserts semicolons at line ends, so a brace on the next line breaks the syntax.",
     gopherMood: "encouraging",
@@ -297,12 +297,12 @@ func main() {
     type: "concept",
     question: "What does the blank identifier _ do?",
     options: [
-      "Discards a value you don't need",
       "Creates a private variable",
+      "Discards a value you don't need",
       "Represents nil",
       "Marks a variable as unused",
     ],
-    correct: 0,
+    correct: 1,
     explanation:
       "The blank identifier _ lets you ignore values. Common with range: for _, v := range items. Go won't compile with unused variables, so _ is the escape hatch.",
     gopherMood: "thinking",
@@ -327,8 +327,8 @@ func main() {
         fmt.Println("big")
     }
 }`,
-    options: ["three", "small", "big", "Compile error"],
-    correct: 0,
+    options: ["small", "big", "three", "Compile error"],
+    correct: 2,
     explanation:
       "Switch with no condition after the semicolon acts like if-else. x is 3, so case x == 3 matches. Go switch doesn't fall through by default.",
     gopherMood: "celebrating",
@@ -363,8 +363,8 @@ func main() {
     f := double
     fmt.Println(f(5))
 }`,
-    options: ["10", "5", "Compile error", "double(5)"],
-    correct: 0,
+    options: ["5", "Compile error", "double(5)", "10"],
+    correct: 3,
     explanation:
       "Functions are first-class values in Go. f holds a reference to double, so f(5) calls double(5) which returns 10.",
     gopherMood: "celebrating",
@@ -376,12 +376,12 @@ func main() {
     type: "concept",
     question: "What does defer do?",
     options: [
-      "Schedules a function call to run when the enclosing function returns",
       "Runs a function in a separate goroutine",
       "Delays execution by one second",
       "Skips the function call entirely",
+      "Schedules a function call to run when the enclosing function returns",
     ],
-    correct: 0,
+    correct: 3,
     explanation:
       "defer pushes a call onto a stack. When the surrounding function returns, deferred calls execute in LIFO order. Common for cleanup: defer file.Close().",
     gopherMood: "thinking",
@@ -422,8 +422,8 @@ func main() {
     s = append(s, 4, 5)
     fmt.Println(len(s), cap(s) >= 5)
 }`,
-    options: ["5 true", "3 true", "5 false", "Compile error"],
-    correct: 0,
+    options: ["3 true", "5 true", "5 false", "Compile error"],
+    correct: 1,
     explanation:
       "append adds elements to a slice. The slice now has 5 elements. Capacity is always >= length, so cap(s) >= 5 is true.",
     gopherMood: "celebrating",
@@ -446,8 +446,8 @@ func main() {
     v, ok := m["c"]
     fmt.Println(v, ok)
 }`,
-    options: ["0 false", "nil false", "Compile error", "panic"],
-    correct: 0,
+    options: ["nil false", "Compile error", "0 false", "panic"],
+    correct: 2,
     explanation:
       'Accessing a missing map key returns the zero value (0 for int) and false for the "comma ok" idiom. No panic, no nil.',
     gopherMood: "thinking",
@@ -459,12 +459,12 @@ func main() {
     type: "idiom",
     question: "What is the idiomatic way to check if a key exists in a map?",
     options: [
-      "_, ok := m[key]; if ok { ... }",
       "if m.has(key) { ... }",
+      "_, ok := m[key]; if ok { ... }",
       "if m[key] != nil { ... }",
       "if m.contains(key) { ... }",
     ],
-    correct: 0,
+    correct: 1,
     explanation:
       'Go uses the "comma ok" idiom. The second return value from a map lookup is a boolean indicating whether the key exists.',
     gopherMood: "idle",
@@ -476,12 +476,12 @@ func main() {
     type: "concept",
     question: "How do you define a struct in Go?",
     options: [
-      "type Point struct { X, Y int }",
       "struct Point { X, Y int }",
       "class Point { X, Y int }",
       "record Point(X int, Y int)",
+      "type Point struct { X, Y int }",
     ],
-    correct: 0,
+    correct: 3,
     explanation:
       "Structs are defined with type Name struct { fields }. Go has no classes; structs with methods are the closest equivalent.",
     gopherMood: "thinking",
@@ -526,8 +526,8 @@ func main() {
     sub := nums[1:3]
     fmt.Println(sub)
 }`,
-    options: ["[20 30]", "[10 20 30]", "[20 30 40]", "[10 20]"],
-    correct: 0,
+    options: ["[10 20 30]", "[20 30 40]", "[20 30]", "[10 20]"],
+    correct: 2,
     explanation:
       "Slice notation [low:high] includes low, excludes high. nums[1:3] gives elements at index 1 and 2: 20 and 30.",
     gopherMood: "celebrating",
@@ -548,12 +548,12 @@ func main() {
     fmt.Println(m)
 }`,
     options: [
-      "Map is nil; needs make() before use",
       "Missing type annotation",
       'Can\'t use "hello" as a key',
       "Nothing, it works fine",
+      "Map is nil; needs make() before use",
     ],
-    correct: 0,
+    correct: 3,
     explanation:
       "var m map[string]int declares a nil map. Writing to a nil map panics. Use m := make(map[string]int) or m := map[string]int{} to initialize it.",
     gopherMood: "encouraging",
@@ -565,12 +565,12 @@ func main() {
     type: "concept",
     question: "What does make() do that a literal can't?",
     options: [
-      "Pre-allocates capacity for slices, maps, and channels",
       "Creates a new type",
+      "Pre-allocates capacity for slices, maps, and channels",
       "Makes a variable immutable",
       "Allocates memory on the stack instead of heap",
     ],
-    correct: 0,
+    correct: 1,
     explanation:
       "make() initializes slices, maps, and channels with optional capacity hints. make([]int, 0, 100) creates an empty slice that can hold 100 items before resizing.",
     gopherMood: "thinking",
@@ -589,8 +589,8 @@ func main() {
     s := "Hello"
     fmt.Println(len(s))
 }`,
-    options: ["5", "6", "4", "Compile error"],
-    correct: 0,
+    options: ["6", "4", "Compile error", "5"],
+    correct: 3,
     explanation:
       'len() on a string returns the number of bytes. "Hello" is 5 ASCII characters, each one byte, so len is 5. For Unicode strings, len counts bytes, not runes.',
     gopherMood: "celebrating",
@@ -643,8 +643,8 @@ func sayHi(g Greeter) {
 func main() {
     sayHi(Spanish{})
 }`,
-    options: ["Hola", "Hello", "Compile error", "panic"],
-    correct: 0,
+    options: ["Hello", "Hola", "Compile error", "panic"],
+    correct: 1,
     explanation:
       "Spanish implements the Greeter interface because it has a Greet() string method. sayHi accepts any Greeter, so Spanish{} works.",
     gopherMood: "celebrating",
@@ -656,12 +656,12 @@ func main() {
     type: "idiom",
     question: "What is the idiomatic way to handle errors in Go?",
     options: [
-      "if err != nil { return err }",
       "try { ... } catch (err) { ... }",
       "result.unwrap()",
+      "if err != nil { return err }",
       "throw new Error(msg)",
     ],
-    correct: 0,
+    correct: 2,
     explanation:
       "Go uses explicit error returns instead of exceptions. The pattern is: result, err := doThing(); if err != nil { return err }. Every error is handled where it occurs.",
     gopherMood: "idle",
@@ -674,12 +674,12 @@ func main() {
     question:
       "What is the difference between a value receiver and a pointer receiver?",
     options: [
-      "Value receiver gets a copy; pointer receiver can modify the original",
       "They are identical in behavior",
       "Value receivers are faster",
       "Pointer receivers can only be used with interfaces",
+      "Value receiver gets a copy; pointer receiver can modify the original",
     ],
-    correct: 0,
+    correct: 3,
     explanation:
       "func (d Dog) Speak() gets a copy of Dog. func (d *Dog) Rename(n string) can modify the actual Dog. Use pointer receivers when you need to mutate or avoid copying large structs.",
     gopherMood: "thinking",
@@ -730,12 +730,12 @@ func main() {
     type: "concept",
     question: "What does the empty interface interface{} (or any) accept?",
     options: [
-      "Any type at all",
       "Only structs",
+      "Any type at all",
       "Only primitive types",
       "Nothing; it's a compile error",
     ],
-    correct: 0,
+    correct: 1,
     explanation:
       "The empty interface has zero methods, so every type satisfies it. Since Go 1.18, you can write 'any' as shorthand. fmt.Println uses it: func Println(a ...any).",
     gopherMood: "thinking",
@@ -765,12 +765,12 @@ func main() {
     fmt.Println(c.n)
 }`,
     options: [
-      "Value receiver; Increment modifies a copy, not the original",
       "n should be exported (capital N)",
       "Missing return statement",
+      "Value receiver; Increment modifies a copy, not the original",
       "Nothing, it prints 2",
     ],
-    correct: 0,
+    correct: 2,
     explanation:
       "Increment has a value receiver (c Counter), so c.n++ modifies a copy. The original c.n stays 0. Fix: use a pointer receiver (c *Counter).",
     gopherMood: "encouraging",
@@ -797,12 +797,12 @@ func main() {
     type: "concept",
     question: "What is a type assertion in Go?",
     options: [
-      "Extracting the concrete type from an interface value",
       "Checking if a variable is nil",
       "Converting between numeric types",
       "Declaring a new type alias",
+      "Extracting the concrete type from an interface value",
     ],
-    correct: 0,
+    correct: 3,
     explanation:
       "Type assertion extracts the underlying value: str := val.(string). Use the comma-ok form to avoid panics: str, ok := val.(string).",
     gopherMood: "thinking",
@@ -821,8 +821,8 @@ func main() {
     defer fmt.Println("world")
     fmt.Println("hello")
 }`,
-    options: ["hello\\nworld", "world\\nhello", "hello", "world"],
-    correct: 0,
+    options: ["world\\nhello", "hello", "world", "hello\\nworld"],
+    correct: 3,
     explanation:
       'defer pushes "world" to execute when main() returns. So "hello" prints first, then "world" runs on exit.',
     gopherMood: "celebrating",
@@ -866,8 +866,8 @@ func main() {
     v := <-ch
     fmt.Println(v)
 }`,
-    options: ["42", "0", "Deadlock panic", "Nothing"],
-    correct: 0,
+    options: ["0", "42", "Deadlock panic", "Nothing"],
+    correct: 1,
     explanation:
       "A goroutine sends 42 into the channel. The main goroutine receives it with <-ch. Channels synchronize the two; no sleep needed.",
     gopherMood: "celebrating",
@@ -880,12 +880,12 @@ func main() {
     question:
       "What happens when you send to an unbuffered channel and no one is receiving?",
     options: [
-      "The sender blocks until a receiver is ready",
       "The value is dropped",
       "It panics immediately",
+      "The sender blocks until a receiver is ready",
       "The value is queued internally",
     ],
-    correct: 0,
+    correct: 2,
     explanation:
       "Unbuffered channels synchronize: the sender waits for a receiver and vice versa. This is how goroutines coordinate without shared memory.",
     gopherMood: "thinking",
@@ -920,12 +920,12 @@ func main() {
     type: "concept",
     question: "What does select do with channels?",
     options: [
-      "Waits on multiple channel operations, proceeds with the first ready one",
       "Selects which goroutine to run next",
       "Filters values from a channel",
       "Creates multiple channels at once",
+      "Waits on multiple channel operations, proceeds with the first ready one",
     ],
-    correct: 0,
+    correct: 3,
     explanation:
       "select is like switch for channels. It blocks until one case can proceed. If multiple are ready, it picks one at random. Add a default case to make it non-blocking.",
     gopherMood: "thinking",
@@ -946,12 +946,12 @@ func main() {
     fmt.Println(<-ch)
 }`,
     options: [
-      "Deadlock: send blocks forever (no goroutine to receive)",
       "Channel needs a type parameter",
+      "Deadlock: send blocks forever (no goroutine to receive)",
       "Missing close(ch)",
       "Nothing, prints 42",
     ],
-    correct: 0,
+    correct: 1,
     explanation:
       "On an unbuffered channel, ch <- 42 blocks until someone receives. But the receive is on the next line, which never runs. Deadlock. Fix: send in a goroutine or use a buffered channel.",
     gopherMood: "encouraging",
@@ -977,8 +977,8 @@ func main() {
         fmt.Println(msg)
     }
 }`,
-    options: ["ping\\npong", "ping", "Deadlock", "pong\\nping"],
-    correct: 0,
+    options: ["ping", "Deadlock", "ping\\npong", "pong\\nping"],
+    correct: 2,
     explanation:
       "range over a channel receives values until the channel is closed. The goroutine sends ping, then pong, then closes. Both values print in order.",
     gopherMood: "celebrating",
@@ -1008,12 +1008,12 @@ func main() {
     type: "concept",
     question: "What does close(ch) do to a channel?",
     options: [
-      "Signals no more values will be sent; receivers get zero values after draining",
       "Deletes the channel from memory",
       "Sends a nil value",
+      "Signals no more values will be sent; receivers get zero values after draining",
       "Blocks until all values are received",
     ],
-    correct: 0,
+    correct: 2,
     explanation:
       "Closing a channel tells receivers there's nothing more coming. range loops exit. Receiving from a closed, empty channel returns the zero value and false.",
     gopherMood: "thinking",
@@ -1043,12 +1043,12 @@ func main() {
     wg.Wait()
 }`,
     options: [
-      "0, 1, and 2 in some order",
       "Always 0 1 2",
       "Always 2 2 2",
       "Compile error",
+      "0, 1, and 2 in some order",
     ],
-    correct: 0,
+    correct: 3,
     explanation:
       "Each goroutine captures its own copy of i via the function parameter n. All three values print, but goroutine scheduling is non-deterministic, so the order varies.",
     gopherMood: "celebrating",
@@ -1081,12 +1081,12 @@ func main() {
     type: "idiom",
     question: "What is the Go testing convention for test files?",
     options: [
-      "name_test.go in the same package",
       "test_name.go in a tests/ directory",
+      "name_test.go in the same package",
       "name.test.go anywhere",
       "spec_name.go in a spec/ directory",
     ],
-    correct: 0,
+    correct: 1,
     explanation:
       "Test files end in _test.go and live alongside the code they test. Test functions start with Test: func TestAdd(t *testing.T). Run with: go test ./...",
     gopherMood: "idle",
@@ -1098,12 +1098,12 @@ func main() {
     type: "concept",
     question: "What does go:embed do?",
     options: [
-      "Embeds files into the Go binary at compile time",
       "Imports C code into Go",
       "Embeds HTML templates at runtime",
+      "Embeds files into the Go binary at compile time",
       "Creates inline assembly",
     ],
-    correct: 0,
+    correct: 2,
     explanation:
       "The //go:embed directive lets you include file contents in your binary. Works with strings, []byte, and embed.FS. Example: //go:embed config.json \\n var config string",
     gopherMood: "thinking",
@@ -1124,12 +1124,12 @@ func main() {
     defer fmt.Println("third")
 }`,
     options: [
-      "third\\nsecond\\nfirst",
       "first\\nsecond\\nthird",
+      "third\\nsecond\\nfirst",
       "first",
       "third",
     ],
-    correct: 0,
+    correct: 1,
     explanation:
       "Deferred calls execute in LIFO (last-in, first-out) order. Think of it as a stack: last defer in, first to run on exit.",
     gopherMood: "celebrating",
@@ -1141,12 +1141,12 @@ func main() {
     type: "concept",
     question: "What is a context.Context used for?",
     options: [
-      "Carrying deadlines, cancellation signals, and request-scoped values",
       "Storing global configuration",
       "Managing database connections",
       "Logging function calls",
+      "Carrying deadlines, cancellation signals, and request-scoped values",
     ],
-    correct: 0,
+    correct: 3,
     explanation:
       "Context flows through function calls to control cancellation and timeouts. APIs that do I/O should accept ctx as their first parameter. Always respect ctx.Done().",
     gopherMood: "thinking",
@@ -1176,12 +1176,12 @@ func main() {
     type: "concept",
     question: "What are generics in Go (since 1.18)?",
     options: [
-      "Type parameters that let functions and types work with multiple types",
       "Automatic type conversion between compatible types",
       "A way to generate code at build time",
+      "Type parameters that let functions and types work with multiple types",
       "Runtime type checking similar to reflection",
     ],
-    correct: 0,
+    correct: 2,
     explanation:
       "Generics use type parameters: func Map[T, U any](s []T, f func(T) U) []U. Constraints like comparable or custom interfaces restrict which types are allowed.",
     gopherMood: "thinking",
@@ -1222,12 +1222,12 @@ func main() {
     type: "idiom",
     question: "What is the functional options pattern in Go?",
     options: [
-      "Using variadic functions with option functions to configure a struct",
       "Using a map of string options",
+      "Using variadic functions with option functions to configure a struct",
       "Passing a config struct with all fields",
       "Using environment variables for configuration",
     ],
-    correct: 0,
+    correct: 1,
     explanation:
       "Functional options use closures: func WithTimeout(d time.Duration) Option. The constructor applies them: New(WithTimeout(5*time.Second)). Clean API, extensible, no breaking changes.",
     gopherMood: "thinking",
@@ -1248,8 +1248,8 @@ func main() {
     delete(m, "c") // key doesn't exist
     fmt.Println(len(m))
 }`,
-    options: ["1", "2", "0", "panic"],
-    correct: 0,
+    options: ["2", "0", "1", "panic"],
+    correct: 2,
     explanation:
       'delete(m, "a") removes key "a". delete(m, "c") is a no-op (deleting a missing key doesn\'t panic). One key remains: "b".',
     gopherMood: "celebrating",
