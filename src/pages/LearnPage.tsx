@@ -53,16 +53,22 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
     if (step === 0) {
       return (
         <div>
-          <img
-            src={asset(lesson.conceptImage)}
-            alt={lesson.title}
+          <div
             style={{
               width: mobile ? 200 : 260,
               height: mobile ? 200 : 260,
-              objectFit: "contain",
               marginBottom: spacing.lg,
+              flexShrink: 0,
             }}
-          />
+          >
+            <img
+              src={asset(lesson.conceptImage)}
+              alt={lesson.title}
+              width={mobile ? 200 : 260}
+              height={mobile ? 200 : 260}
+              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+            />
+          </div>
           <h1
             style={{
               fontFamily: font.mono,
@@ -107,16 +113,25 @@ export const LearnPage: React.FC<LearnPageProps> = ({ onNavigate }) => {
             }}
           >
             {cardImage && (
-              <img
-                src={asset(cardImage)}
-                alt={section.title}
+              <div
                 style={{
                   width: mobile ? 160 : 180,
                   height: mobile ? 160 : 180,
-                  objectFit: "contain",
                   flexShrink: 0,
                 }}
-              />
+              >
+                <img
+                  src={asset(cardImage)}
+                  alt={section.title}
+                  width={mobile ? 160 : 180}
+                  height={mobile ? 160 : 180}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
+                />
+              </div>
             )}
             <div style={{ flex: 1 }}>
               <h2
