@@ -25,63 +25,78 @@ function App() {
       }}
     >
       {/* Nav */}
-      <nav
-        style={{
-          ...styles.nav,
-          padding: mobile
-            ? `${spacing.sm}px ${spacing.md}px`
-            : styles.nav.padding,
-        }}
-      >
-        <button onClick={() => setPage("home")} style={styles.navBrand}>
-          Go Dojo
-        </button>
-        <div style={styles.navLinks}>
-          <button
-            onClick={() => setPage("learn")}
-            style={{
-              ...styles.navLink,
-              color: page === "learn" ? colors.accent : colors.textMuted,
-            }}
-          >
-            Learn
+      <header>
+        <nav
+          style={{
+            ...styles.nav,
+            padding: mobile
+              ? `${spacing.sm}px ${spacing.md}px`
+              : styles.nav.padding,
+          }}
+        >
+          <button onClick={() => setPage("home")} style={styles.navBrand}>
+            Go Dojo
           </button>
-          <button
-            onClick={() => setPage("quiz")}
-            style={{
-              ...styles.navLink,
-              color: page === "quiz" ? colors.accent : colors.textMuted,
-            }}
-          >
-            Train
-          </button>
-          <button
-            onClick={() => setPage("progress")}
-            style={{
-              ...styles.navLink,
-              color: page === "progress" ? colors.accent : colors.textMuted,
-            }}
-          >
-            Progress
-          </button>
-          <button
-            onClick={() => setPage("about")}
-            style={{
-              ...styles.navLink,
-              color: page === "about" ? colors.accent : colors.textMuted,
-            }}
-          >
-            About
-          </button>
-        </div>
-      </nav>
+          <div style={styles.navLinks}>
+            <button
+              onClick={() => setPage("learn")}
+              style={{
+                ...styles.navLink,
+                color: page === "learn" ? colors.accent : colors.textMuted,
+              }}
+            >
+              Learn
+            </button>
+            <button
+              onClick={() => setPage("quiz")}
+              style={{
+                ...styles.navLink,
+                color: page === "quiz" ? colors.accent : colors.textMuted,
+              }}
+            >
+              Train
+            </button>
+            <button
+              onClick={() => setPage("progress")}
+              style={{
+                ...styles.navLink,
+                color: page === "progress" ? colors.accent : colors.textMuted,
+              }}
+            >
+              Progress
+            </button>
+            <button
+              onClick={() => setPage("about")}
+              style={{
+                ...styles.navLink,
+                color: page === "about" ? colors.accent : colors.textMuted,
+              }}
+            >
+              About
+            </button>
+          </div>
+        </nav>
+      </header>
 
       {/* Pages */}
-      {page === "home" && <HomePage onNavigate={navigate} />}
-      {page === "learn" && <LearnPage onNavigate={navigate} />}
-      {page === "quiz" && <QuizPage onNavigate={navigate} />}
-      {page === "progress" && <ProgressPage />}
-      {page === "about" && <AboutPage onNavigate={navigate} />}
+      <main>
+        {page === "home" && <HomePage onNavigate={navigate} />}
+        {page === "learn" && <LearnPage onNavigate={navigate} />}
+        {page === "quiz" && <QuizPage onNavigate={navigate} />}
+        {page === "progress" && <ProgressPage />}
+        {page === "about" && <AboutPage onNavigate={navigate} />}
+      </main>
+
+      <footer
+        style={{
+          padding: `${spacing.md}px`,
+          textAlign: "center",
+          fontSize: 12,
+          color: colors.textMuted,
+        }}
+      >
+        Go Dojo - Learn Go Through Spaced Repetition
+      </footer>
     </div>
   );
 }
@@ -103,6 +118,9 @@ const styles: Record<string, React.CSSProperties> = {
     border: "none",
     cursor: "pointer",
     padding: 0,
+    minHeight: 44,
+    display: "flex",
+    alignItems: "center",
   },
   navLinks: {
     display: "flex",
@@ -114,7 +132,10 @@ const styles: Record<string, React.CSSProperties> = {
     background: "none",
     border: "none",
     cursor: "pointer",
-    padding: `${spacing.xs}px ${spacing.sm}px`,
+    padding: `${spacing.sm}px ${spacing.md}px`,
+    minHeight: 44,
+    display: "flex",
+    alignItems: "center",
     transition: "color 0.2s",
   },
 };
