@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "godojo",
+  "project_id": "62fbaa28-9833-417f-8920-96c06d481321"
+}
