@@ -7,6 +7,157 @@ interface AboutPageProps {
   onNavigate: (page: string) => void;
 }
 
+interface Feature {
+  img: string;
+  alt: string;
+  title: string;
+  text: string;
+}
+
+const FEATURES: Feature[] = [
+  {
+    img: "k05",
+    alt: "Gopher with timer",
+    title: "Spaced repetition",
+    text: "The SM-2 algorithm decides when you see each card again. Get it right and it recedes into the distance. Get it wrong and it reappears the next morning like a cat you forgot to feed.",
+  },
+  {
+    img: "g07",
+    alt: "Gopher chef",
+    title: "Visual metaphors",
+    text: "Every concept gets a gopher doing something concrete. Slices become sushi rolls. Channels become copper pipes. The brain is a deeply visual organ; it will hold onto a picture of a gopher holding a jar long after a paragraph of documentation has evaporated.",
+  },
+  {
+    img: "br10",
+    alt: "Three gophers numbered 1-2-3",
+    title: "Six belts, 60 cards",
+    text: "White belt starts with variables and for-loops. Black belt ends with reflection, unsafe pointers, and build tags. The progression is steep on purpose. Comfortable learning is an oxymoron.",
+  },
+  {
+    img: "b08",
+    alt: "Gopher with formula",
+    title: "10 cards per session",
+    text: "Short enough to fit between meetings. Due reviews come first, then new material. Press 1-4 to answer, Enter to continue. No mouse required.",
+  },
+];
+
+const SHOWCASE_IDS = ["w01", "br07", "g07", "k09", "y06", "b06"];
+
+const TECH_STACK = [
+  "React 19",
+  "TypeScript",
+  "Vite",
+  "Shiki",
+  "SM-2",
+  "Web Audio API",
+  "Claude Code",
+  "GitHub Pages",
+];
+
+const ExternalLink: React.FC<{
+  href: string;
+  style: React.CSSProperties;
+  children: React.ReactNode;
+}> = ({ href, style, children }) => (
+  <a href={href} target="_blank" rel="noopener noreferrer" style={style}>
+    {children}
+  </a>
+);
+
+const Hero: React.FC<{ mobile: boolean }> = ({ mobile }) => (
+  <div style={styles.hero}>
+    <Gopher mood="celebrating" size={mobile ? 140 : 180} />
+    <h1 style={{ ...styles.title, fontSize: mobile ? 28 : 36 }}>
+      About Go Dojo
+    </h1>
+    <p style={styles.tagline}>
+      A flashcard dojo for Go, powered by spaced repetition and small determined
+      gophers
+    </p>
+  </div>
+);
+
+const FeatureCard: React.FC<{ mobile: boolean; feature: Feature }> = ({
+  mobile,
+  feature,
+}) => (
+  <div
+    style={{
+      ...styles.card,
+      flexDirection: mobile ? "column" : "row",
+    }}
+  >
+    <div style={styles.cardIcon}>
+      <img
+        src={asset(`concepts/${feature.img}.png`)}
+        alt={feature.alt}
+        style={{
+          ...styles.cardImg,
+          width: mobile ? 180 : 160,
+          height: mobile ? 180 : 160,
+        }}
+      />
+    </div>
+    <div style={{ minWidth: 0 }}>
+      <h3 style={styles.cardTitle}>{feature.title}</h3>
+      <p style={styles.cardText}>{feature.text}</p>
+    </div>
+  </div>
+);
+
+const IllustrationShowcase: React.FC = () => (
+  <div style={styles.showcase}>
+    <h2 style={styles.sectionTitle}>Why the illustrations?</h2>
+    <div style={styles.illustrationGrid}>
+      {SHOWCASE_IDS.map((id) => (
+        <img
+          key={id}
+          src={asset(`concepts/${id}.png`)}
+          alt={`Concept illustration ${id}`}
+          style={styles.gridImg}
+        />
+      ))}
+    </div>
+    <p style={styles.text}>
+      Programming concepts are abstract by nature. A goroutine is not a thing you
+      can point at. An interface has no shape. The illustrations give each idea a
+      physical form, something the spaced repetition algorithm can actually sink
+      its teeth into. A gopher passing a message through a pipe is harder to
+      forget than "channels provide a mechanism for concurrently executing
+      functions to communicate."
+    </p>
+  </div>
+);
+
+const TechStack: React.FC = () => (
+  <div style={styles.section}>
+    <h2 style={styles.sectionTitle}>Built with</h2>
+    <div style={styles.techRow}>
+      {TECH_STACK.map((t) => (
+        <span key={t} style={styles.techPill}>
+          {t}
+        </span>
+      ))}
+    </div>
+  </div>
+);
+
+const CTA: React.FC<{ onNavigate: (page: string) => void }> = ({
+  onNavigate,
+}) => (
+  <div style={styles.cta}>
+    <p style={styles.ctaText}>Ready to train?</p>
+    <div style={styles.ctaButtons}>
+      <button onClick={() => onNavigate("learn")} style={styles.ctaPrimary}>
+        Start learning
+      </button>
+      <button onClick={() => onNavigate("quiz")} style={styles.ctaSecondary}>
+        Train
+      </button>
+    </div>
+  </div>
+);
+
 export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   const mobile = useIsMobile();
   return (
@@ -19,115 +170,17 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           : `${spacing.xl}px ${spacing.md}px`,
       }}
     >
-      {/* Hero */}
-      <div style={styles.hero}>
-        <Gopher mood="celebrating" size={mobile ? 140 : 180} />
-        <h1 style={{ ...styles.title, fontSize: mobile ? 28 : 36 }}>
-          About Go Dojo
-        </h1>
-        <p style={styles.tagline}>
-          A flashcard dojo for Go, powered by spaced repetition and small
-          determined gophers
-        </p>
-      </div>
+      <Hero mobile={mobile} />
 
-      {/* Feature cards */}
       <div style={styles.grid}>
-        {[
-          {
-            img: "k05",
-            alt: "Gopher with timer",
-            title: "Spaced repetition",
-            text: "The SM-2 algorithm decides when you see each card again. Get it right and it recedes into the distance. Get it wrong and it reappears the next morning like a cat you forgot to feed.",
-          },
-          {
-            img: "g07",
-            alt: "Gopher chef",
-            title: "Visual metaphors",
-            text: "Every concept gets a gopher doing something concrete. Slices become sushi rolls. Channels become copper pipes. The brain is a deeply visual organ; it will hold onto a picture of a gopher holding a jar long after a paragraph of documentation has evaporated.",
-          },
-          {
-            img: "br10",
-            alt: "Three gophers numbered 1-2-3",
-            title: "Six belts, 60 cards",
-            text: "White belt starts with variables and for-loops. Black belt ends with reflection, unsafe pointers, and build tags. The progression is steep on purpose. Comfortable learning is an oxymoron.",
-          },
-          {
-            img: "b08",
-            alt: "Gopher with formula",
-            title: "10 cards per session",
-            text: "Short enough to fit between meetings. Due reviews come first, then new material. Press 1-4 to answer, Enter to continue. No mouse required.",
-          },
-        ].map((c) => (
-          <div
-            key={c.img}
-            style={{
-              ...styles.card,
-              flexDirection: mobile ? "column" : "row",
-            }}
-          >
-            <div style={styles.cardIcon}>
-              <img
-                src={asset(`concepts/${c.img}.png`)}
-                alt={c.alt}
-                style={{
-                  ...styles.cardImg,
-                  width: mobile ? 180 : 160,
-                  height: mobile ? 180 : 160,
-                }}
-              />
-            </div>
-            <div style={{ minWidth: 0 }}>
-              <h3 style={styles.cardTitle}>{c.title}</h3>
-              <p style={styles.cardText}>{c.text}</p>
-            </div>
-          </div>
+        {FEATURES.map((feature) => (
+          <FeatureCard key={feature.img} mobile={mobile} feature={feature} />
         ))}
       </div>
 
-      {/* Illustration showcase */}
-      <div style={styles.showcase}>
-        <h2 style={styles.sectionTitle}>Why the illustrations?</h2>
-        <div style={styles.illustrationGrid}>
-          {["w01", "br07", "g07", "k09", "y06", "b06"].map((id) => (
-            <img
-              key={id}
-              src={asset(`concepts/${id}.png`)}
-              alt={`Concept illustration ${id}`}
-              style={styles.gridImg}
-            />
-          ))}
-        </div>
-        <p style={styles.text}>
-          Programming concepts are abstract by nature. A goroutine is not a
-          thing you can point at. An interface has no shape. The illustrations
-          give each idea a physical form, something the spaced repetition
-          algorithm can actually sink its teeth into. A gopher passing a message
-          through a pipe is harder to forget than "channels provide a mechanism
-          for concurrently executing functions to communicate."
-        </p>
-      </div>
+      <IllustrationShowcase />
 
-      {/* Tech stack */}
-      <div style={styles.section}>
-        <h2 style={styles.sectionTitle}>Built with</h2>
-        <div style={styles.techRow}>
-          {[
-            "React 19",
-            "TypeScript",
-            "Vite",
-            "Shiki",
-            "SM-2",
-            "Web Audio API",
-            "Claude Code",
-            "GitHub Pages",
-          ].map((t) => (
-            <span key={t} style={styles.techPill}>
-              {t}
-            </span>
-          ))}
-        </div>
-      </div>
+      <TechStack />
 
       {/* Wait, why TypeScript? */}
       <div style={styles.section}>
@@ -139,14 +192,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           program, and React happens to be good at the kind of interactive
           card-flipping UI this requires. The irony is not lost on us. Olga also
           built{" "}
-          <a
-            href="https://getskillcheck.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={styles.inlineLink}
-          >
+          <ExternalLink href="https://getskillcheck.com" style={styles.inlineLink}>
             SkillCheck
-          </a>
+          </ExternalLink>
           , an agentic skill whose sole purpose is to validate other agentic
           skills. Meta is the house style at this point.
         </p>
@@ -164,14 +212,12 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         </p>
         <p style={styles.text}>
           Go Dojo has a sibling:{" "}
-          <a
+          <ExternalLink
             href="https://olgasafonova.github.io/kanadojo/"
-            target="_blank"
-            rel="noopener noreferrer"
             style={styles.inlineLink}
           >
             KanaDojo
-          </a>
+          </ExternalLink>
           , the same spaced repetition engine applied to Japanese hiragana and
           katakana. Same philosophy, different alphabet.
         </p>
@@ -182,46 +228,28 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
         <h2 style={styles.sectionTitle}>Who made this?</h2>
         <p style={styles.text}>
           Built by{" "}
-          <a
+          <ExternalLink
             href="https://github.com/olgasafonova"
-            target="_blank"
-            rel="noopener noreferrer"
             style={styles.inlineLink}
           >
             Olga Safonova
-          </a>{" "}
-          while learning Go. The concept illustrations were generated with AI
-          and cleaned up for transparent backgrounds. The gopher mascot follows
-          the tradition established by Renee French, who deserves credit for
-          making a rodent the most recognizable thing in systems programming.
+          </ExternalLink>{" "}
+          while learning Go. The concept illustrations were generated with AI and
+          cleaned up for transparent backgrounds. The gopher mascot follows the
+          tradition established by Renee French, who deserves credit for making a
+          rodent the most recognizable thing in systems programming.
         </p>
         <div style={styles.linkRow}>
-          <a
+          <ExternalLink
             href="https://github.com/olgasafonova/godojo"
-            target="_blank"
-            rel="noopener noreferrer"
             style={styles.extLink}
           >
             Source on GitHub
-          </a>
+          </ExternalLink>
         </div>
       </div>
 
-      {/* CTA */}
-      <div style={styles.cta}>
-        <p style={styles.ctaText}>Ready to train?</p>
-        <div style={styles.ctaButtons}>
-          <button onClick={() => onNavigate("learn")} style={styles.ctaPrimary}>
-            Start learning
-          </button>
-          <button
-            onClick={() => onNavigate("quiz")}
-            style={styles.ctaSecondary}
-          >
-            Train
-          </button>
-        </div>
-      </div>
+      <CTA onNavigate={onNavigate} />
     </div>
   );
 };
