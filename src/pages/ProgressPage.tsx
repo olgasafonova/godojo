@@ -23,9 +23,283 @@ const BELT_LABELS: Record<Belt, string> = {
   black: "Advanced",
 };
 
+const BELT_ORDER: Belt[] = [
+  "white",
+  "yellow",
+  "green",
+  "blue",
+  "brown",
+  "black",
+];
+
+function beltProgress(
+  belt: (typeof BELTS)[number],
+  isCurrent: boolean,
+  achieved: boolean,
+  masteredCount: number,
+): number {
+  if (isCurrent && belt.max) {
+    return Math.min(1, (masteredCount - belt.min) / (belt.max - belt.min + 1));
+  }
+  return achieved ? 1 : 0;
+}
+
+const BeltCard: React.FC<{
+  belt: (typeof BELTS)[number];
+  currentBeltId: Belt;
+  masteredCount: number;
+}> = ({ belt, currentBeltId, masteredCount }) => {
+  const isCurrent = belt.id === currentBeltId;
+  const achieved = masteredCount >= belt.min;
+  const rangeText = belt.max ? `${belt.min}-${belt.max}` : `${belt.min}+`;
+  const progress = beltProgress(belt, isCurrent, achieved, masteredCount);
+  const nameColor =
+    isCurrent && belt.id !== "black" ? belt.color : colors.text;
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: `${spacing.lg}px ${spacing.sm}px`,
+        background: isCurrent ? colors.bgCard : "transparent",
+        borderRadius: radius.md,
+        opacity: achieved || isCurrent ? 1 : 0.35,
+      }}
+    >
+      <div
+        style={{
+          width: 48,
+          height: 12,
+          borderRadius: 3,
+          background: belt.id === "black" ? "#555" : belt.color,
+          border: belt.id === "white" ? "1px solid #888" : "none",
+          marginBottom: spacing.sm,
+        }}
+      />
+      <div
+        style={{
+          fontFamily: font.mono,
+          fontSize: 15,
+          fontWeight: isCurrent ? font.weightBold : font.weightRegular,
+          color: nameColor,
+        }}
+      >
+        {belt.name}
+      </div>
+      <div
+        style={{
+          fontFamily: font.mono,
+          fontSize: 15,
+          color: colors.textMuted,
+          marginTop: 2,
+        }}
+      >
+        {rangeText} cards
+      </div>
+      {(isCurrent || achieved) && (
+        <div
+          style={{
+            marginTop: spacing.sm,
+            width: "100%",
+            height: 3,
+            borderRadius: 2,
+            background: colors.notStarted,
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              width: `${progress * 100}%`,
+              height: "100%",
+              background: belt.color,
+              borderRadius: 2,
+              transition: "width 0.3s",
+            }}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+function cardSwatchColor(
+  rec: ReturnType<typeof getAllRecords>[string] | undefined,
+): { bg: string; text: string } {
+  const seen = !!rec;
+  const mastered = !!rec && isMastered(rec);
+  const bg = mastered
+    ? colors.mastered
+    : seen
+      ? colors.learning
+      : colors.notStarted;
+  return { bg, text: mastered || seen ? "#fff" : colors.textMuted };
+}
+
+const BeltCardGroup: React.FC<{
+  beltId: Belt;
+  records: ReturnType<typeof getAllRecords>;
+}> = ({ beltId, records }) => {
+  const beltCards = cards.filter((c) => c.belt === beltId);
+  return (
+    <div style={{ marginBottom: spacing.xl }}>
+      <h3
+        style={{
+          fontFamily: font.mono,
+          fontSize: 18,
+          textTransform: "uppercase",
+          letterSpacing: 1.5,
+          color: beltId === "black" ? colors.textMuted : colors.belt[beltId],
+          marginBottom: spacing.sm,
+        }}
+      >
+        {BELT_LABELS[beltId]}
+      </h3>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        {beltCards.map((card) => {
+          const swatch = cardSwatchColor(records[card.id]);
+          return (
+            <div
+              key={card.id}
+              title={card.question}
+              style={{
+                width: 56,
+                height: 56,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: swatch.bg,
+                borderRadius: radius.sm,
+                fontSize: 14,
+                fontFamily: font.mono,
+                color: swatch.text,
+              }}
+            >
+              {card.id}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const secondaryButton: React.CSSProperties = {
+  fontFamily: font.mono,
+  fontSize: 14,
+  color: colors.textMuted,
+  background: "transparent",
+  border: `1px solid ${colors.notStarted}`,
+  borderRadius: radius.md,
+  padding: "10px 20px",
+  cursor: "pointer",
+};
+
+const ResetSection: React.FC = () => {
+  const [confirmReset, setConfirmReset] = useState(false);
+
+  return (
+    <div
+      style={{
+        borderTop: `1px solid ${colors.notStarted}`,
+        paddingTop: spacing.xl,
+        marginTop: spacing.xl,
+      }}
+    >
+      {!confirmReset ? (
+        <button onClick={() => setConfirmReset(true)} style={secondaryButton}>
+          Reset all progress
+        </button>
+      ) : (
+        <div style={{ display: "flex", gap: spacing.md, alignItems: "center" }}>
+          <span
+            style={{ fontFamily: font.body, fontSize: 14, color: colors.wrong }}
+          >
+            This will erase all progress. Are you sure?
+          </span>
+          <button
+            onClick={() => {
+              resetAll();
+              setConfirmReset(false);
+              window.location.reload();
+            }}
+            style={{
+              fontFamily: font.mono,
+              fontSize: 14,
+              color: "#fff",
+              background: colors.wrong,
+              border: "none",
+              borderRadius: radius.md,
+              padding: "10px 20px",
+              cursor: "pointer",
+            }}
+          >
+            Yes, reset
+          </button>
+          <button onClick={() => setConfirmReset(false)} style={secondaryButton}>
+            Cancel
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const RankHeader: React.FC<{
+  mobile: boolean;
+  belt: ReturnType<typeof getCurrentBelt>;
+}> = ({ mobile, belt }) => (
+  <div
+    style={{
+      display: "flex",
+      flexDirection: mobile ? "column" : "row",
+      alignItems: "center",
+      textAlign: mobile ? "center" : "left",
+      gap: spacing.lg,
+      marginBottom: spacing.xxl,
+    }}
+  >
+    <Gopher mood="meditating" size={mobile ? 140 : 200} />
+    <div>
+      <div
+        style={{
+          fontFamily: font.mono,
+          fontSize: 16,
+          textTransform: "uppercase",
+          letterSpacing: 2,
+          color: colors.textMuted,
+          marginBottom: spacing.xs,
+        }}
+      >
+        Current Rank
+      </div>
+      <div
+        style={{
+          fontFamily: font.mono,
+          fontSize: 34,
+          fontWeight: font.weightBold,
+          color: belt.color,
+        }}
+      >
+        {belt.name}
+      </div>
+      <div
+        style={{
+          fontFamily: font.mono,
+          fontSize: 16,
+          color: colors.textMuted,
+          marginTop: spacing.xs,
+        }}
+      >
+        {belt.id} belt
+      </div>
+    </div>
+  </div>
+);
+
 export const ProgressPage: React.FC = () => {
   const mobile = useIsMobile();
-  const [confirmReset, setConfirmReset] = useState(false);
   const records = getAllRecords();
   const streak = getStreak();
   const masteredCount = getMasteredCount();
@@ -42,53 +316,7 @@ export const ProgressPage: React.FC = () => {
         padding: `${spacing.xl}px ${spacing.md}px`,
       }}
     >
-      {/* Gopher + Belt */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: mobile ? "column" : "row",
-          alignItems: mobile ? "center" : "center",
-          textAlign: mobile ? "center" : "left",
-          gap: spacing.lg,
-          marginBottom: spacing.xxl,
-        }}
-      >
-        <Gopher mood="meditating" size={mobile ? 140 : 200} />
-        <div>
-          <div
-            style={{
-              fontFamily: font.mono,
-              fontSize: 16,
-              textTransform: "uppercase",
-              letterSpacing: 2,
-              color: colors.textMuted,
-              marginBottom: spacing.xs,
-            }}
-          >
-            Current Rank
-          </div>
-          <div
-            style={{
-              fontFamily: font.mono,
-              fontSize: 34,
-              fontWeight: font.weightBold,
-              color: belt.color,
-            }}
-          >
-            {belt.name}
-          </div>
-          <div
-            style={{
-              fontFamily: font.mono,
-              fontSize: 16,
-              color: colors.textMuted,
-              marginTop: spacing.xs,
-            }}
-          >
-            {belt.id} belt
-          </div>
-        </div>
-      </div>
+      <RankHeader mobile={mobile} belt={belt} />
 
       {/* Stats */}
       <div
@@ -131,222 +359,23 @@ export const ProgressPage: React.FC = () => {
           marginBottom: spacing.xxl,
         }}
       >
-        {BELTS.map((b) => {
-          const isCurrent = b.id === belt.id;
-          const achieved = masteredCount >= b.min;
-          const rangeText = b.max ? `${b.min}-${b.max}` : `${b.min}+`;
-          const progress =
-            isCurrent && b.max
-              ? Math.min(1, (masteredCount - b.min) / (b.max - b.min + 1))
-              : achieved
-                ? 1
-                : 0;
-
-          return (
-            <div
-              key={b.id}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                padding: `${spacing.lg}px ${spacing.sm}px`,
-                background: isCurrent ? colors.bgCard : "transparent",
-                borderRadius: radius.md,
-                opacity: achieved || isCurrent ? 1 : 0.35,
-              }}
-            >
-              <div
-                style={{
-                  width: 48,
-                  height: 12,
-                  borderRadius: 3,
-                  background: b.id === "black" ? "#555" : b.color,
-                  border: b.id === "white" ? "1px solid #888" : "none",
-                  marginBottom: spacing.sm,
-                }}
-              />
-              <div
-                style={{
-                  fontFamily: font.mono,
-                  fontSize: 15,
-                  fontWeight: isCurrent ? font.weightBold : font.weightRegular,
-                  color: isCurrent
-                    ? b.id === "black"
-                      ? colors.text
-                      : b.color
-                    : colors.text,
-                }}
-              >
-                {b.name}
-              </div>
-              <div
-                style={{
-                  fontFamily: font.mono,
-                  fontSize: 15,
-                  color: colors.textMuted,
-                  marginTop: 2,
-                }}
-              >
-                {rangeText} cards
-              </div>
-              {(isCurrent || achieved) && (
-                <div
-                  style={{
-                    marginTop: spacing.sm,
-                    width: "100%",
-                    height: 3,
-                    borderRadius: 2,
-                    background: colors.notStarted,
-                    overflow: "hidden",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: `${progress * 100}%`,
-                      height: "100%",
-                      background: b.color,
-                      borderRadius: 2,
-                      transition: "width 0.3s",
-                    }}
-                  />
-                </div>
-              )}
-            </div>
-          );
-        })}
+        {BELTS.map((b) => (
+          <BeltCard
+            key={b.id}
+            belt={b}
+            currentBeltId={belt.id}
+            masteredCount={masteredCount}
+          />
+        ))}
       </div>
 
       {/* Card grid by belt */}
       <h2 style={sectionTitle}>All Cards</h2>
-      {(["white", "yellow", "green", "blue", "brown", "black"] as Belt[]).map(
-        (beltId) => {
-          const beltCards = cards.filter((c) => c.belt === beltId);
-          return (
-            <div key={beltId} style={{ marginBottom: spacing.xl }}>
-              <h3
-                style={{
-                  fontFamily: font.mono,
-                  fontSize: 18,
-                  textTransform: "uppercase",
-                  letterSpacing: 1.5,
-                  color:
-                    beltId === "black" ? colors.textMuted : colors.belt[beltId],
-                  marginBottom: spacing.sm,
-                }}
-              >
-                {BELT_LABELS[beltId]}
-              </h3>
-              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                {beltCards.map((card) => {
-                  const rec = records[card.id];
-                  const mastered = rec && isMastered(rec);
-                  const seen = !!rec;
-                  const bg = mastered
-                    ? colors.mastered
-                    : seen
-                      ? colors.learning
-                      : colors.notStarted;
-                  return (
-                    <div
-                      key={card.id}
-                      title={card.question}
-                      style={{
-                        width: 56,
-                        height: 56,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        background: bg,
-                        borderRadius: radius.sm,
-                        fontSize: 14,
-                        fontFamily: font.mono,
-                        color: mastered || seen ? "#fff" : colors.textMuted,
-                      }}
-                    >
-                      {card.id}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        },
-      )}
+      {BELT_ORDER.map((beltId) => (
+        <BeltCardGroup key={beltId} beltId={beltId} records={records} />
+      ))}
 
-      {/* Reset */}
-      <div
-        style={{
-          borderTop: `1px solid ${colors.notStarted}`,
-          paddingTop: spacing.xl,
-          marginTop: spacing.xl,
-        }}
-      >
-        {!confirmReset ? (
-          <button
-            onClick={() => setConfirmReset(true)}
-            style={{
-              fontFamily: font.mono,
-              fontSize: 14,
-              color: colors.textMuted,
-              background: "transparent",
-              border: `1px solid ${colors.notStarted}`,
-              borderRadius: radius.md,
-              padding: "10px 20px",
-              cursor: "pointer",
-            }}
-          >
-            Reset all progress
-          </button>
-        ) : (
-          <div
-            style={{ display: "flex", gap: spacing.md, alignItems: "center" }}
-          >
-            <span
-              style={{
-                fontFamily: font.body,
-                fontSize: 14,
-                color: colors.wrong,
-              }}
-            >
-              This will erase all progress. Are you sure?
-            </span>
-            <button
-              onClick={() => {
-                resetAll();
-                setConfirmReset(false);
-                window.location.reload();
-              }}
-              style={{
-                fontFamily: font.mono,
-                fontSize: 14,
-                color: "#fff",
-                background: colors.wrong,
-                border: "none",
-                borderRadius: radius.md,
-                padding: "10px 20px",
-                cursor: "pointer",
-              }}
-            >
-              Yes, reset
-            </button>
-            <button
-              onClick={() => setConfirmReset(false)}
-              style={{
-                fontFamily: font.mono,
-                fontSize: 14,
-                color: colors.textMuted,
-                background: "transparent",
-                border: `1px solid ${colors.notStarted}`,
-                borderRadius: radius.md,
-                padding: "10px 20px",
-                cursor: "pointer",
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-        )}
-      </div>
+      <ResetSection />
     </div>
   );
 };
