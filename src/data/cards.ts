@@ -406,6 +406,7 @@ func main() {
     explanation:
       "Since Go 1.22 you can range over an integer. range 3 counts 0, 1, 2. It's the short form of for i := 0; i < 3; i++.",
     gopherMood: "celebrating",
+    conceptImage: "/concepts/y11.png",
   },
 
   // ═══════════════════════════════════════
@@ -635,6 +636,7 @@ func main() {
     explanation:
       "min, max and clear became built-ins in Go 1.21. min and max take any number of ordered values. clear(m) deletes every key from a map, so len(m) is 0.",
     gopherMood: "celebrating",
+    conceptImage: "/concepts/g11.png",
   },
 
   // ═══════════════════════════════════════
@@ -884,6 +886,7 @@ func main() {
     explanation:
       "%w wraps the original error, so == fails: err is now a different value. errors.Is walks the whole wrap chain. To extract a specific error type, use errors.As, or errors.AsType[*fs.PathError](err) since Go 1.26.",
     gopherMood: "thinking",
+    conceptImage: "/concepts/b11.png",
   },
 
   // ═══════════════════════════════════════
@@ -1132,6 +1135,7 @@ func main() {
     explanation:
       "Since Go 1.22, each loop iteration gets its own i, so each closure remembers a different value. Before 1.22 all three shared one i and this printed 333, a classic Go bug.",
     gopherMood: "thinking",
+    conceptImage: "/concepts/br11.png",
   },
 
   // ═══════════════════════════════════════
@@ -1349,6 +1353,7 @@ func main() {
     explanation:
       "Go 1.27 allows generic methods: func (c *Cache) Get[T any](key string) (T, bool). Called as c.Get[int](\"count\"). Interface methods still can't have type parameters, and a generic method can't satisfy an interface.",
     gopherMood: "thinking",
+    conceptImage: "/concepts/k11.png",
   },
   {
     id: "k12",
@@ -1368,6 +1373,7 @@ func main() {
     explanation:
       "Since Go 1.26, new() accepts a value, not just a type. new(42) returns an *int pointing at 42. Before 1.26 you needed a temporary variable: v := 42; p := &v.",
     gopherMood: "celebrating",
+    conceptImage: "/concepts/k12.png",
   },
 ];
 
