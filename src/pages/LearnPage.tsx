@@ -27,47 +27,50 @@ type LessonSection = Lesson["sections"][number];
 const IntroCard: React.FC<{ mobile: boolean; lesson: Lesson }> = ({
   mobile,
   lesson,
-}) => (
-  <div>
-    <div
-      style={{
-        width: mobile ? 200 : 260,
-        height: mobile ? 200 : 260,
-        marginBottom: spacing.lg,
-        flexShrink: 0,
-      }}
-    >
-      <img
-        src={asset(lesson.conceptImage)}
-        alt={lesson.title}
-        width={mobile ? 200 : 260}
-        height={mobile ? 200 : 260}
-        style={{ width: "100%", height: "100%", objectFit: "contain" }}
-      />
+}) => {
+  const size = mobile ? 200 : 260;
+  return (
+    <div>
+      <div
+        style={{
+          width: size,
+          height: size,
+          marginBottom: spacing.lg,
+          flexShrink: 0,
+        }}
+      >
+        <img
+          src={asset(lesson.conceptImage)}
+          alt={lesson.title}
+          width={size}
+          height={size}
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+        />
+      </div>
+      <h1
+        style={{
+          fontFamily: font.mono,
+          fontSize: mobile ? 28 : 36,
+          fontWeight: font.weightBold,
+          color: colors.text,
+          marginBottom: spacing.md,
+        }}
+      >
+        {lesson.title}
+      </h1>
+      <p
+        style={{
+          fontFamily: font.body,
+          fontSize: 18,
+          color: colors.textMuted,
+          lineHeight: 1.7,
+        }}
+      >
+        {lesson.intro}
+      </p>
     </div>
-    <h1
-      style={{
-        fontFamily: font.mono,
-        fontSize: mobile ? 28 : 36,
-        fontWeight: font.weightBold,
-        color: colors.text,
-        marginBottom: spacing.md,
-      }}
-    >
-      {lesson.title}
-    </h1>
-    <p
-      style={{
-        fontFamily: font.body,
-        fontSize: 18,
-        color: colors.textMuted,
-        lineHeight: 1.7,
-      }}
-    >
-      {lesson.intro}
-    </p>
-  </div>
-);
+  );
+};
 
 const SectionInsight: React.FC<{ insight: string }> = ({ insight }) => (
   <div
@@ -113,80 +116,83 @@ const SectionInsight: React.FC<{ insight: string }> = ({ insight }) => (
 const SectionCard: React.FC<{ mobile: boolean; section: LessonSection }> = ({
   mobile,
   section,
-}) => (
-  <div>
-    {/* Illustration + title */}
-    <div
-      style={{
-        display: "flex",
-        flexDirection: mobile ? "column" : "row",
-        alignItems: "flex-start",
-        gap: spacing.lg,
-        marginBottom: spacing.xl,
-      }}
-    >
-      {section.image && (
-        <div
-          style={{
-            width: mobile ? 160 : 180,
-            height: mobile ? 160 : 180,
-            flexShrink: 0,
-          }}
-        >
-          <img
-            src={asset(section.image)}
-            alt={section.title}
-            width={mobile ? 160 : 180}
-            height={mobile ? 160 : 180}
-            style={{ width: "100%", height: "100%", objectFit: "contain" }}
-          />
+}) => {
+  const size = mobile ? 160 : 180;
+  return (
+    <div>
+      {/* Illustration + title */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: mobile ? "column" : "row",
+          alignItems: "flex-start",
+          gap: spacing.lg,
+          marginBottom: spacing.xl,
+        }}
+      >
+        {section.image && (
+          <div
+            style={{
+              width: size,
+              height: size,
+              flexShrink: 0,
+            }}
+          >
+            <img
+              src={asset(section.image)}
+              alt={section.title}
+              width={size}
+              height={size}
+              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+            />
+          </div>
+        )}
+        <div style={{ flex: 1 }}>
+          <h2
+            style={{
+              fontFamily: font.mono,
+              fontSize: mobile ? 24 : 30,
+              fontWeight: font.weightBold,
+              color: colors.text,
+              marginBottom: spacing.md,
+            }}
+          >
+            {section.title}
+          </h2>
+          <p
+            style={{
+              fontFamily: font.body,
+              fontSize: 18,
+              color: colors.textMuted,
+              lineHeight: 1.7,
+            }}
+          >
+            {section.body}
+          </p>
         </div>
-      )}
-      <div style={{ flex: 1 }}>
-        <h2
-          style={{
-            fontFamily: font.mono,
-            fontSize: mobile ? 24 : 30,
-            fontWeight: font.weightBold,
-            color: colors.text,
-            marginBottom: spacing.md,
-          }}
-        >
-          {section.title}
-        </h2>
-        <p
-          style={{
-            fontFamily: font.body,
-            fontSize: 18,
-            color: colors.textMuted,
-            lineHeight: 1.7,
-          }}
-        >
-          {section.body}
-        </p>
       </div>
+
+      {/* Code examples */}
+      {section.examples.map((ex, i) => (
+        <div key={i} style={{ marginBottom: spacing.lg }}>
+          <CodeBlock code={ex.code} />
+          <p
+            style={{
+              fontFamily: font.mono,
+              fontSize: 14,
+              color: colors.textMuted,
+              marginTop: spacing.sm,
+            }}
+          >
+            {ex.caption}
+          </p>
+        </div>
+      ))}
+
+      {section.insight && <SectionInsight insight={section.insight} />}
     </div>
-
-    {/* Code examples */}
-    {section.examples.map((ex, i) => (
-      <div key={i} style={{ marginBottom: spacing.lg }}>
-        <CodeBlock code={ex.code} />
-        <p
-          style={{
-            fontFamily: font.mono,
-            fontSize: 14,
-            color: colors.textMuted,
-            marginTop: spacing.sm,
-          }}
-        >
-          {ex.caption}
-        </p>
-      </div>
-    ))}
-
-    {section.insight && <SectionInsight insight={section.insight} />}
-  </div>
-);
+  );
+};
 
 const GotchasCard: React.FC<{
   mobile: boolean;
@@ -357,6 +363,23 @@ const LessonCard: React.FC<LessonCardProps> = ({
   );
 };
 
+const beltButtonStyle = (
+  color: string,
+  isSelected: boolean,
+  mobile: boolean,
+): React.CSSProperties => ({
+  fontFamily: font.mono,
+  fontSize: mobile ? 14 : 16,
+  fontWeight: isSelected ? font.weightBold : font.weightRegular,
+  color: isSelected ? colors.bg : colors.text,
+  background: isSelected ? color : colors.bgCard,
+  border: `2px solid ${isSelected ? color : colors.notStarted}`,
+  borderRadius: 24,
+  padding: mobile ? "8px 14px" : "10px 20px",
+  cursor: "pointer",
+  transition: "all 0.2s",
+});
+
 const BeltSelector: React.FC<{
   mobile: boolean;
   selectedBelt: Belt;
@@ -370,31 +393,15 @@ const BeltSelector: React.FC<{
       flexWrap: "wrap",
     }}
   >
-    {BELTS.map((b) => {
-      const isSelected = b.id === selectedBelt;
-      return (
-        <button
-          key={b.id}
-          onClick={() => onChangeBelt(b.id)}
-          style={{
-            fontFamily: font.mono,
-            fontSize: mobile ? 14 : 16,
-            fontWeight: isSelected ? font.weightBold : font.weightRegular,
-            color: isSelected ? colors.bg : colors.text,
-            background: isSelected ? b.color : colors.bgCard,
-            border: isSelected
-              ? `2px solid ${b.color}`
-              : `2px solid ${colors.notStarted}`,
-            borderRadius: 24,
-            padding: mobile ? "8px 14px" : "10px 20px",
-            cursor: "pointer",
-            transition: "all 0.2s",
-          }}
-        >
-          {BELT_TOPICS[b.id]}
-        </button>
-      );
-    })}
+    {BELTS.map((b) => (
+      <button
+        key={b.id}
+        onClick={() => onChangeBelt(b.id)}
+        style={beltButtonStyle(b.color, b.id === selectedBelt, mobile)}
+      >
+        {BELT_TOPICS[b.id]}
+      </button>
+    ))}
   </div>
 );
 
@@ -421,6 +428,52 @@ const ProgressBar: React.FC<{ progress: number }> = ({ progress }) => (
   </div>
 );
 
+const BackButton: React.FC<{ disabled: boolean; onClick: () => void }> = ({
+  disabled,
+  onClick,
+}) => {
+  const tone = disabled ? colors.notStarted : colors.accent;
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        fontFamily: font.mono,
+        fontSize: 16,
+        color: tone,
+        background: "transparent",
+        border: `2px solid ${tone}`,
+        borderRadius: radius.md,
+        padding: "12px 28px",
+        cursor: disabled ? "default" : "pointer",
+        transition: "all 0.2s",
+      }}
+    >
+      Back
+    </button>
+  );
+};
+
+const NextButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
+  <button
+    onClick={onClick}
+    style={{
+      fontFamily: font.mono,
+      fontSize: 16,
+      fontWeight: font.weightMedium,
+      color: colors.bg,
+      background: colors.accent,
+      border: "none",
+      borderRadius: radius.md,
+      padding: "12px 28px",
+      cursor: "pointer",
+      transition: "all 0.2s",
+    }}
+  >
+    Next
+  </button>
+);
+
 const LessonNav: React.FC<{
   step: number;
   totalSteps: number;
@@ -438,49 +491,13 @@ const LessonNav: React.FC<{
       gap: spacing.md,
     }}
   >
-    <button
-      onClick={onBack}
-      disabled={isFirst}
-      style={{
-        fontFamily: font.mono,
-        fontSize: 16,
-        color: isFirst ? colors.notStarted : colors.accent,
-        background: "transparent",
-        border: `2px solid ${isFirst ? colors.notStarted : colors.accent}`,
-        borderRadius: radius.md,
-        padding: "12px 28px",
-        cursor: isFirst ? "default" : "pointer",
-        transition: "all 0.2s",
-      }}
-    >
-      Back
-    </button>
+    <BackButton disabled={isFirst} onClick={onBack} />
 
     <span style={{ fontFamily: font.mono, fontSize: 14, color: colors.textMuted }}>
       {step + 1} / {totalSteps}
     </span>
 
-    {!isLast ? (
-      <button
-        onClick={onNext}
-        style={{
-          fontFamily: font.mono,
-          fontSize: 16,
-          fontWeight: font.weightMedium,
-          color: colors.bg,
-          background: colors.accent,
-          border: "none",
-          borderRadius: radius.md,
-          padding: "12px 28px",
-          cursor: "pointer",
-          transition: "all 0.2s",
-        }}
-      >
-        Next
-      </button>
-    ) : (
-      <div style={{ width: 90 }} />
-    )}
+    {isLast ? <div style={{ width: 90 }} /> : <NextButton onClick={onNext} />}
   </div>
 );
 
