@@ -8,6 +8,7 @@ import { CodeBlock } from "../components/CodeBlock";
 import { colors, font, radius, spacing } from "../styles/tokens";
 import { useIsMobile } from "../utils/useMediaQuery";
 import { playCorrect, playWrong } from "../utils/sounds";
+import { asset } from "../utils/basePath";
 
 type Phase = "ready" | "question" | "feedback" | "done";
 
@@ -298,10 +299,20 @@ const FeedbackPanel: React.FC<{
         alignItems: mobile ? "center" : "flex-start",
       }}
     >
-      <Gopher
-        mood={isCorrect ? "celebrating" : "encouraging"}
-        size={mobile ? 140 : 180}
-      />
+      {card.conceptImage ? (
+        <img
+          src={asset(card.conceptImage)}
+          alt=""
+          width={mobile ? 140 : 180}
+          height={mobile ? 140 : 180}
+          style={styles.conceptImage}
+        />
+      ) : (
+        <Gopher
+          mood={isCorrect ? "celebrating" : "encouraging"}
+          size={mobile ? 140 : 180}
+        />
+      )}
       <div style={styles.feedbackText}>
         <div
           style={{
@@ -656,6 +667,10 @@ const styles: Record<string, React.CSSProperties> = {
   },
   feedbackText: {
     flex: 1,
+  },
+  conceptImage: {
+    flexShrink: 0,
+    objectFit: "contain",
   },
   feedbackVerdict: {
     fontFamily: font.mono,
