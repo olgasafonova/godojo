@@ -44,6 +44,53 @@ function beltProgress(
   return achieved ? 1 : 0;
 }
 
+const BeltSwatch: React.FC<{ belt: (typeof BELTS)[number] }> = ({ belt }) => (
+  <div
+    style={{
+      width: 48,
+      height: 12,
+      borderRadius: 3,
+      background: belt.id === "black" ? "#555" : belt.color,
+      border: belt.id === "white" ? "1px solid #888" : "none",
+      marginBottom: spacing.sm,
+    }}
+  />
+);
+
+const BeltProgressBar: React.FC<{ progress: number; color: string }> = ({
+  progress,
+  color,
+}) => (
+  <div
+    style={{
+      marginTop: spacing.sm,
+      width: "100%",
+      height: 3,
+      borderRadius: 2,
+      background: colors.notStarted,
+      overflow: "hidden",
+    }}
+  >
+    <div
+      style={{
+        width: `${progress * 100}%`,
+        height: "100%",
+        background: color,
+        borderRadius: 2,
+        transition: "width 0.3s",
+      }}
+    />
+  </div>
+);
+
+const beltRangeText = (belt: (typeof BELTS)[number]): string =>
+  belt.max ? `${belt.min}-${belt.max}` : `${belt.min}+`;
+
+const beltNameColor = (
+  belt: (typeof BELTS)[number],
+  isCurrent: boolean,
+): string => (isCurrent && belt.id !== "black" ? belt.color : colors.text);
+
 const BeltCard: React.FC<{
   belt: (typeof BELTS)[number];
   currentBeltId: Belt;
@@ -51,10 +98,8 @@ const BeltCard: React.FC<{
 }> = ({ belt, currentBeltId, masteredCount }) => {
   const isCurrent = belt.id === currentBeltId;
   const achieved = masteredCount >= belt.min;
-  const rangeText = belt.max ? `${belt.min}-${belt.max}` : `${belt.min}+`;
+  const reached = achieved || isCurrent;
   const progress = beltProgress(belt, isCurrent, achieved, masteredCount);
-  const nameColor =
-    isCurrent && belt.id !== "black" ? belt.color : colors.text;
 
   return (
     <div
@@ -65,25 +110,16 @@ const BeltCard: React.FC<{
         padding: `${spacing.lg}px ${spacing.sm}px`,
         background: isCurrent ? colors.bgCard : "transparent",
         borderRadius: radius.md,
-        opacity: achieved || isCurrent ? 1 : 0.35,
+        opacity: reached ? 1 : 0.35,
       }}
     >
-      <div
-        style={{
-          width: 48,
-          height: 12,
-          borderRadius: 3,
-          background: belt.id === "black" ? "#555" : belt.color,
-          border: belt.id === "white" ? "1px solid #888" : "none",
-          marginBottom: spacing.sm,
-        }}
-      />
+      <BeltSwatch belt={belt} />
       <div
         style={{
           fontFamily: font.mono,
           fontSize: 15,
           fontWeight: isCurrent ? font.weightBold : font.weightRegular,
-          color: nameColor,
+          color: beltNameColor(belt, isCurrent),
         }}
       >
         {belt.name}
@@ -96,30 +132,9 @@ const BeltCard: React.FC<{
           marginTop: 2,
         }}
       >
-        {rangeText} cards
+        {beltRangeText(belt)} cards
       </div>
-      {(isCurrent || achieved) && (
-        <div
-          style={{
-            marginTop: spacing.sm,
-            width: "100%",
-            height: 3,
-            borderRadius: 2,
-            background: colors.notStarted,
-            overflow: "hidden",
-          }}
-        >
-          <div
-            style={{
-              width: `${progress * 100}%`,
-              height: "100%",
-              background: belt.color,
-              borderRadius: 2,
-              transition: "width 0.3s",
-            }}
-          />
-        </div>
-      )}
+      {reached && <BeltProgressBar progress={progress} color={belt.color} />}
     </div>
   );
 };
