@@ -205,8 +205,11 @@ for condition { }
 for { }
 
 // Range (foreach)
-for i, v := range items { }`,
-            caption: "Four flavors, one keyword.",
+for i, v := range items { }
+
+// Range over a number (Go 1.22+)
+for i := range 10 { }        // i = 0..9`,
+            caption: "Five flavors, one keyword. range 10 is the modern way to count.",
           },
         ],
       },
@@ -338,6 +341,19 @@ sub := nums[1:3]  // [20, 30]
             caption:
               "Slice notation [low:high] includes low, excludes high. Like Python.",
           },
+          {
+            code: `// Built-ins (Go 1.21+)
+min(3, 1, 2)          // 1
+max(3, 1, 2)          // 3
+clear(m)              // empties a map (zeroes a slice)
+
+// The slices package (Go 1.21+)
+s := []int{3, 1, 2}
+slices.Sort(s)                 // [1 2 3]
+slices.Contains(s, 2)          // true`,
+            caption:
+              "Before Go 1.21 you wrote these loops by hand. Now they're one call.",
+          },
         ],
         insight:
           "Slices have length (elements in use) and capacity (elements allocated). append() only reallocates when len == cap. Pre-allocate with make([]T, 0, expectedSize) to avoid copies.",
@@ -402,6 +418,17 @@ fmt.Println(u.age)    // 0 (zero value, not set)`,
 m := make(map[string]int)    // initialized, ready to write
 ch := make(chan int, 10)      // buffered channel`,
             caption: "make() is for slices, maps, and channels. Nothing else.",
+          },
+          {
+            code: `p := new(int)        // *int pointing at 0
+q := new(42)         // Go 1.26+: *int pointing at 42
+
+type Person struct {
+    Age *int         // nil means "unknown"
+}
+bob := Person{Age: new(30)}`,
+            caption:
+              "Since Go 1.26, new() takes a value. Handy for optional pointer fields in JSON structs.",
           },
         ],
       },
@@ -501,6 +528,20 @@ type error interface {
 err := errors.New("something went wrong")
 err = fmt.Errorf("user %s not found", name)`,
             caption: "Any type with an Error() string method is an error.",
+          },
+          {
+            code: `_, err := os.Open("missing.txt")
+err = fmt.Errorf("loading config: %w", err)
+
+// Is this error (or anything it wraps) fs.ErrNotExist?
+errors.Is(err, fs.ErrNotExist)          // true
+
+// Pull out a specific error type (Go 1.26+)
+if pe, ok := errors.AsType[*fs.PathError](err); ok {
+    fmt.Println(pe.Path)                 // missing.txt
+}`,
+            caption:
+              "Never compare wrapped errors with ==. errors.Is checks the whole chain. errors.AsType is the generic, type-safe version of errors.As.",
           },
         ],
       },
@@ -636,32 +677,42 @@ case <-time.After(5 * time.Second):
       {
         title: "sync.WaitGroup",
         image: "/concepts/br08.png",
-        body: "WaitGroup coordinates multiple goroutines. Add(1) before launching, Done() inside (usually deferred), Wait() to block until all finish.",
+        body: "WaitGroup coordinates multiple goroutines. Since Go 1.25, wg.Go(f) starts f in a goroutine and does the counting for you. Wait() blocks until all finish.",
         examples: [
           {
             code: `var wg sync.WaitGroup
 
+for i := range 5 {
+    wg.Go(func() {           // Go 1.25+
+        process(i)
+    })
+}
+
+wg.Wait()                    // blocks until all finish`,
+            caption:
+              "wg.Go replaces the Add/Done bookkeeping. Each iteration has its own i.",
+          },
+          {
+            code: `// The same thing before Go 1.25
 for i := 0; i < 5; i++ {
     wg.Add(1)
     go func(n int) {
         defer wg.Done()
         process(n)
-    }(i)                     // pass i as argument!
-}
-
-wg.Wait()                    // blocks until all Done()`,
+    }(i)
+}`,
             caption:
-              "Pass loop variables as function arguments to avoid closure capture bugs.",
+              "You'll still see this in older code. Passing i as n was needed before Go 1.22.",
           },
         ],
         insight:
-          "Always pass loop variables to goroutine closures as function arguments. Otherwise all goroutines share the same variable and will likely all see the final value.",
+          "Before Go 1.22, all iterations of a for loop shared one loop variable, so goroutines often all saw the last value. Go 1.22 gives each iteration its own copy, which fixed that whole class of bugs.",
       },
     ],
     gotchas: [
       "Sending on an unbuffered channel with no receiver causes a deadlock.",
       "Closing an already-closed channel panics. Only the sender should close.",
-      "Loop variable capture in goroutines: always pass the variable as a function parameter.",
+      "When main() returns, unfinished goroutines die silently. Always wait for them.",
     ],
     summary:
       "Goroutines for concurrent work, channels for safe communication, WaitGroup for coordination. Start simple and add complexity only when needed.",
@@ -746,6 +797,21 @@ doubled := Map([]int{1, 2, 3}, func(x int) int {
             caption:
               "Generic functions use [T constraint] syntax. any means no restriction.",
           },
+          {
+            code: `type Cache struct {
+    data map[string]any
+}
+
+// Go 1.27+: a method can declare its own type parameters
+func (c *Cache) Get[T any](key string) (T, bool) {
+    v, ok := c.data[key].(T)
+    return v, ok
+}
+
+n, ok := cache.Get[int]("count")`,
+            caption:
+              "Before Go 1.27 this had to be a package-level function. Interface methods still can't have type parameters.",
+          },
         ],
       },
       {
@@ -822,7 +888,7 @@ var templateFS embed.FS`,
       },
     ],
     gotchas: [
-      "Closure capture in goroutine loops: all goroutines may see the last value. Pass variables as function arguments.",
+      "Go versions matter: loop-variable, range and generics behavior depends on the go line in go.mod. Code written for Go 1.21 or earlier may still pass loop variables as arguments; that workaround is no longer needed.",
       "Deferred calls run in LIFO order. The last defer runs first.",
       "Don't overuse init(). It makes package startup order implicit and testing harder.",
     ],

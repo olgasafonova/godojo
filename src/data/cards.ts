@@ -387,6 +387,26 @@ func main() {
     gopherMood: "thinking",
     conceptImage: "/concepts/y10.png",
   },
+  {
+    id: "y11",
+    belt: "yellow",
+    type: "output",
+    question: "What does this print? (Go 1.22+)",
+    code: `package main
+
+import "fmt"
+
+func main() {
+    for i := range 3 {
+        fmt.Print(i, " ")
+    }
+}`,
+    options: ["1 2 3 ", "0 1 2 3 ", "0 1 2 ", "Compile error"],
+    correct: 2,
+    explanation:
+      "Since Go 1.22 you can range over an integer. range 3 counts 0, 1, 2. It's the short form of for i := 0; i < 3; i++.",
+    gopherMood: "celebrating",
+  },
 
   // ═══════════════════════════════════════
   // GREEN BELT: Slices, maps, structs
@@ -595,6 +615,26 @@ func main() {
       'len() on a string returns the number of bytes. "Hello" is 5 ASCII characters, each one byte, so len is 5. For Unicode strings, len counts bytes, not runes.',
     gopherMood: "celebrating",
     conceptImage: "/concepts/g10.png",
+  },
+  {
+    id: "g11",
+    belt: "green",
+    type: "output",
+    question: "What does this print? (Go 1.21+)",
+    code: `package main
+
+import "fmt"
+
+func main() {
+    m := map[string]int{"a": 1, "b": 2}
+    clear(m)
+    fmt.Println(min(3, 1, 2), max(3, 1, 2), len(m))
+}`,
+    options: ["1 3 2", "Compile error", "3 1 0", "1 3 0"],
+    correct: 3,
+    explanation:
+      "min, max and clear became built-ins in Go 1.21. min and max take any number of ordered values. clear(m) deletes every key from a map, so len(m) is 0.",
+    gopherMood: "celebrating",
   },
 
   // ═══════════════════════════════════════
@@ -828,6 +868,23 @@ func main() {
     gopherMood: "celebrating",
     conceptImage: "/concepts/b10.png",
   },
+  {
+    id: "b11",
+    belt: "blue",
+    type: "idiom",
+    question:
+      "err was wrapped with fmt.Errorf(\"load: %w\", fs.ErrNotExist). How do you check for fs.ErrNotExist?",
+    options: [
+      "err == fs.ErrNotExist",
+      "errors.Is(err, fs.ErrNotExist)",
+      "err.Error() == \"file does not exist\"",
+      "err.(fs.ErrNotExist)",
+    ],
+    correct: 1,
+    explanation:
+      "%w wraps the original error, so == fails: err is now a different value. errors.Is walks the whole wrap chain. To extract a specific error type, use errors.As, or errors.AsType[*fs.PathError](err) since Go 1.26.",
+    gopherMood: "thinking",
+  },
 
   // ═══════════════════════════════════════
   // BROWN BELT: Goroutines, channels
@@ -998,7 +1055,7 @@ func main() {
     ],
     correct: 0,
     explanation:
-      "sync.WaitGroup tracks goroutines: wg.Add(1) before launch, wg.Done() inside (often deferred), wg.Wait() to block until all finish. Clean and race-free.",
+      "sync.WaitGroup tracks goroutines. Since Go 1.25, wg.Go(f) starts f in a goroutine and does the counting for you; wg.Wait() blocks until all finish. Older code does the same by hand: wg.Add(1) before launch, defer wg.Done() inside.",
     gopherMood: "idle",
     conceptImage: "/concepts/br08.png",
   },
@@ -1033,12 +1090,10 @@ import (
 
 func main() {
     var wg sync.WaitGroup
-    for i := 0; i < 3; i++ {
-        wg.Add(1)
-        go func(n int) {
-            defer wg.Done()
-            fmt.Print(n)
-        }(i)
+    for i := range 3 {
+        wg.Go(func() {
+            fmt.Print(i)
+        })
     }
     wg.Wait()
 }`,
@@ -1050,9 +1105,33 @@ func main() {
     ],
     correct: 3,
     explanation:
-      "Each goroutine captures its own copy of i via the function parameter n. All three values print, but goroutine scheduling is non-deterministic, so the order varies.",
+      "range 3 counts 0, 1, 2 (Go 1.22+), and each iteration has its own i, so every goroutine sees a different value. wg.Go (Go 1.25+) launches each one and wg.Wait() waits for all. All three values print, but goroutine scheduling is non-deterministic, so the order varies.",
     gopherMood: "celebrating",
     conceptImage: "/concepts/br10.png",
+  },
+  {
+    id: "br11",
+    belt: "brown",
+    type: "output",
+    question: "What does this print on Go 1.22 or later?",
+    code: `package main
+
+import "fmt"
+
+func main() {
+    var funcs []func()
+    for i := 0; i < 3; i++ {
+        funcs = append(funcs, func() { fmt.Print(i) })
+    }
+    for _, f := range funcs {
+        f()
+    }
+}`,
+    options: ["333", "012", "222", "Compile error"],
+    correct: 1,
+    explanation:
+      "Since Go 1.22, each loop iteration gets its own i, so each closure remembers a different value. Before 1.22 all three shared one i and this printed 333, a classic Go bug.",
+    gopherMood: "thinking",
   },
 
   // ═══════════════════════════════════════
@@ -1206,13 +1285,13 @@ func main() {
 }`,
     options: [
       "Closure captures v by reference; all goroutines likely print 3",
-      "Missing sync.WaitGroup; goroutines may not run",
+      "Missing sync.WaitGroup; main may exit before goroutines run",
       "Both: closure capture and missing WaitGroup",
       "Nothing wrong, prints 1 2 3",
     ],
-    correct: 2,
+    correct: 1,
     explanation:
-      "Two bugs: (1) All goroutines share the same v variable, which ends at 3. Fix: pass v as parameter. (2) main() exits before goroutines run. Fix: use sync.WaitGroup.",
+      "Since Go 1.22, every loop iteration gets its own v, so the old closure-capture bug is gone (before 1.22, \"Both\" was the right answer). The bug left: main() returns before the goroutines run, so you may see nothing at all. Fix: wait with a sync.WaitGroup.",
     gopherMood: "encouraging",
     conceptImage: "/concepts/k08.png",
   },
@@ -1254,6 +1333,41 @@ func main() {
       'delete(m, "a") removes key "a". delete(m, "c") is a no-op (deleting a missing key doesn\'t panic). One key remains: "b".',
     gopherMood: "celebrating",
     conceptImage: "/concepts/k10.png",
+  },
+  {
+    id: "k11",
+    belt: "black",
+    type: "concept",
+    question: "What did Go 1.27 add to generics?",
+    options: [
+      "Methods can declare their own type parameters",
+      "Interfaces can have generic methods",
+      "Type parameters are inferred from return types",
+      "Generics work at runtime via reflection",
+    ],
+    correct: 0,
+    explanation:
+      "Go 1.27 allows generic methods: func (c *Cache) Get[T any](key string) (T, bool). Called as c.Get[int](\"count\"). Interface methods still can't have type parameters, and a generic method can't satisfy an interface.",
+    gopherMood: "thinking",
+  },
+  {
+    id: "k12",
+    belt: "black",
+    type: "output",
+    question: "What does this print? (Go 1.26+)",
+    code: `package main
+
+import "fmt"
+
+func main() {
+    p := new(42)
+    fmt.Println(*p)
+}`,
+    options: ["0", "42", "Compile error", "A memory address"],
+    correct: 1,
+    explanation:
+      "Since Go 1.26, new() accepts a value, not just a type. new(42) returns an *int pointing at 42. Before 1.26 you needed a temporary variable: v := 42; p := &v.",
+    gopherMood: "celebrating",
   },
 ];
 

@@ -8,7 +8,7 @@ Learn Go through spaced repetition and visual metaphors.
 
 ## How it works
 
-60 quiz cards organized into six belts, from variables and loops (white) to reflection and unsafe pointers (black). The SM-2 algorithm schedules each card at the right interval. Get it right and it fades into the background. Get it wrong and it shows up again tomorrow morning.
+66 quiz cards, current as of Go 1.27, organized into six belts, from variables and loops (white) to reflection and unsafe pointers (black). The SM-2 algorithm schedules each card at the right interval. Get it right and it fades into the background. Get it wrong and it shows up again tomorrow morning.
 
 Sessions are 10 cards. Due reviews first, then new material. Progress lives in localStorage; nothing leaves your browser.
 

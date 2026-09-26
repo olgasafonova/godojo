@@ -30,7 +30,7 @@ const FEATURES: Feature[] = [
   {
     img: "br10",
     alt: "Three gophers numbered 1-2-3",
-    title: "Six belts, 60 cards",
+    title: "Six belts, 66 cards",
     text: "White belt starts with variables and for-loops. Black belt ends with reflection, unsafe pointers, and build tags. The progression is steep on purpose. Comfortable learning is an oxymoron.",
   },
   {
