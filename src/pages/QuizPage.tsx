@@ -279,6 +279,39 @@ const QuestionCard: React.FC<{
   </div>
 );
 
+const FeedbackVisual: React.FC<{
+  card: GoCard;
+  mobile: boolean;
+  isCorrect: boolean;
+}> = ({ card, mobile, isCorrect }) => {
+  const size = mobile ? 140 : 180;
+  if (!card.conceptImage) {
+    return (
+      <Gopher mood={isCorrect ? "celebrating" : "encouraging"} size={size} />
+    );
+  }
+  return (
+    <img
+      src={asset(card.conceptImage)}
+      alt=""
+      width={size}
+      height={size}
+      style={styles.conceptImage}
+    />
+  );
+};
+
+const FeedbackVerdict: React.FC<{ isCorrect: boolean }> = ({ isCorrect }) => (
+  <div
+    style={{
+      ...styles.feedbackVerdict,
+      color: isCorrect ? colors.mastered : colors.wrong,
+    }}
+  >
+    {isCorrect ? "Correct!" : "Not quite"}
+  </div>
+);
+
 const FeedbackPanel: React.FC<{
   card: GoCard;
   mobile: boolean;
@@ -299,29 +332,9 @@ const FeedbackPanel: React.FC<{
         alignItems: mobile ? "center" : "flex-start",
       }}
     >
-      {card.conceptImage ? (
-        <img
-          src={asset(card.conceptImage)}
-          alt=""
-          width={mobile ? 140 : 180}
-          height={mobile ? 140 : 180}
-          style={styles.conceptImage}
-        />
-      ) : (
-        <Gopher
-          mood={isCorrect ? "celebrating" : "encouraging"}
-          size={mobile ? 140 : 180}
-        />
-      )}
+      <FeedbackVisual card={card} mobile={mobile} isCorrect={isCorrect} />
       <div style={styles.feedbackText}>
-        <div
-          style={{
-            ...styles.feedbackVerdict,
-            color: isCorrect ? colors.mastered : colors.wrong,
-          }}
-        >
-          {isCorrect ? "Correct!" : "Not quite"}
-        </div>
+        <FeedbackVerdict isCorrect={isCorrect} />
         <p style={styles.explanation}>{card.explanation}</p>
       </div>
     </div>
@@ -477,24 +490,40 @@ function useQuizSession(): QuizSession {
   };
 }
 
+const isAdvanceKey = (key: string): boolean => key === "Enter" || key === " ";
+
+function optionIndexForKey(key: string): number | null {
+  const num = parseInt(key);
+  return num >= 1 && num <= 4 ? num - 1 : null;
+}
+
+const canPickOption = (phase: Phase, selected: number | null): boolean =>
+  phase === "question" && selected === null;
+
+function advanceActionFor(
+  phase: Phase,
+  handleNext: () => void,
+  startQuiz: () => void,
+): (() => void) | null {
+  if (phase === "feedback") return handleNext;
+  if (phase === "ready") return startQuiz;
+  return null;
+}
+
 function useQuizKeyboard(session: QuizSession): void {
   const { phase, selected, handleSelect, handleNext, startQuiz } = session;
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      const advance = phase === "feedback" ? handleNext : startQuiz;
-      const canAdvance =
-        (phase === "feedback" || phase === "ready") &&
-        (e.key === "Enter" || e.key === " ");
-
-      if (canAdvance) {
+      const advance = advanceActionFor(phase, handleNext, startQuiz);
+      if (advance && isAdvanceKey(e.key)) {
         e.preventDefault();
         advance();
         return;
       }
 
-      if (phase === "question" && selected === null) {
-        const num = parseInt(e.key);
-        if (num >= 1 && num <= 4) handleSelect(num - 1);
+      const optionIdx = optionIndexForKey(e.key);
+      if (optionIdx !== null && canPickOption(phase, selected)) {
+        handleSelect(optionIdx);
       }
     };
     window.addEventListener("keydown", handler);
