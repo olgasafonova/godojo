@@ -1,5 +1,5 @@
 import { Gopher } from "../components/Gopher";
-import { getCurrentBelt } from "../data/belts";
+import { beltAccent, getCurrentBelt } from "../data/belts";
 import { getMasteredCount, getDueCount, getStreak } from "../store/progress";
 import { cards } from "../data/cards";
 import { colors, font, radius, spacing } from "../styles/tokens";
@@ -16,7 +16,7 @@ const StatsRow: React.FC<{
 }> = ({ belt, masteredCount, streakCount }) => (
   <div style={styles.statsRow}>
     <div style={styles.statPill}>
-      <span style={{ color: belt.color }}>{belt.name}</span>
+      <span style={{ color: beltAccent(belt) }}>{belt.name}</span>
     </div>
     <div style={styles.statPill}>
       {masteredCount}/{cards.length} mastered

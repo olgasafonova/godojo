@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { cards } from "../data/cards";
-import { BELTS, getCurrentBelt } from "../data/belts";
+import { BELTS, beltAccent, getCurrentBelt } from "../data/belts";
 import {
   getAllRecords,
   getStreak,
@@ -84,12 +84,12 @@ const BeltProgressBar: React.FC<{ progress: number; color: string }> = ({
 );
 
 const beltRangeText = (belt: (typeof BELTS)[number]): string =>
-  belt.max ? `${belt.min}-${belt.max}` : `${belt.min}+`;
+  belt.max === undefined ? `all ${belt.min}` : `${belt.min}-${belt.max}`;
 
 const beltNameColor = (
   belt: (typeof BELTS)[number],
   isCurrent: boolean,
-): string => (isCurrent && belt.id !== "black" ? belt.color : colors.text);
+): string => (isCurrent ? beltAccent(belt) : colors.text);
 
 const BeltCard: React.FC<{
   belt: (typeof BELTS)[number];
@@ -134,7 +134,7 @@ const BeltCard: React.FC<{
       >
         {beltRangeText(belt)} cards
       </div>
-      {reached && <BeltProgressBar progress={progress} color={belt.color} />}
+      {reached && <BeltProgressBar progress={progress} color={beltAccent(belt)} />}
     </div>
   );
 };
@@ -294,7 +294,7 @@ const RankHeader: React.FC<{
           fontFamily: font.mono,
           fontSize: 34,
           fontWeight: font.weightBold,
-          color: belt.color,
+          color: beltAccent(belt),
         }}
       >
         {belt.name}
