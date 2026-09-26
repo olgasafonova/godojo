@@ -9,6 +9,38 @@ import { useIsMobile } from "./utils/useMediaQuery";
 
 type Page = "home" | "learn" | "quiz" | "progress" | "about";
 
+const NAV_LINKS: { page: Page; label: string }[] = [
+  { page: "learn", label: "Learn" },
+  { page: "quiz", label: "Train" },
+  { page: "progress", label: "Progress" },
+  { page: "about", label: "About" },
+];
+
+const PAGES: Record<Page, (onNavigate: (p: string) => void) => React.ReactNode> =
+  {
+    home: (onNavigate) => <HomePage onNavigate={onNavigate} />,
+    learn: (onNavigate) => <LearnPage onNavigate={onNavigate} />,
+    quiz: (onNavigate) => <QuizPage onNavigate={onNavigate} />,
+    progress: () => <ProgressPage />,
+    about: (onNavigate) => <AboutPage onNavigate={onNavigate} />,
+  };
+
+const NavLink: React.FC<{
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}> = ({ label, active, onClick }) => (
+  <button
+    onClick={onClick}
+    style={{
+      ...styles.navLink,
+      color: active ? colors.accent : colors.textMuted,
+    }}
+  >
+    {label}
+  </button>
+);
+
 function App() {
   const [page, setPage] = useState<Page>("home");
 
@@ -38,54 +70,20 @@ function App() {
             Go Dojo
           </button>
           <div style={styles.navLinks}>
-            <button
-              onClick={() => setPage("learn")}
-              style={{
-                ...styles.navLink,
-                color: page === "learn" ? colors.accent : colors.textMuted,
-              }}
-            >
-              Learn
-            </button>
-            <button
-              onClick={() => setPage("quiz")}
-              style={{
-                ...styles.navLink,
-                color: page === "quiz" ? colors.accent : colors.textMuted,
-              }}
-            >
-              Train
-            </button>
-            <button
-              onClick={() => setPage("progress")}
-              style={{
-                ...styles.navLink,
-                color: page === "progress" ? colors.accent : colors.textMuted,
-              }}
-            >
-              Progress
-            </button>
-            <button
-              onClick={() => setPage("about")}
-              style={{
-                ...styles.navLink,
-                color: page === "about" ? colors.accent : colors.textMuted,
-              }}
-            >
-              About
-            </button>
+            {NAV_LINKS.map((link) => (
+              <NavLink
+                key={link.page}
+                label={link.label}
+                active={page === link.page}
+                onClick={() => setPage(link.page)}
+              />
+            ))}
           </div>
         </nav>
       </header>
 
       {/* Pages */}
-      <main>
-        {page === "home" && <HomePage onNavigate={navigate} />}
-        {page === "learn" && <LearnPage onNavigate={navigate} />}
-        {page === "quiz" && <QuizPage onNavigate={navigate} />}
-        {page === "progress" && <ProgressPage />}
-        {page === "about" && <AboutPage onNavigate={navigate} />}
-      </main>
+      <main>{PAGES[page](navigate)}</main>
 
       <footer
         style={{
