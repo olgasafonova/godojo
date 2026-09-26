@@ -28,12 +28,14 @@ const PAGES: Record<Page, (onNavigate: (p: string) => void) => React.ReactNode> 
 const NavLink: React.FC<{
   label: string;
   active: boolean;
+  mobile: boolean;
   onClick: () => void;
-}> = ({ label, active, onClick }) => (
+}> = ({ label, active, mobile, onClick }) => (
   <button
     onClick={onClick}
     style={{
       ...styles.navLink,
+      ...(mobile && styles.navLinkMobile),
       color: active ? colors.accent : colors.textMuted,
     }}
   >
@@ -62,19 +64,25 @@ function App() {
           style={{
             ...styles.nav,
             padding: mobile
-              ? `${spacing.sm}px ${spacing.md}px`
+              ? `${spacing.sm}px 12px`
               : styles.nav.padding,
           }}
         >
-          <button onClick={() => setPage("home")} style={styles.navBrand}>
+          <button
+            onClick={() => setPage("home")}
+            style={{ ...styles.navBrand, ...(mobile && styles.navBrandMobile) }}
+          >
             Go Dojo
           </button>
-          <div style={styles.navLinks}>
+          <div
+            style={{ ...styles.navLinks, ...(mobile && styles.navLinksMobile) }}
+          >
             {NAV_LINKS.map((link) => (
               <NavLink
                 key={link.page}
                 label={link.label}
                 active={page === link.page}
+                mobile={mobile}
                 onClick={() => setPage(link.page)}
               />
             ))}
@@ -120,9 +128,16 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     alignItems: "center",
   },
+  navBrandMobile: {
+    fontSize: 15,
+    whiteSpace: "nowrap",
+  },
   navLinks: {
     display: "flex",
     gap: spacing.lg,
+  },
+  navLinksMobile: {
+    gap: 0,
   },
   navLink: {
     fontFamily: font.mono,
@@ -135,6 +150,10 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     alignItems: "center",
     transition: "color 0.2s",
+  },
+  navLinkMobile: {
+    fontSize: 14,
+    padding: `${spacing.sm}px 6px`,
   },
 };
 
