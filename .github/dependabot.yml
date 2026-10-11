@@ -8,7 +8,18 @@ updates:
       day: "monday"
     commit-message:
       prefix: "deps"
+    ignore:
+      # typescript-eslint 8 accepts TypeScript below 6.1 only, so a TypeScript 7
+      # bump cannot install. Remove this once typescript-eslint supports it.
+      - dependency-name: "typescript"
+        update-types:
+          - "version-update:semver-major"
     groups:
+      eslint:
+        # @eslint/js requires the matching eslint major, so the two move together.
+        patterns:
+          - "eslint"
+          - "@eslint/js"
       npm-dependencies:
         # Group minor and patch only. Majors get their own PR so they are
         # reviewable and never arrive inside a bump titled "N updates".
@@ -26,3 +37,9 @@ updates:
       day: "monday"
     commit-message:
       prefix: "ci"
+    groups:
+      github-actions:
+        # Every action bump edits the same workflow file, so separate pull
+        # requests conflict with each other. Keep them in one.
+        patterns:
+          - "*"
