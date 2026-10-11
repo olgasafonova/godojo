@@ -363,6 +363,13 @@ const LessonCard: React.FC<LessonCardProps> = ({
   );
 };
 
+// The black belt colour is nearly the page background, so a selected black tab
+// needs light text and a visible border instead of the usual dark-on-colour.
+const selectedTabColors = (color: string) =>
+  color === colors.belt.black
+    ? { text: colors.text, border: colors.textMuted }
+    : { text: colors.bg, border: color };
+
 const beltButtonStyle = (
   color: string,
   isSelected: boolean,
@@ -371,9 +378,9 @@ const beltButtonStyle = (
   fontFamily: font.mono,
   fontSize: mobile ? 14 : 16,
   fontWeight: isSelected ? font.weightBold : font.weightRegular,
-  color: isSelected ? colors.bg : colors.text,
+  color: isSelected ? selectedTabColors(color).text : colors.text,
   background: isSelected ? color : colors.bgCard,
-  border: `2px solid ${isSelected ? color : colors.notStarted}`,
+  border: `2px solid ${isSelected ? selectedTabColors(color).border : colors.notStarted}`,
   borderRadius: 24,
   padding: mobile ? "8px 14px" : "10px 20px",
   cursor: "pointer",
